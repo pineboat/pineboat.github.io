@@ -14,9 +14,8 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: PineBoat
-email: vijayabharathi.in/contact
 description: > # this means to ignore newlines until "baseurl:"
-  All that you learn fade away, what you write will stay.
+  Web development is weird. It is easy to learn, difficult to do it right, much easier to forget. If you are not enthusiastic about learning new things every day, you will also have the luxury of travelling back in time by the sheer progress being made on all ends.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: vijayabharathib
@@ -24,7 +23,7 @@ github_username:  vijayabharathib
 
 # Build settings
 markdown: kramdown
-theme: minima
+#theme: jekyll-theme-midnight
 gems:
   - jekyll-feed
 exclude:
