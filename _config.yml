@@ -14,17 +14,19 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: PineBoat
-author: Vijayabharathi
+author: Vijayabharathi B
 description: > # this means to ignore newlines until "baseurl:"
-  Web development is weird. It is easy to learn, difficult to do it right, much easier to forget. If you are not enthusiastic about learning new things every day, you will also have the luxury of travelling back in time by the sheer progress being made on all ends.
+  Web development is weird. It is easy to learn, difficult to do it right, much easier to forget. If you are not enthusiastic about learning new things every day, you will also have the luxury of travelling back in time by the sheer progress being made on all ends (back, middle and front!).
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://pineboat.in" # the base hostname & protocol for your site, e.g. http://example.com
+logo: "/assets/icons/logo.png"
 twitter_username: vijayabharathib
 github_username:  vijayabharathib
 google_analytics: UA-80881928-2
-permalink: /:title/
+permalink: /:categories/:year/:month/:day/:title
 # Build settings
 markdown: kramdown
+highlighter: rogue
 #theme: jekyll-theme-midnight
 gems:
   - jekyll-feed
