@@ -1,7 +1,7 @@
 ---
 layout: page
 title: About
-excerpt: "Know more about what's driving pineboat."
+excerpt: "A blog for technology users and developers. Know more about what's driving pineboat."
 permalink: /about/
 ---
 ## Why

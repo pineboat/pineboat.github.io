@@ -83,6 +83,7 @@ li {
  */
 h1, h2, h3, h4, h5, h6 {
   font-weight: $base-font-weight;
+  color: #63c0f5;
 }
 
 
@@ -117,8 +118,8 @@ a {
  * Blockquotes
  */
 blockquote {
-  color: $grey-color;
-  border-left: 4px solid $grey-color-light;
+  color: #b5e853;
+  border-left: 4px solid #b5e853;
   padding-left: $spacing-unit / 2;
   @include relative-font-size(1.125);
   letter-spacing: -1px;
@@ -139,7 +140,7 @@ code {
   @include relative-font-size(0.9375);
   border: 1px solid $grey-color-dark;
   border-radius: 3px;
-  background-color: #0e1112;
+  background-color: darken($background-color,6%);
 }
 
 code {

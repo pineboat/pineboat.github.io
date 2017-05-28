@@ -194,7 +194,9 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
+  jekyll-avatar
   jekyll-feed (~> 0.6)
+  jekyll-seo-tag
   tzinfo-data
 
 RUBY VERSION
