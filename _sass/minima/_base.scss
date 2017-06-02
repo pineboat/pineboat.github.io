@@ -1,9 +1,20 @@
+html {
+  font: $base-font-weight #{$base-font-size}/#{$base-line-height} $font-family-body-default;
+  height: 100%;
+
+  &.wf-active {
+    font: $base-font-weight #{$base-font-size}/#{$base-line-height} $font-family-body-webfont;
+  }
+}
+
+
 /**
  * Reset some basic elements
  */
 body, h1, h2, h3, h4, h5, h6,
 p, blockquote, pre, hr,
-dl, dd, ol, ul, figure {
+body, h1, h2, h3, h4, h5, h6,
+dl, dd, oigure {
   margin: 0;
   padding: 0;
 }
@@ -14,7 +25,6 @@ dl, dd, ol, ul, figure {
  * Basic styling
  */
 body {
-  font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
   color: $text-color;
   background-color: $background-color;
   -webkit-text-size-adjust: 100%;
@@ -37,6 +47,18 @@ ul, ol, dl, figure,
   margin-bottom: $spacing-unit / 2;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-family-heading-default;
+  font-size: 140%;
+  font-weight: 700;
+}
+
+.wf-active{
+   h1, h2, h3, h4, h5, h6, .site-header {
+    font-family: $font-family-heading-webfont;
+    font-weight: 700;
+  }
+}
 
 
 /**
