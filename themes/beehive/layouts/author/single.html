@@ -1,0 +1,12 @@
+{{ define "main" }}
+  <h2>single author template</h2>
+  <h1>{{ print .Params.firstname " " .Params.lastname }}</h1>
+  <img src="{{ .Params.image }}" alt={{ .Params.firstname }} />
+
+  {{ .Content }}
+  <ul>
+  {{ range (where .Site.Pages ".Params.author" .Params.id )}}
+    <li><a href={{ .Permalink }}> {{ .Title }} </a></li>
+  {{ end }}
+  </ul>
+{{ end }}

@@ -1,0 +1,11 @@
+{{ define "main" }}
+  {{ $data := .Data }}
+  <div class="container" role="main">
+    <ul class="list">
+      {{ range $key, $value := .Data.Terms.ByCount }}
+        <li class="list-item"><a href="{{ $.Site.LanguagePrefix }}/{{ $data.Plural }}/{{ $value.Name | urlize }}" >
+        {{ $value.Name }}<span class="badge">{{ $value.Count }}</span></a></li>
+      {{ end }}
+    </ul>
+  </div>
+{{ end }}

@@ -1,0 +1,12 @@
+{{ define "main"}}
+  <article role="main" class="o-post">
+    <h1>{{ .Title }}</h1>
+    <h2>{{ .Params.subtitle }}</h2>
+    {{ .Content }}
+    <ul>
+    {{ range (where .Site.Pages ".Params.id" .Params.author ) }}
+      <li> <a href="{{ .Permalink }}">{{ print .Params.firstname " " .Params.lastname }}</a> </li>
+    {{ end }}
+    </ul>
+  </article>
+{{ end }}

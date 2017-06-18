@@ -1,0 +1,66 @@
+* {
+  box-sizing: border-box;
+
+  &::selection {
+    background-color: $color-red-light;
+    color: $color-teal-dark;
+  }
+}
+
+html {
+  font-family: $font-family-body-default;
+  height: 100%;
+  background-color: $color-teal-dark;
+  color: $color-teal-light;
+  color: transparentize($color-teal-light, .1);
+  font-size: 120%;
+
+  &.wf-active {
+    font-family: $font-family-body-webfont;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-family-heading-default;
+  font-weight: 700;
+  .wf-active & {
+    font-family: $font-family-heading-webfont;
+    font-weight: 700;
+  }
+}
+
+a {
+  &, h1,h2,h3,h4,h6,h5 {
+    color: $color-orange-light;
+    text-decoration: none;
+  }
+  &:visited {
+    &, h1,h2,h3,h4,h6,h5 & {
+      color: $color-green-light;
+    }
+  }
+  &:hover{
+    &, h1,h2,h3,h4,h5,h6 & {
+      //border-bottom: 1px solid $color-yellow-light;
+      color: $color-brand;
+    }
+  }
+}
+
+p {
+  margin: 0;
+  margin-top: 1em;
+  line-height: 1.6em;
+}
+
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  border: 0;
+  border-top: 10px solid $color-brand;
+}

@@ -1,0 +1,5 @@
+baseURL = "https://pineboat.in/"
+languageCode = "en-us"
+title = "PineBoat"
+theme= "beehive"
+canonifyURLs= true
