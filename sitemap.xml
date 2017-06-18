@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://pineboat.in/page/about/</loc>
+    <lastmod>2017-06-18T20:19:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pineboat.in/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pineboat.in/page/</loc>
+    <lastmod>2017-06-18T20:19:30+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pineboat.in/</loc>
+    <lastmod>2017-06-18T20:19:30+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pineboat.in/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>
