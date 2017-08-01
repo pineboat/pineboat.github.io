@@ -1,0 +1,15 @@
+baseURL: "https://pineboat.in/"
+languageCode: "en-us"
+title: "PineBoat"
+theme: "beehive"
+canonifyURLs: true
+paginate: 10
+author:
+  vijayabharathib:
+    firstname: "Vijayabharathi"
+    lastname: "Balasubramanian"
+    bio: "All over the world in 80 days"
+    social:
+      website: "https://vijayabharathi.in"
+      twitter: "vijayabharathib"
+      github: "vijayabharathib"

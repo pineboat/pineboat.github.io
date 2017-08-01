@@ -3,7 +3,11 @@
     <h2 class="c-post-title">{{ .Title }}</h2>
   </a>
   <ul class="c-post-meta">
-    <li class="c-meta-autor"> By {{ .Params.author }}</li>
+    {{ range (where .Site.Pages ".Params.id" .Params.author )}}
+      <li class="c-meta-author">
+        <a href="{{ .URL }}">{{ print .Params.firstname " " .Params.lastname }}</a>
+      </li>
+    {{ end }}
     <li clsss="c-meta-date"> {{ .PublishDate.Format "January 2, 2006" }} </li>
     <li class="c-meta-length"> {{ .ReadingTime }} minute read ({{ .FuzzyWordCount}} words) </li>
     <li class="c-meta-tags">

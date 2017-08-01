@@ -1,9 +1,10 @@
 {{ define "main"}}
-  <h1>Articles from index.html</h1>
+  <h1>Recent Articles</h1>
   <div class="o-posts-list">
     {{ $postList := .Paginate (where .Data.Pages "Type" "post") }}
     {{ range $postList.Pages }}
       {{ partial "post_preview.html" . }}
     {{ end }}
   </div>
+  {{ partial "post_pagination.html" . }}
 {{ end }}

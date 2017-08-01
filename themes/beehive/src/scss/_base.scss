@@ -11,8 +11,7 @@ html {
   font-family: $font-family-body-default;
   height: 100%;
   background-color: $color-teal-dark;
-  color: $color-teal-light;
-  color: transparentize($color-teal-light, .1);
+  color: $color-teal-lighter;
   font-size: 120%;
 
   &.wf-active {

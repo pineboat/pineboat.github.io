@@ -1,0 +1,50 @@
+{{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
+  <ul class="o-pagination c-nav-links">
+    {{ if ne .Paginator.First.PageNumber .Paginator.PageNumber }}
+      <li class="first active">
+        <a class="c-nav-link" href="{{ .URL }}page/{{ .Paginator.First.PageNumber }}">&larrb; First
+        </a>
+      </li>
+    {{/* else }}
+      <li class="first inactive">
+        <a class="c-nav-link" href="#">&larrb; First
+        </a>
+      </li>{{ */}}
+    {{ end }}
+    {{ if .Paginator.HasPrev }}
+      <li class="previous active">
+        <a class="c-nav-link" href="{{ .URL }}page/{{ .Paginator.Prev.PageNumber }}">&larr; {{ "Previous" }}</a>
+      </li>
+    {{/* else }}
+      <li class="previous inactive">
+        <a class="c-nav-link" href="#">&larr; {{ "Previous" }}</a>
+      </li>{{ */}}
+    {{ end }}
+    {{ $currentPageNum := .Paginator.PageNumber }}
+    {{ range .Paginator.Pagers }}
+      {{ if eq $currentPageNum .PageNumber }}
+        <li class="page-number inactive">
+          <a class="c-nav-link" href="#">{{ .PageNumber }}</a>
+        </li>
+      {{ else }}
+        <li class="page-number active">
+          <a class="c-nav-link" href="{{ .URL }}">{{ .PageNumber }}</a>
+        </li>
+      {{ end }}
+    {{ end }}
+    {{ if .Paginator.HasNext }}
+      <li class="next active">
+        <a class="c-nav-link" href="{{ .URL }}page/{{ .Paginator.Next.PageNumber }}">{{ "Next" }} &rarr;</a>
+      </li>
+    {{/* else }}
+      <li class="next inactive"><a class="c-nav-link" href="#">{{ "Next" }} &rarr;</a></li>{{ */}}
+    {{ end }}
+    {{ if ne .Paginator.Last.PageNumber .Paginator.PageNumber }}
+      <li class="last active">
+        <a class="c-nav-link" href="{{ .URL }}page/{{ .Paginator.Last.PageNumber }}">Last &rarrb;</a>
+      </li>
+    {{/* else }}
+      <li class="last inactive"><a class="c-nav-link" href="#">Last &rarrb;</a></li>{{ */}}
+    {{ end }}
+  </ul>
+{{ end }}

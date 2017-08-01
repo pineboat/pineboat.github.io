@@ -8,8 +8,7 @@ html {
   font-family: Arial, Helvetica, sans-serif;
   height: 100%;
   background-color: #011;
-  color: #bee;
-  color: rgba(187, 238, 238, 0.9);
+  color: #bff;
   font-size: 120%; }
   html.wf-active {
     font-family: "pt-sans", Arial, Helvetica, sans-serif; }
@@ -71,6 +70,8 @@ a.c-logo-link {
 
 .o-site-nav {
   margin: 20px; }
+  .o-site-nav a {
+    padding: 10px 20px; }
 
 ul.c-nav-links li {
   display: inline-block;
@@ -82,14 +83,15 @@ ul.c-nav-links li {
   font-family: "acuta", Georgia, Times, serif;
   margin: auto 5px;
   cursor: pointer; }
-  ul.c-nav-links li:hover, ul.c-nav-links li.active {
+  ul.c-nav-links li:hover, ul.c-nav-links li.current {
     background: #c04; }
-    ul.c-nav-links li:hover a, ul.c-nav-links li.active a {
+    ul.c-nav-links li:hover a, ul.c-nav-links li.current a {
       color: #ffc; }
+  ul.c-nav-links li:active {
+    background: #011; }
 
 a.c-nav-link {
   display: inline-block;
-  padding: 10px 20px;
   text-decoration: none;
   color: #c04; }
   a.c-nav-link:hover {
@@ -104,16 +106,50 @@ a.c-nav-link {
 .c-post-meta {
   padding-bottom: 10px; }
 
+.c-post-title {
+  margin-bottom: .4em; }
+
 .c-tag-list li {
   display: inline-block; }
 
-.c-post-meta li {
-  display: inline-block; }
+.c-meta-tags {
+  justify-self: end; }
+
+.c-meta-date {
+  justify-self: end; }
+
+.c-post-meta {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto;
+  grid-gap: 10px;
+  list-style: none; }
+  .c-post-meta > li {
+    display: block; }
 
 .site-footer {
-  border-top: 10px solid #c04;
-  margin-top: 10px;
+  border-top: 0.5em solid #c04;
+  margin-top: 30px;
   padding: 10px;
   text-align: center; }
+
+.o-pagination {
+  list-style: none;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid #bee;
+  padding-top: 10px; }
+  .o-pagination li {
+    display: inline-block;
+    margin-left: 10px; }
+  .o-pagination a {
+    padding: 5px 10px; }
+  .o-pagination .inactive:hover {
+    background-color: #011; }
+  .o-pagination .inactive a {
+    color: #ccc;
+    cursor: default; }
 
 /*# sourceMappingURL=main.css.map */
