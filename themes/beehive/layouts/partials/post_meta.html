@@ -1,0 +1,22 @@
+
+  <ul class="c-post-meta">
+    {{ range (where .Site.Pages ".Params.id" .Params.author )}}
+      <li class="c-meta-author">
+        By <a href="{{ .URL }}">{{ print .Params.firstname " " .Params.lastname }}</a>
+      </li>
+    {{ end }}
+    <li class="c-meta-date"> {{ .PublishDate.Format "January 2, 2006" }} </li>
+    <li class="c-meta-length"> {{ .ReadingTime }} minute read </li>
+    <li class="c-meta-tags">
+      <span>Tags: </span>
+      <ul class="c-tag-list" role="list">
+        {{ range .Params.tags }}
+          <li>
+            <a href="{{ $.Site.LanguagePrefix }}/tags/{{ . | urlize }}">
+              {{ . }}
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+    </li>
+  </ul>

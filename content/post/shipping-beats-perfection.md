@@ -12,7 +12,7 @@ First of all, there is an elaborate [post][KamensBlog] on this by Ben Kamens.
 
 [KamensBlog]: http://bjk5.com/post/60760280107/shipping-beats-perfection-explained
 
-For quite sometime I've been trying to create my own blog. I wanted to share what I learned. I was forgetting things faster than the rate at which I learned them. I wanted to keep writing so that I can retain them longer and also help someone on the way.
+For quite sometime I've been trying to create my own blog. I wanted to share what I learned. I was forgetting things faster than the rate at which I learned them. I wanted to keep writing so that I can retain them longer and also help someone on the way (which could be the future-me trying to solve the same problem).
 
 But there were quite a few reasons that kept coming to the surface; I didn't realize I was rationalizing until I realized I've been procrastinating for a very long time. Here are some of them which you might identify if you have ever thought about writing in the open internet.
 
@@ -24,12 +24,18 @@ But there were quite a few reasons that kept coming to the surface; I didn't rea
 * I better hide away in the thickness of the Internet
 * Then why bother writing at all if it is not going to be useful to anyone?
 * It'll be embarrassing if someone makes a nasty comment about this post / me.
-* The post page needs more css styling
+* The post page needs more styling
 * What if the readers want to subscribe to the blog? Shouldn't I build a readership? Aren't you getting ahead of yourself?
+
+>To sum it up, fear of being vulnerable is what was stopping me sharing things out in the open world. 
+
+Parker from [Interview Cake] used a phrase (rather a variable) $seemingly_productive_procrastination which strikes as the best way to put it. No one ever procrastinates saying I want to put it off as it is hard/difficult/I don't know..etc. Most of the time it goes like I want to do the other thing which is urgent.
 
 While all this was going on, I kept learning new things and didn't write anything. Sever ideas that I thought are good were slipping by since I didn't have a platform ready for me to start writing.
 
 So here I am, making it my first post, giving it a realistic goal,
 
 * Today is 1st August 2017, I'll post this live in 7 days on 8th August.
-* I'll add enough CSS in the meantime to ensure this post is readable.
+* I'll add enough functionality in the meantime to ensure this post is readable.
+
+[Interview Cake]: https://www.interviewcake.com/

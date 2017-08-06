@@ -19,6 +19,32 @@ html {
   }
 }
 
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+h3 {
+  font-size: 1.2em;
+}
+
+@media (min-width: 40em) {
+
+
+h1 {
+  font-size: 2.5em;
+  line-height: 1.2em;
+}
+
+h2 {
+  font-size: 2em;
+  line-height: 1.1em;
+}
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: $font-family-heading-default;
   font-weight: 700;
@@ -41,7 +67,7 @@ a {
   &:hover{
     &, h1,h2,h3,h4,h5,h6 & {
       //border-bottom: 1px solid $color-yellow-light;
-      color: $color-brand;
+      color: $color-red-light;
     }
   }
 }
@@ -55,11 +81,33 @@ p {
 
 ul {
   margin: 0;
-  padding: 0;
 }
 
 body {
   margin: 0;
   border: 0;
   border-top: 10px solid $color-brand;
+}
+
+input:not([type=submit]):not([type=file]) {
+  width: 100%;
+  border-radius: 3px;
+  padding: 5px;
+  font-size: large;
+  border: none;
+  margin-top: 5px;
+}
+
+input[type="submit"]{
+  border: none;
+  font-size: 120%;
+  border-radius: 3px;
+  width: 100%;
+  padding: 5px;
+  margin-top: 20px;
+  background: $color-yellow-light;
+  color: $color-pink-light;
+  font-family: "acuta",Georgia,Times,Serif;
+  font-weight: 700;
+  cursor: pointer;
 }

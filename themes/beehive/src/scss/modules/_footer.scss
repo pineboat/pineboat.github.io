@@ -3,4 +3,23 @@
   margin-top: 30px;
   padding: 10px;
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.footer_card {
+  background: rgba(255,255,255,.1);
+  padding: 5px;
+  border-radius: 3px;
+  margin: 10px auto 0 auto;
+  max-width: 20em;
+  width: 100%;
+}
+
+.mc_referral {
+  font-size: .8em;
+}
+
+.footer_stack_info {
+  list-style: none;
 }

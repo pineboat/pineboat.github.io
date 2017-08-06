@@ -4,7 +4,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <!-- Site Title, Description, Author, and Favicon -->
 {{- with .Title | default .Site.Title }}
-  <title>{{ . }}</title>
+  <title>{{ print . " | PineBoat" }}</title>
+{{- end }}
+
+{{- with  .Description | default .Params.Subtitle | default .Site.Params.Subtitle |  default .Summary }}
+  <meta name="description" content="{{ . }}">
 {{- end }}
 
 <!-- Links and stylesheets -->

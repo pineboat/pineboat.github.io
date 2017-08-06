@@ -16,14 +16,9 @@ a.c-logo-link {
   margin: 10px auto;
   width: 100px;
   height: 100px;
-  border-radius: 50%;
-  border: 2px solid $color-brand;
   text-align: center;
   vertical-align: middle;
-  background: darken($color-brand, 30%);
-  &:hover {
-    background: darken($color-brand, 20%);
-  }
+
 }
 
 .c-logo-image {
@@ -39,12 +34,13 @@ a.c-logo-link {
 }
 
 ul.c-nav-links {
+  padding: 0;
   li {
     display: inline-block;
     background: $color-yellow-light;
     text-align: center;
     border-radius: 3px;
-    font-size: 120%;
+    font-size: 100%;
     font-weight: 700;
     font-family: $font-family-heading-webfont;
     margin: auto 5px;

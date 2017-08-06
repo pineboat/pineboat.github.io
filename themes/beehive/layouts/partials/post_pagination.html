@@ -2,26 +2,26 @@
   <ul class="o-pagination c-nav-links">
     {{ if ne .Paginator.First.PageNumber .Paginator.PageNumber }}
       <li class="first active">
-        <a class="c-nav-link" href="{{ .URL }}page/{{ .Paginator.First.PageNumber }}">&larrb; First
+        <a class="c-nav-link" href="{{ .URL }}page/{{ .Paginator.First.PageNumber }}">First
         </a>
       </li>
-    {{/* else }}
+    {{ else }}
       <li class="first inactive">
-        <a class="c-nav-link" href="#">&larrb; First
+        <a class="c-nav-link" href="#">First
         </a>
-      </li>{{ */}}
+      </li>
     {{ end }}
     {{ if .Paginator.HasPrev }}
       <li class="previous active">
-        <a class="c-nav-link" href="{{ .URL }}page/{{ .Paginator.Prev.PageNumber }}">&larr; {{ "Previous" }}</a>
+        <a class="c-nav-link" href="{{ .URL }}page/{{ .Paginator.Prev.PageNumber }}"> {{ "Previous" }}</a>
       </li>
-    {{/* else }}
+    {{ else }}
       <li class="previous inactive">
-        <a class="c-nav-link" href="#">&larr; {{ "Previous" }}</a>
-      </li>{{ */}}
+        <a class="c-nav-link" href="#"> {{ "Previous" }}</a>
+      </li>
     {{ end }}
     {{ $currentPageNum := .Paginator.PageNumber }}
-    {{ range .Paginator.Pagers }}
+    {{/* range .Paginator.Pagers }}
       {{ if eq $currentPageNum .PageNumber }}
         <li class="page-number inactive">
           <a class="c-nav-link" href="#">{{ .PageNumber }}</a>
@@ -31,20 +31,20 @@
           <a class="c-nav-link" href="{{ .URL }}">{{ .PageNumber }}</a>
         </li>
       {{ end }}
-    {{ end }}
+    {{ end */}}
     {{ if .Paginator.HasNext }}
       <li class="next active">
-        <a class="c-nav-link" href="{{ .URL }}page/{{ .Paginator.Next.PageNumber }}">{{ "Next" }} &rarr;</a>
+        <a class="c-nav-link" href="{{ .URL }}page/{{ .Paginator.Next.PageNumber }}">{{ "Next" }}</a>
       </li>
-    {{/* else }}
-      <li class="next inactive"><a class="c-nav-link" href="#">{{ "Next" }} &rarr;</a></li>{{ */}}
+    {{ else }}
+      <li class="next inactive"><a class="c-nav-link" href="#">{{ "Next" }}</a></li>
     {{ end }}
     {{ if ne .Paginator.Last.PageNumber .Paginator.PageNumber }}
       <li class="last active">
-        <a class="c-nav-link" href="{{ .URL }}page/{{ .Paginator.Last.PageNumber }}">Last &rarrb;</a>
+        <a class="c-nav-link" href="{{ .URL }}page/{{ .Paginator.Last.PageNumber }}">Last</a>
       </li>
-    {{/* else }}
-      <li class="last inactive"><a class="c-nav-link" href="#">Last &rarrb;</a></li>{{ */}}
+    {{ else }}
+      <li class="last inactive"><a class="c-nav-link" href="#">Last </a></li>
     {{ end }}
   </ul>
 {{ end }}

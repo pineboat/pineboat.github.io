@@ -2,29 +2,11 @@
   <a href="{{ .Permalink }}">
     <h2 class="c-post-title">{{ .Title }}</h2>
   </a>
-  <ul class="c-post-meta">
-    {{ range (where .Site.Pages ".Params.id" .Params.author )}}
-      <li class="c-meta-author">
-        <a href="{{ .URL }}">{{ print .Params.firstname " " .Params.lastname }}</a>
-      </li>
-    {{ end }}
-    <li clsss="c-meta-date"> {{ .PublishDate.Format "January 2, 2006" }} </li>
-    <li class="c-meta-length"> {{ .ReadingTime }} minute read ({{ .FuzzyWordCount}} words) </li>
-    <li class="c-meta-tags">
-      <ul class="c-tag-list" role="list">
-        {{ range .Params.tags }}
-          <li>
-            <a href="{{ $.Site.LanguagePrefix }}/tags/{{ . | urlize }}">
-              {{ . }}
-            </a>
-          </li>
-        {{ end }}
-      </ul>
-    </li>
-  </ul>
+  {{ partial "post_meta.html" . }}
   {{ if .Params.subtitle }}
-    <h3 class="c-post-subtitle">
+    <p class="c-post-subtitle">
       {{- .Params.subtitle -}}
-    </h3>
+    </p>
   {{ end }}
+  <a class="c-post-show-more" href="{{ .Permalink }}">Show me more...</a>
 </article>

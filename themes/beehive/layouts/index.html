@@ -1,5 +1,4 @@
 {{ define "main"}}
-  <h1>Recent Articles</h1>
   <div class="o-posts-list">
     {{ $postList := .Paginate (where .Data.Pages "Type" "post") }}
     {{ range $postList.Pages }}
