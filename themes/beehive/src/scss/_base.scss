@@ -10,9 +10,9 @@
 html {
   font-family: $font-family-body-default;
   height: 100%;
-  background-color: $color-teal-dark;
-  color: $color-teal-lighter;
-  font-size: 120%;
+  background-color: $color-violet-dark;
+  color: $color-text;
+  font-size: 18px;
 
   &.wf-active {
     font-family: $font-family-body-webfont;
