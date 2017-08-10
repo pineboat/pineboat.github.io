@@ -4,6 +4,7 @@ title: "PineBoat"
 theme: "beehive"
 canonifyURLs: true
 paginate: 10
+googleAnalytics: "UA-80881928-2"
 author:
   vijayabharathib:
     firstname: "Vijayabharathi"
