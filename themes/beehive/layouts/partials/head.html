@@ -3,12 +3,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <!-- Site Title, Description, Author, and Favicon -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@pineboat">
+<meta name="twitter:creator" content="@vijayabharathib">
 {{- with .Title | default .Site.Title }}
-  <title>{{ print . " | PineBoat" }}</title>
+  <title>{{ print . " | PineBoat - to ship full stack code and design" }}</title>
+  <meta name="twitter:title" content="{{ . }}">
 {{- end }}
 
 {{- with  .Description | default .Params.Subtitle | default .Site.Params.Subtitle |  default .Summary }}
   <meta name="description" content="{{ . }}">
+  <meta name="twitter:description" content="{{ . }}">
 {{- end }}
 
 <!-- Links and stylesheets -->
