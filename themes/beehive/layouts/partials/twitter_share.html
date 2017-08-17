@@ -1,0 +1,12 @@
+{{ if .IsPage }}
+  <a class="twitter-share-button"
+    href="https://twitter.com/share"
+    data-size="large"
+    data-text="{{ .Params.Subtitle }}"
+    data-url="{{ .Permalink }}"
+    data-hashtags="{{ .Params.tags }}"
+    data-via="pineboat"
+    data-related="vijayabharathib">
+  Share
+  </a>
+{{ end }}

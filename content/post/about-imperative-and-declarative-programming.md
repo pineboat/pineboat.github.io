@@ -5,6 +5,7 @@ publishdate = "2017-08-22T06:00:00+05:30"
 subtitle = "The difference between hand-holding and ?"
 tags = ["programming"]
 title = "What's all the fuss about imperative and declarative programming?"
+draft=true
 +++
 
 

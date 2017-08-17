@@ -9,5 +9,6 @@
       <li> By <a href="{{ .Permalink }}">{{ print .Params.firstname " " .Params.lastname }}</a> </li>
     {{ end }}
     </ul>
+    {{ partial "twitter_share.html" . }}
   </article>
 {{ end }}

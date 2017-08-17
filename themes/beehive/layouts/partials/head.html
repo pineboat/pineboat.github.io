@@ -3,11 +3,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <!-- Site Title, Description, Author, and Favicon -->
+
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@pineboat">
 <meta name="twitter:creator" content="@vijayabharathib">
 {{- with .Title | default .Site.Title }}
-  <title>{{ print . " | PineBoat - to ship full stack code and design" }}</title>
+  <title>{{ print . " | PineBoat - logs on shipping full stack code and design" }}</title>
   <meta name="twitter:title" content="{{ . }}">
 {{- end }}
 
@@ -30,5 +31,8 @@
     h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
   })(document);
 </script>
-{{ template "_internal/google_analytics_async.html" . }}
+{{ if ne (in .Permalink "localhost") true }}
+  {{ template "_internal/google_analytics_async.html" . }}
+{{ end }}
+
 </head>
