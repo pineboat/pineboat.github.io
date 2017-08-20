@@ -149,7 +149,7 @@ Python command by default starts the server on port 8000. So, `http://localhost:
 
 If that looks good, we are going to get it over to github pages.
 
-## Primer on GitHub pages
+### 04. Primer on GitHub pages
 
 GitHub pages are hosting solution provided by GitHub itself for repositories. There are few places where you can host your site, all within a repository:
 
@@ -166,11 +166,11 @@ Once you host your website, you can load it in the following urls, depending on 
 ```
 With that understanding, let's equip our repository to go live.
 
-### 04. Publish to GitHub pages
+### 05. Publish to GitHub pages
 
 The new README.md given to us by the create-react-app has a separate section on GitHub pages. There are few things we need to do.
 
-1. Additions to `package.json` file
+**1. Additions to `package.json` file**
 
 ```json
 "homepage": "http://<your_user_name>.github.io/<your_repository_name",
@@ -181,12 +181,38 @@ The new README.md given to us by the create-react-app has a separate section on 
 ```
 >Note: Usually, the last section / entry in a json doesn't need a comma, all others should have one.
 
-2. Install gh-pages package
+**2. Install gh-pages package**
+
 This one is easy. Just run the following command while you are inside the project directory:
 `npm install --save gh-pages`.
 
-The `--save` flag will add `gh-pages` as a development dependency, so that anyone else who clones your project can also get it when they run 'npm install'.
+The `--save` flag will add `gh-pages` as a dependency, so that anyone else who clones your project can also get it when they run 'npm install'.
 
+Here is a snapshot of `git diff` command showing all we have added since `package.json` was created.
+
+![Git Diff showing above additions to package.json](/img/react-continuous-deployment/git-diff-add-gh-pages-package.png)
+
+**3. Deploy to gh-pages branch**
+
+Finally, let's run `npm run deploy`. It will automatically run `predeploy`, which will generate the production build we've seen earlier. It will then deploy the build to our repository under a new branch named `gh-pages`.
+
+If you get a status `Published` as the last statement, you've successfully deployed the production build to GitHub. Here is the output,
+
+![output of npm run deploy](/img/react-continuous-deployment/output-of-npm-run-deploy.png)
+
+**4. Select gh-pages branch to be published**
+
+Let's head over to github repository and publish our site. Open up the repository and go to settings tab at the top. It looks like this image below, wait a minute! GitHub has automatically published my `gh-pages` branch. There is nothing more for me to do. It also shows the URL in which I can access the site.
+
+Point 4 above should actully say 'Do nothing'. It's all done and ready for us to consume.
+
+![published github pages settings](/img/react-continuous-deployment/published-github-pages.png)
+
+>Note: The URL shown for my repository may be misleading you, that's because I have created this repository under an organization entry I've created for my blog. Which is 'PineBoat' obviously and github uses my custom domain to place this under (which isn't something I expected until I tried this).
+
+So far, so good. If you have experience in git and node packages, you'd have had no trouble reaching this far, in fact the default `README.md` had enough to help me this far. If you had no experience, hope you enjoyed the journey.
+
+But as we are aspiring for a workflow for continuous deployment, we are starting to navigate some uncharted waters (but nothing is uncharted these days, may not charted many times we can say).
 
 ## Wire in TravisCI for automatic build
 
