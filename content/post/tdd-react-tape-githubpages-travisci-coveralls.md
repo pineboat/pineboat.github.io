@@ -1,7 +1,7 @@
 +++
 author = "vijayabharathib"
-date = "2017-08-22T06:14:25+05:30"
-publishdate = "2017-08-22T06:14:25+05:30"
+date = "2017-08-24T06:14:25+05:30"
+publishdate = "2017-08-24T06:14:25+05:30"
 subtitle = "How to get a react static site from terminal to github pages with continuous integration via Travis CI."
 tags = ["React","TDD","Travis CI"]
 title = "Test driven react development with Tape - zero to continuous deployment"
@@ -15,9 +15,9 @@ It's quite common to hack with apps on codepen, there will be a time when you wa
 Here is the deal, we are going to set up a development workflow using `create-react-app` and `npm` scripts for a react app. We'll wire Travis-CI & Coveralls together to get nice & shiny badges like the one below. But more so to ensure commits from our development box are automatically tested by Travis-CI, built and deployed to github pages if the tests pass.
 
 Get ready to get these badges on your repository:
-![Build Status](https://travis-ci.org/vijayabharathib/fcc-project-react-recipies.svg?branch=master) ![Coverage Status](https://coveralls.io/repos/github/vijayabharathib/fcc-project-react-recipies/badge.svg?branch=master)
+![Build Status](https://travis-ci.org/vijayabharathib/fcc-project-react-recipies.svg?branch=master)
 
-I have organized the whole workflow in stages. Each stage can be done in one sitting (within about 50 minutes / 2 pomodoros).
+I have organized the whole workflow in stages. Each stage can be done in one sitting (within about 50 minutes - OR - 2 [pomodori](https://cirillocompany.de/pages/pomodoro-technique)).
 
 ## Stage 01 - Run create-react-app locally
 
@@ -170,7 +170,7 @@ With that understanding, let's equip our repository to go live.
 
 The new README.md given to us by the create-react-app has a separate section on GitHub pages. There are few things we need to do.
 
-**1. Additions to `package.json` file**
+#### 1. Additions to `package.json` file
 
 ```json
 "homepage": "http://<your_user_name>.github.io/<your_repository_name",
@@ -181,7 +181,7 @@ The new README.md given to us by the create-react-app has a separate section on 
 ```
 >Note: Usually, the last section / entry in a json doesn't need a comma, all others should have one.
 
-**2. Install gh-pages package**
+#### 2. Install gh-pages package
 
 This one is easy. Just run the following command while you are inside the project directory:
 `npm install --save gh-pages`.
@@ -192,7 +192,7 @@ Here is a snapshot of `git diff` command showing all we have added since `packag
 
 ![Git Diff showing above additions to package.json](/img/react-continuous-deployment/git-diff-add-gh-pages-package.png)
 
-**3. Deploy to gh-pages branch**
+#### 3. Deploy to gh-pages branch
 
 Finally, let's run `npm run deploy`. It will automatically run `predeploy`, which will generate the production build we've seen earlier. It will then deploy the build to our repository under a new branch named `gh-pages`.
 
@@ -200,13 +200,13 @@ If you get a status `Published` as the last statement, you've successfully deplo
 
 ![output of npm run deploy](/img/react-continuous-deployment/output-of-npm-run-deploy.png)
 
-**4. Select gh-pages branch to be published**
+#### 4. Select gh-pages branch to be published
 
 Let's head over to github repository and publish our site. Open up the repository and go to settings tab at the top. It looks like this image below, wait a minute! GitHub has automatically published my `gh-pages` branch. There is nothing more for me to do. It also shows the URL in which I can access the site.
 
 Point 4 above should actully say 'Do nothing'. It's all done and ready for us to consume.
 
-![published github pages settings](/img/react-continuous-deployment/published-github-pages.png)
+![published github pages settings](/img/react-continuous-deployment/published-github-pages_compressed.png)
 
 >Note: The URL shown for my repository may be misleading you, that's because I have created this repository under an organization entry I've created for my blog. Which is 'PineBoat' obviously and github uses my custom domain to place this under (which isn't something I expected until I tried this).
 
@@ -214,17 +214,122 @@ So far, so good. If you have experience in git and node packages, you'd have had
 
 But as we are aspiring for a workflow for continuous deployment, we are starting to navigate some uncharted waters (but nothing is uncharted these days, may not charted many times we can say).
 
-## Wire in TravisCI for automatic build
+## Stage 3: Continuous Deployment
+This is where we bring in bots to do most of the deployment we have done in stage 2.
 
-## Coveralls to report code coverage
+### 06. Wire in TravisCI for automatic build
 
-## Badge of honor from Travis CI
+Let's get Travis CI to do the deploy job for us. There is no harm in building and deploying your site on your own. As we have seen, all it takes is a few more minutes of our valuable time. However, when you run into larger projects of scale, it's better to let trusted bots do some of the jobs. Travis CI is one such service.
 
-## Badge of honor from Coveralls
-## Plug in TAPE and test libraries
+We can take advantage of Travis CI to build and deploy whenever we commit our code to the repository.
 
-## Test coverage report
+#### 1. Sign Up to Travis CI
+It would be annoying if I start with 'if you have a github account' now. I'm sure you have one by now and we can use that to sign up to Travis CI.
 
-## Automatic Test Run using npm-watch
+#### 2. Connect to GitHub Repository
+Watch out for the permissions. If your repository does not get listed, click on that 'sync' button and refresh the page. For me, I had to grant permission to 'PineBoat' organization before I could see the repository.
+
+Travis CI shows you the steps. Flick that switch against your repository to connect it.
+
+Click on the repository name to open it up. It'll show a build staus as 'unknown' and a larger note saying 'No builds for this repository'.
+
+![travis first time repository with unknown build status](/img/react-continuous-deployment/travis-first-time-repository-compressed.png)
+
+Not for long, let's change it.
+
+#### 3. Add `.travis.yml` to the repository
+
+Here is the `.travis.yml` that needed to be added. Have a look and stay with me while I clear some of the questions you might get.
+
+```yml
+language: node_js
+node_js:
+  - "node"
+
+after_success:
+  - git config --global user.name "vijayabharathi"
+  - git config --global user.email "vijayabharathib@users.noreply.github.com"
+  - git remote rm origin
+  - git remote add origin https://vijayabharathib:${GH_TOKEN}@github.com/pineboat/react-continuous-deployment.git
+  - npm run deploy
+```
+The YAML syntax is slightly different from `json`. [This page](http://docs.ansible.com/ansible/latest/YAMLSyntax.html) might help. Time to break it down. You probably figured out most of those text. Here is an account in plain English.
+
+This is a node project. Take the latest node version. Node runs `npm test` by default. So, if the test is successful, add my git username and email. Add git remote origin for the repository with my user name and the GH_TOKEN generated during sign up process. Finally, run `npm run deploy` command (which you'll recall, will run `npm run predeploy` before running `npm run deploy`).
+
+#### 4. Commit and watch Travis CI build
+That's it, keep your Travis-CI repository page open. On your terminal, add changes, commit and push them to GitHub. In case you need a reminder, here is the list of commands:
+```bash
+git add --all
+git commit -m "add .travis.yml configuration for automatic build"
+git push origin master
+```
+If you switch to Travis-CI page, you'll see the page coming alive once `git push` is over (or in a few seconds lag). The build starts automagically. You'll know if it is successful. Mine was and here is the Travis-CI page showing nice green status.
+![travis successful build](/img/react-continuous-deployment/travis-successful-build.png)
+
+And the log shown is no less than 2500 lines. Glad Travis-CI shows only what we need to see. A clear indication of steps followed as shown below in the image.
+![travis log showing test pass status and subsequent deployment to gh-pages](/img/react-continuous-deployment/travis-log.png)
+
+#### 5. Another trial, this time with changes to code
+
+Last time, we couldn't really see any difference in our application after deployment. That's because we didn't make any. So, there was no way to tell if the build was successful (though, technically, you can load gh-pages branch and look into the commits, but I digress).
+
+This time, let's make some small changes. Time to take the react wheel back in time.
+
+Just to changes. One, within `src/App.css` file, there is a section for animation named `@keyframes App-logo-spin`. Change that `360deg` to `-360deg`. This is to spin the wheel counter clockwise.
+
+Two, load that `src/logo.svg` file and change the fill color from `#61DAFB` to `#DA61FB`. If your dev server is running via `npm start`, you can already see a purple wheel running counter clockwise. If not, never mind, add the changes to the stash, commit and push them to the repository. Watch if the build is successful in Travis-CI and then head over to your github page.
+
+Alas, I don't see that purple wheel, still the default blue one.
+
+#### 6. Fix the missing GH_TOKEN
+
+Though Travis-CI reported that all is well, it's not. If you open up the gh-pages branch, you'll see the original commit we made from local terminal. No other commits. That means, the `after_success` commands were not so successful.
+
+If you expand `npm run deploy` section in the log, you'll see some authentication errors. That's because we've not given Travis-CI permission to write to our repository.
+
+You can create a new token from [Personal access tokens](https://github.com/settings/tokens) page from GitHub.com. Remember to give access to public repository alone. Just one tickmark against `public_repo` will do. **Don't miss this.** Once you generate a token, copy it. GitHub rightly warns that you will not be able to see it again.
+
+Head over to Travis-CI, click on 'More Options' for your repository and chose settings. It'll show severl sections, but **Environment Variables** is the one to look for.
+
+Name the token as `GH_TOKEN` and past the token under value field. Click add. Do not switch on the 'Display value in logs' as it might be visible to people if you send the logs out. The token is equivalen to your password.
+
+That's it, now Travis-CI can write to our repository.
+
+Go back to the **Current** tab of the repository and click on **Restart build**. Once the build is over, you can check the logs and check the gh-pages branch on GitHub. You should see a new commit.
+
+Congrats, that's our first automated deployment. How about the `github.io` website itself? No amount of refresh would bring the much needed purple wheel.
+
+#### 7. Ask service worker to take a break
+
+Still the wheel is bleeding blue. But `gh-pages` branch in the repository shows a second commit. If you compare the `index.html` on the repository and on the web page source, they are pointing at different css and js files. The hash suffix is our clue.
+
+This seems to be the result of energetic javascript service worker, but needs more research. In the mean time, let's just stop the service worker and clear the storage.
+
+If you are on chrome, dev tools can be accessed from menu (or pressing F12). 'Application' tab on Chrome DevTools has 'Clear Storage' section. Check all entries and finally click on that 'Clear site data'.
+
+Refresh and bhoom! Here is our reverse wheel in bright purple. Time for celebration.
+
+![new version of the website showing purple react wheel spinning counter clockwise](/img/react-continuous-deployment/reverse-react2.gif)
+
+>Note: there must be a better way to do this automatically. Would be a pain if we have to stop and clean service worker and storage each time to get the changes online. Topic for more research.
+
+## Stage 4: Badge of honor from Travis CI
+
+There is one final task in front of us. That is to get a shiny Travis-CI build status badge over to our repository's `README.md`.
+
+Open up Travis-CI and click on the `build:passing` badge. It'll show a dialog with options to port the image. Leave the branch as master, Select 'Markdown' instead of 'Image URL'. Copy the text given.
+
+Paste it in the `README.old.md`, which was left to us by `create-react-app` so graciously. Write your own content. You can delete the default `README.md` from the repository and rename the `README.old.md` to `README.md`.
+
+Add the changes to git staging, commit and push to the cloud. Now the repository should show the batch you always wanted.
+
+[![Build Status](https://travis-ci.org/pineboat/react-continuous-deployment.svg?branch=master)](https://travis-ci.org/pineboat/react-continuous-deployment)
+
+I'd like to leave you with a question. If you are working in a large teams using similar workflow, what are the challenges and how would you solve them? Write a post and let me know.
+
+Thank you so much for reading. Hope you found it useful.
+
+Reply via a tweet if you have any feedback. You can find a twitter button below. Alternatively, I keep an [issue open](https://github.com/pineboat/pineboat.github.io/issues/2) on GitHub for you to interact. 
 
 [npm-eject]: https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#npm-run-eject
