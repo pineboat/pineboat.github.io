@@ -5,3 +5,26 @@
   border-top: 5px solid $color-teal-light;
 
 }
+.o-post {
+  img {
+    display: block;
+    margin: 10px auto;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.twitter-share-button {
+  margin-left: auto;
+}
+
+.c-post-subtitle {
+  max-width: 90%;
+  margin: 50px auto 10px;
+  font-weight: bold;
+}
+
+.c-image-credit {
+  font-size: .9em;
+  text-align: center;
+}

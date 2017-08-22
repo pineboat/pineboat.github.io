@@ -7,13 +7,21 @@
   flex-wrap: wrap;
 }
 
-.footer_card {
+%card {
   background: rgba(255,255,255,.1);
   padding: 5px;
   border-radius: 3px;
   margin: 10px auto 0 auto;
-  max-width: 20em;
   width: 100%;
+}
+
+blockquote, pre {
+  @extend %card;
+}
+
+.footer_card {
+  @extend %card;
+  max-width: 20em;
 }
 
 .mc_referral {

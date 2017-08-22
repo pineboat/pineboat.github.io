@@ -19,30 +19,16 @@ html {
   }
 }
 
-h1 {
-  font-size: 2em;
-}
-
-h2 {
-  font-size: 1.5em;
-}
-
-h3 {
-  font-size: 1.2em;
-}
-
 @media (min-width: 40em) {
+  h1 {
+    font-size: 2.5em;
+    line-height: 1.2em;
+  }
 
-
-h1 {
-  font-size: 2.5em;
-  line-height: 1.2em;
-}
-
-h2 {
-  font-size: 2em;
-  line-height: 1.1em;
-}
+  h2 {
+    font-size: 2em;
+    line-height: 1.1em;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -52,6 +38,24 @@ h1, h2, h3, h4, h5, h6 {
     font-family: $font-family-heading-webfont;
     font-weight: 700;
   }
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
+  margin-top: 2em;
+}
+
+h3 {
+  font-size: 1.2em;
+}
+
+h4 {
+  font-style: italic;
+  margin: 2em 0 1em 1em;
 }
 
 a {
@@ -110,4 +114,9 @@ input[type="submit"]{
   font-family: "acuta",Georgia,Times,Serif;
   font-weight: 700;
   cursor: pointer;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
