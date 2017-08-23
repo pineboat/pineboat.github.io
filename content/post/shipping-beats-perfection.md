@@ -65,5 +65,9 @@ So here I am, making it my first post, giving it a realistic goal,
 
 >I actually posted it on 9th Aug! Have you had anything similar? You can reach me on this post's [github issue](https://github.com/pineboat/pineboat.github.io/issues/1) for a conversation. Or try twitter handle [@pineboat](https://twitter.com/pineboat) for this publication.
 
+Spread it wider to your audience if you like this.
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">First post on writing and blockers out on pineboat. Read it here: <a href="https://t.co/64g3JUrd2w">https://t.co/64g3JUrd2w</a></p>&mdash; PineBoat (@PineBoat) <a href="https://twitter.com/PineBoat/status/895419430729023488">August 9, 2017</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 [Interview Cake]: https://www.interviewcake.com/
 [KamensBlog]: http://bjk5.com/post/60760280107/shipping-beats-perfection-explained
