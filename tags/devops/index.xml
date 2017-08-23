@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on PineBoat</title>
-    <link>https://pineboat.in/post/</link>
-    <description>Recent content in Posts on PineBoat</description>
+    <title>Devops on PineBoat</title>
+    <link>https://pineboat.in/tags/devops/</link>
+    <description>Recent content in Devops on PineBoat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 23 Aug 2017 22:45:25 +0530</lastBuildDate>
     
-	<atom:link href="https://pineboat.in/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pineboat.in/tags/devops/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,16 +19,6 @@
       <guid>https://pineboat.in/post/travis-to-deploy-react-to-github-pages/</guid>
       <description>It&amp;rsquo;s quite common to hack with apps on codepen when you are starting out. There will soon be a time when you want to publish your own web apps to the whole world. They could be side projects or projects for a client. A good development workflow will make a world of difference at this point.
 Here is the deal, we are going to set up a development workflow using the following tools,</description>
-    </item>
-    
-    <item>
-      <title>Shipping beats perfection</title>
-      <link>https://pineboat.in/post/shipping-beats-perfection/</link>
-      <pubDate>Tue, 01 Aug 2017 20:18:38 +0530</pubDate>
-      
-      <guid>https://pineboat.in/post/shipping-beats-perfection/</guid>
-      <description>First of all, there is an elaborate post on this by Ben Kamens if you really want to know more on that phrase and what it means to software development.
-For quite sometime I&amp;rsquo;ve been trying to create my own blog. I wanted to share what I learned. I was forgetting things faster than the rate at which I learned them (I am a web developer, enough said). I wanted to keep writing so that I can retain them longer and also help someone on the way (which could be the future-me trying to solve the same problem).</description>
     </item>
     
   </channel>

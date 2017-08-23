@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://pineboat.in/post/travis-to-deploy-react-to-github-pages/</loc>
+    <lastmod>2017-08-23T22:45:25+05:30</lastmod>
+  </url>
+  
+  <url>
     <loc>https://pineboat.in/post/shipping-beats-perfection/</loc>
     <lastmod>2017-08-01T20:18:38+05:30</lastmod>
   </url>
@@ -35,8 +40,20 @@
   </url>
   
   <url>
+    <loc>https://pineboat.in/tags/devops/</loc>
+    <lastmod>2017-08-23T22:45:25+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://pineboat.in/tags/first-post/</loc>
     <lastmod>2017-08-01T20:18:38+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pineboat.in/tags/github-pages/</loc>
+    <lastmod>2017-08-23T22:45:25+05:30</lastmod>
     <priority>0</priority>
   </url>
   
@@ -48,7 +65,7 @@
   
   <url>
     <loc>https://pineboat.in/</loc>
-    <lastmod>2017-08-01T20:18:38+05:30</lastmod>
+    <lastmod>2017-08-23T22:45:25+05:30</lastmod>
     <priority>0</priority>
   </url>
   
@@ -60,7 +77,7 @@
   
   <url>
     <loc>https://pineboat.in/post/</loc>
-    <lastmod>2017-08-01T20:18:38+05:30</lastmod>
+    <lastmod>2017-08-23T22:45:25+05:30</lastmod>
     <priority>0</priority>
   </url>
   
@@ -77,6 +94,12 @@
   </url>
   
   <url>
+    <loc>https://pineboat.in/tags/react/</loc>
+    <lastmod>2017-08-23T22:45:25+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://pineboat.in/tags/ship/</loc>
     <lastmod>2017-08-01T20:18:38+05:30</lastmod>
     <priority>0</priority>
@@ -85,6 +108,12 @@
   <url>
     <loc>https://pineboat.in/tags/</loc>
     <lastmod>2017-06-18T20:19:30+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pineboat.in/tags/travis-ci/</loc>
+    <lastmod>2017-08-23T22:45:25+05:30</lastmod>
     <priority>0</priority>
   </url>
   
