@@ -1,9 +1,11 @@
 @import 'settings/colors';
 @import 'settings/fonts';
+@import 'settings/grid';
 @import 'base';
 @import 'layout';
 @import 'modules/header';
 @import "modules/post_list";
 @import 'modules/post';
-@import 'modules/footer';
 @import 'modules/pagination';
+@import 'modules/sidebar';
+@import 'modules/footer';

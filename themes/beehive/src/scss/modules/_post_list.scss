@@ -17,13 +17,14 @@
   justify-content: space-between;
   >li {
     margin-top: 10px;
-    text-align: center;
   }
 }
 
 .c-meta-author {
   flex-basis: 100%;
   padding-bottom: 5px;
+  align-self: flex-start;
+
 }
 
 .c-meta-length,

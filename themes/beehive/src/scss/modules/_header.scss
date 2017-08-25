@@ -1,16 +1,25 @@
 .site-header {
   border-bottom: 5px solid $color-brand;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
-.site-nav {
-
+.site-logo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  h1{
+    margin: 0;
+  }
+  .o-logo{
+    margin: 0;
+  }
 }
 
-.o-logo {
-
-}
-//
 a.c-logo-link {
   display: block;
   margin: 10px auto;
@@ -37,33 +46,9 @@ ul.c-nav-links {
   padding: 0;
   li {
     display: inline-block;
-    background: $color-yellow-light;
-    text-align: center;
-    border-radius: 3px;
-    font-size: 100%;
-    font-weight: 700;
-    font-family: $font-family-heading-webfont;
-    margin: auto 5px;
-    &:hover, &.current {
-      background: $color-brand;
-      a {
-        color: $color-yellow-light;
-      }
-    }
-    &:active {
-      background: $color-teal-dark;
-    }
-    cursor: pointer;
   }
 }
+
 a.c-nav-link {
   display: inline-block;
-  text-decoration: none;
-  color: $color-brand;
-  &:hover {
-    text-decoration: none;
-    border: none;
-    color: $color-yellow-light;
-  }
-
 }
