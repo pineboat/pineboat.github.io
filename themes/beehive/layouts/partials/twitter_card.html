@@ -1,0 +1,17 @@
+{{ if isset .Params "image" }}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{{ .Params.image | absURL }}">
+  <meta name="twitter:image:alt" content="{{ .Params.image_alt }}">
+{{ else }}
+  <meta name="twitter:card" content="summary">
+{{ end }}
+<meta name="twitter:site" content="@pineboat">
+<meta name="twitter:creator" content="@vijayabharathib">
+{{- with .Title | default .Site.Title }}
+  <title>{{ print . " | PineBoat - logs on shipping full stack code and design" }}</title>
+  <meta name="twitter:title" content="{{ . }}">
+{{- end }}
+
+{{- with  .Description | default .Params.Subtitle | default .Site.Params.Subtitle |  default .Summary }}
+  <meta name="twitter:description" content="{{ . }}">
+{{- end }}

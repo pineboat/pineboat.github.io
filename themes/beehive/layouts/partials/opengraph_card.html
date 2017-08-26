@@ -1,0 +1,13 @@
+<meta property="og:type" content="article">
+{{ if isset .Params "image" }}
+  <meta property="og:image" content="{{ .Params.image | absURL }}">
+  <meta property="og:image:alt" content="{{ .Params.image_alt }}">
+{{ end }}
+
+{{- with .Title | default .Site.Title }}
+  <meta property="og:title" content="{{ . }}">
+{{- end }}
+
+{{- with  .Description | default .Params.Subtitle | default .Site.Params.Subtitle |  default .Summary }}
+  <meta property="og:description" content="{{ . }}">
+{{- end }}

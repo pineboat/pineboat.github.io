@@ -1,33 +1,25 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Site Title, Description, Author, and Favicon -->
-{{ if isset .Params "image" }}
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="{{ .Params.image }}">
-  <meta name="twitter:image:alt" content="{{ .Params.image_alt }}">
-{{ else }}
-  <meta name="twitter:card" content="summary">
-{{ end }}
-<meta name="twitter:site" content="@pineboat">
-<meta name="twitter:creator" content="@vijayabharathib">
 {{- with .Title | default .Site.Title }}
   <title>{{ print . " | PineBoat - logs on shipping full stack code and design" }}</title>
-  <meta name="twitter:title" content="{{ . }}">
 {{- end }}
 
 {{- with  .Description | default .Params.Subtitle | default .Site.Params.Subtitle |  default .Summary }}
   <meta name="description" content="{{ . }}">
-  <meta name="twitter:description" content="{{ . }}">
 {{- end }}
 
+{{- partial "opengraph_card.html" . -}}
+{{- partial "twitter_card.html" . -}}
+
 <!-- Links and stylesheets -->
-  <link rel="canonical" href="{{ .URL | absLangURL }}" />
-  <link rel="alternate" href="{{ "index.xml" | absLangURL }}" type="application/rss+xml" title="{{ .Site.Title }}">
-  <link rel="stylesheet" href="{{ "css/main.css" | absURL }}" />
+<link rel="canonical" href="{{ .URL | absLangURL }}" />
+<link rel="alternate" href="{{ "index.xml" | absLangURL }}" type="application/rss+xml" title="{{ .Site.Title }}">
+<link rel="stylesheet" href="{{ "css/main.css" | absURL }}" />
+
 {{ if ne (in .Permalink "localhost") true }}
   {{ template "_internal/google_analytics_async.html" . }}
 {{ end }}
-
 </head>
