@@ -5,6 +5,7 @@ theme: "beehive"
 canonifyURLs: true
 paginate: 10
 googleAnalytics: "UA-80881928-2"
+publishDir: "public"
 author:
   vijayabharathib:
     firstname: "Vijayabharathi"
