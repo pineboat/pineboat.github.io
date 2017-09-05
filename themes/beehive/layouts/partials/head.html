@@ -2,11 +2,19 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=dLmn4p7mYj">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=dLmn4p7mYj">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=dLmn4p7mYj">
+  <link rel="manifest" href="/manifest.json?v=dLmn4p7mYj">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=dLmn4p7mYj" color="#cc0044">
+  <link rel="shortcut icon" href="/favicon.ico?v=dLmn4p7mYj">
+  <meta name="theme-color" content="#ffffff">
 <!-- Site Title, Description, Author, and Favicon -->
-{{- with .Title | default .Site.Title }}
-  <title>{{ print . " | PineBoat - logs on shipping full stack code and design" }}</title>
-{{- end }}
-
+{{ if .IsHome }}
+  <title>{{ print "Home" " | " $.Site.Title " - " $.Site.Params.Subtitle }}</title>
+{{ else }}
+  <title>{{ print .Title " | " $.Site.Title " - " $.Site.Params.Subtitle }}</title>
+{{- end -}}
 {{- with  .Description | default .Params.Subtitle | default .Site.Params.Subtitle |  default .Summary }}
   <meta name="description" content="{{ . }}">
 {{- end }}
