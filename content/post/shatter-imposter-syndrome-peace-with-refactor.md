@@ -25,7 +25,7 @@ Then it dawned on me, I must have grown up. I have picked up tips and tricks on 
 
 Here are some of them that I listed down while I was refactoring.
 
-## 1. Generous use of globals
+## 1. Generous Use of Globals
 
 Globals are the best way to hold data / manage state in JavaScript, when I didn't know better ways. It's quite natural for people to go for a global variables.
 
@@ -33,12 +33,12 @@ Look around your old code and find any global variables that you are using. I ce
 
 What has changed? Someone must have shown me why globals are bad. By now I know many of the pitfalls of using global variables. It's time for a list.
 
-### What was the learning?
-1. When the code base is large, it is difficult understand use of globals within a function.
-2. They open up rooms for defects that are hard to debug.
-3. It is quite easy for you to break others' code by using the same variable name
-4. Worse, someone else could as easily overwrite your variable name
-5. This one was new while I was, wait for it, researching<sup>1</sup> for this blog post. Global namespaces are hard to search. Hence, they lead to performance penalty when compared to locals.
+### What was the Learning?
+* When the code base is large, it is difficult understand use of globals within a function.
+* They open up rooms for defects that are hard to debug.
+* It is quite easy for you to break others' code by using the same variable name
+* Worse, someone else could as easily overwrite your variable name
+* This one was new while I was, wait for it, researching<sup>1</sup> for this blog post. Global namespaces are hard to search. Hence, they lead to performance penalty when compared to locals.
 
 <sup>1</sup> You'd argue that there is no evidence of any sort of research in this post. So, let's just say when I googled "globals are bad" and call it a day.
 
@@ -49,49 +49,7 @@ Usually, programming books show global variables first when the topic of 'scope'
 * Try refactoring your code to eliminate globals.
 * Impure functions are one of the places where state from outer scope is mutated. Try limiting use of impure functions.
 
-## 2. Invisible nested loops
-
-It is quite easy to see this kind of nested loop and refactor as necessary. We know we need to be careful when the nesting is more than 2 levels deep. Avoid it.
-```js
-for(let i=0;i<array.length;i++){
-  for(let j=i;j<array.length;j++){
-    for(let k=j;k<array.length;k++){
-      doSomethingOverandOver();
-    }
-  }
-}
-```
-
-But there are times when the nesting is not explicit and in a single place. What if the same is written this way?
-
-```js
-for(let i=0;i<array.length;i++){
-  doSomething(array,i);
-}
-
-const doSomething=(array,i)=>{
-  for(let j=i;j<array.length;j++){
-    over(array,j);
-  }
-}
-
-const over=(array,j)=>{
-  for(let k=j;k<array.length;k++){
-    andOver();
-  }
-}
-```
-This is the same nested loop that is three level deep. But the loops are nicely tucked away within separate functions. Let's say you have spread these functions away from each other. It may be difficult to realize you've run into nested loops that are several levels deep.
-
-Try writing [bubble sort](https://en.wikipedia.org/wiki/Bubble_sort) if you haven't done so recently. Two simple `for` loops will be sufficient to get the results. But it's O(n<sup>2</sup>). A fully sorted array may also run into O(n<sup>2</sup>). Introduce a flag to break the loop if there was no swap, indicating array is already sorted, then it's just O(n)<sup>2</sup>.  
-
-There are few use cases for nested loops. Such as traversing a three dimensional array. Think about alternatives when you see yourself running into multiple loops. Get your head around recursion so that you have that in your tool belt.   
-
-Bottom line, if you must use nested loops, look for improvements to reduce iterations. That's know when to stop. Then work towards stopping it early. Consider if recursion can be an option.
-
-<sup>2</sup> There are obviously better algorithms than bubble sort. However, bubble sort is touted to be an efficient option if the data has only one or two miscreants to be sorted.
-
-## 3. Duplicate code
+## 2. Duplicate code
 You may see similar looking code all over the place. Just different variable names and flags, but common functionality. Think about extracting them to a function.
 
 **Before:**
@@ -119,33 +77,97 @@ clearFilter("sizeFilter");
 //and so on
 ```
 
-Why did it occur to me that duplicate code is bad? I must have learned about `Don't Repeat Yourself (DRY)`
-1. First, when you need to fix/change, duplicate code needs fix/change at multiple places.
-2. When you make same changes to many places, it is quite easy to introduce a bug. Think of those times when your key pad stuck and ctrl+v didn't work. Or the time when you used multiple cursors on text editor when you didn't edit all instances.
-3. Takes up to much space than necessary and increases cognitive load
+### What was the learning ?
+* Don't Repeat Yourself (DRY)
+* Duplicate code needs fix/change at multiple places.
+* When you make same changes to many places, it is quite easy to introduce a bug. [Think of those times when your key pad stuck and ctrl+v didn't work. Or the time when you used multiple cursors on text editor when you didn't edit all instances]
+* Takes up to much space than necessary and increases cognitive load
 
-Extracting duplicate code into an efficient function will help.
-1. Code reads better
-2. Changes need to be applied to one function
-3. Easy to test
+### DIY
+* Identify and extract duplicate code into a reusable function
+* Delete all the duplicate code into function calls.
+* Feel the bliss of deleting code, hold that thought and savor the moment
+* Rewrite your tests to fit the new design (or write new tests)
 
-Also, deleting code is bliss. You should try it. Of course, ensure you have supporting tests to see things still pass as you delete code.
-
-## 4. Complex and Lengthy Functions
+## 3. Complex and Lengthy Functions
 
 The previous section is relevant here. Duplicate code is one of the reasons some functions are large. But that may not be the only reason.
 
-It's natural for people coming linear programming languages such as C to write lengthier functions. Should I just talk for myself here? Because I do not know for sure if people from C universe write lengthier functions. I just happen to have seen .c files with larger functions. It could have been just one person. Lest I digress, there are different takes by different people on what should be the length of a function.
+It's natural for people coming linear programming languages such as C to write lengthier functions. That's my opinion by the way.
 
-I'm on the side of small functions. Based on my experience, I see smaller functions make more readable code. Some would argue jumping between smaller functions would hinder readability. That's why a good name for function is necessary.
+The code I had written 2 years ago had functions as large as 50 lines of code. A set of instructions in sequence. Many loops, accessing data, updating DOM and triggering events. You name it, the function had it. The function was jack of all trades.
+
+My brain needed a larger RAM to hold all those things the function was supposed to do.
+
+### What was the Learning?
 
  >"There are only two hard problems in Computer Science:
    cache invalidation and naming things."   -- Phil Karlton
 
-I have seen my functions exceeding 50 lines of code. They are responsible for a lot of things. That's bad. I enjoyed learning from [Clean Code](https://sites.google.com/site/unclebobconsultingllc/) by "Robert C. Martin". If you haven't, you should. Consider the guidelines and pick anything that interests you. Make it a habit.
+* It is difficult to fully understand purpose of a function if it is larger than your comfort level.
+* I'm on the side of small functions. Based on my experience, I see smaller functions make more readable code.
+* Some would argue jumping between smaller functions would hinder readability. That's why a good name for function is necessary. Which is also why Phil was spot on.
+* When you have a large function, it is easy to name it. Think about some of the things it's doing and rephrase it. For example,  `fetchDataAndProcessDataAndUpdateDOM`. But when you break functions down to smaller ones, you need be good at naming them. For example, `fetchData`, `sortData` and `updateUserTable`
 
 ### DIY:
-Pick a lengthy function, one with more than 50 lines of code. Cut it  short or split it into many smaller functions. Try to maintain or increase the overall readability. Remember, just one responsibility for a function. Just like deleting excess code, this is also an enjoyable experience.
+* Try to go through [Clean Code] by "Robert C. Martin".  
+* Pick a lengthy function, one with more than 50 lines of code.
+* Cut it short or split it into many smaller functions.
+* Try to maintain or increase the overall readability.
+* Remember, we can be jack of all trades. But our functions need to be master of one. That's, just one job for a function to do well.
+* Much like deleting excess code, this is also an enjoyable experience. Savor the moment.
+
+## 4. Hidden Nested Loops
+
+Like I said in the last section, long functions tend to have many responsibilities. Some of those responsibilities achieved through nested loops. I could see loops nested two level deep on my code. It was not very concerning at first sight. It is easy to spot deeply nested loops and uproot them. One such example here.
+
+```js
+for(let i=0;i<array.length;i++){
+  for(let j=i;j<array.length;j++){
+    for(let k=j;k<array.length;k++){
+      doSomethingOverandOver();
+    }
+  }
+}
+```
+
+But there are times when the nesting is not explicit and in a single place. Take the one below for example,
+
+```js
+for(let i=0;i<array.length;i++){
+  doSomething(array,i);
+}
+
+const doSomething=(array,i)=>{
+  for(let j=i;j<array.length;j++){
+    over(array,j);
+  }
+}
+
+const over=(array,j)=>{
+  for(let k=j;k<array.length;k++){
+    andOver();
+  }
+}
+```
+
+This is the same nested loop that is three level deep. The loops are nicely tucked away within separate functions - which doesn't make it any better. Let's say you have spread these functions away from each other. It may be difficult to realize you've run into nested loops that are several levels deep.
+
+### What was the learning?
+* Nested loops are usually signs of **brute force** implementation.
+* A [bubble sort] with no optimization will run for n<sup>2</sup> times.
+* Nested loops that are three levels deep may quickly escalate into several runs of same code.
+* When you deal with large scale data, nested loops are not the way to go.
+* Avoid looping through data that comes from a DB, try to use the power of SQL and your database engine. 
+
+### DIY
+* Try writing [bubble sort] if you haven't done so recently.
+* Two simple `for` loops will be sufficient to get the results. But it's O(n<sup>2</sup>).
+* Run it against a fully sorted array. The best case scenario. It will run into O(n<sup>2</sup>).
+* Introduce a flag to break the loop if there was no swap, indicating array is already sorted, then it's just O(n).
+* If you must use nested loops, look for improvements to reduce iterations. That's knowing when to stop. Then work towards stopping it early.
+* Consider if recursion or regular expression can be an option if you are working with strings.
+* There are few use cases for nested loops. Such as traversing a three dimensional array.
 
 ## 5. Synchronization Issues
 
@@ -214,3 +236,5 @@ Thank you, hope it was worth reading.
 
 [istanbul]: https://github.com/gotwarlost/istanbul
 [coveralls]: https://github.com/nickmerwin/node-coveralls
+[clean code]: https://sites.google.com/site/unclebobconsultingllc/
+[bubble sort]: https://en.wikipedia.org/wiki/Bubble_sort
