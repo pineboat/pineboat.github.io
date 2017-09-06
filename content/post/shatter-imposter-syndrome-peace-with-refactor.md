@@ -31,9 +31,9 @@ Globals are the best way to hold data / manage state in JavaScript, when I didn'
 
 Look around your old code and find any global variables that you are using. I certainly could find many. Drop them all. May be leave a singleton.
 
-What has changed?
-Someone must have shown me why globals are bad. By now I know many of the pitfalls of using global variables.
+What has changed? Someone must have shown me why globals are bad. By now I know many of the pitfalls of using global variables. It's time for a list.
 
+### What was the learning?
 1. When the code base is large, it is difficult understand use of globals within a function.
 2. They open up rooms for defects that are hard to debug.
 3. It is quite easy for you to break others' code by using the same variable name
@@ -44,7 +44,10 @@ Someone must have shown me why globals are bad. By now I know many of the pitfal
 
 Usually, programming books show global variables first when the topic of 'scope' comes in. I would suggest all books on any programming language show global scope at the end, as a warning side note.
 
-Read more on [this page](http://wiki.c2.com/?GlobalVariablesAreBad).
+### DIY:
+* Read more on 'why globals are bad' on [this page](http://wiki.c2.com/?GlobalVariablesAreBad).
+* Try refactoring your code to eliminate globals.
+* Impure functions are one of the places where state from outer scope is mutated. Try limiting use of impure functions.
 
 ## 2. Invisible nested loops
 
@@ -130,7 +133,9 @@ Also, deleting code is bliss. You should try it. Of course, ensure you have supp
 
 ## 4. Complex and Lengthy Functions
 
-Duplicate code is one of the reasons some functions are large. It's natural for people coming linear programming languages such as C to write lengthier functions. Should I just talk for myself here? Because I do not know for sure if people from C universe write lengthier functions. I just happen to have seen .c files with larger functions, but I could have been just one person. Lest I digress, there are different takes by different people on what should be the length of a function.
+The previous section is relevant here. Duplicate code is one of the reasons some functions are large. But that may not be the only reason.
+
+It's natural for people coming linear programming languages such as C to write lengthier functions. Should I just talk for myself here? Because I do not know for sure if people from C universe write lengthier functions. I just happen to have seen .c files with larger functions. It could have been just one person. Lest I digress, there are different takes by different people on what should be the length of a function.
 
 I'm on the side of small functions. Based on my experience, I see smaller functions make more readable code. Some would argue jumping between smaller functions would hinder readability. That's why a good name for function is necessary.
 
@@ -155,11 +160,8 @@ But the good news is, you eventually figure out. If you start running JavaScript
 Always respect this piece of code:
 ```js
 document.addEventListener("DOMContentLoaded",function(e){
-/* This is where
-** most of your code
-** relevant to DOM
-** should live
-*/  
+// This is where most of your code
+// interacting with DOM should live
 });
 ```
 ### DIY:
@@ -167,13 +169,24 @@ Nope, this is not something you may find in your project. There is no DIY here. 
 
 ## 6. No tests whatsoever
 
-The app I chose to refactor had no tests. I had to manually check the app after each change I was making. It was painful. It wasn't so painful in the last project. So, what's changed? I was using TDD in the last project. I had some tests running automatically through `guard` (for rails) or `npm-watch` for node.
+The app I chose to refactor had no tests. I had to check if the app is still functional. It was quite manual. It was painful. It wasn't so painful in the last project.
 
-You'll enjoy refactoring if there are tests that run automatically. Remember to write new ones if you write something new. It helps to have a code coverage tool like `coveralls` to understand coverage and fix gaps.
+So, what's changed? I was using TDD in the last project. I had some tests running in the background as part of my dev workflow. Either through `guard` (for rails) or `npm-watch` for node.
 
-TDD is hard. It takes patience and practice to get into a habit of writing at least some tests. I rush to write the actual functionality first. Seeing the results on the browser is the normal impulsive behavior, at least for me. To write tests first is counter intuitive. You should almost always write tests first. That 'almost' is for you to retain the right to choose if you want to write tests first.
+Now that there are no tests, the refactoring was even more challenging.
 
-Confession: I sometime end up writing tests later. But I do know having good test coverage makes it all the more easier to introduce changes, refactoring and deleting old code.
+### What was the learning?
+
+* You'll enjoy refactoring if there are tests.
+* You'll enjoy it more if it automatically runs when you make changes.
+* It's rewarding if you have a code coverage tools like [istanbul] and [coveralls]. Steady increase in code coverage can be a motivating factor.
+* TDD is hard. It takes patience and practice to get into a habit of writing at least some tests.
+* You should almost always write tests first. That 'almost' is for you to retain the right to choose if you want to write tests first.
+
+**Confession**: I rush to write the actual functionality first. Seeing the results on the browser is the normal impulsive behavior, at least for me. To write tests first is counter intuitive.
+
+### DIY
+As you refactor your project, ensure you also write tests. If you already have tests, think about how you'd refactor your tests. If you have none, all the more reason to write tests from scratch.
 
 ## 7. No sight of library/framework
 You might have hand crafted your application from scratch. That's the best start you can give for any application. But you might also see your app as a composition of components. You might ask yourself "why did I hand craft everything in the first place?" There is so much imperative programming going on here.
@@ -193,8 +206,11 @@ Try to bring in a tiny library to help you. I haven't used `Preact` but it fits 
 
 ---
 
-I'm sure when I look back at this post 2 years later, I might have moved on. I may think I could have written a better one. I'd reassure myself that I am learning and growing.
+If you do not send this story across to your followers, you run the risk of me writing another post. May be in two years. I'll write about why this post is not so good. I'll list down what have I learned about 'writing well' and how to make this post better. I'd reassure myself that I am learning and growing.
 
 **I urge you to try this. Try refactoring your old project, may be a year or two old. Be conscious of changes you make. That'll help you recognize what have you learned in the meantime. Write a post and remember to let me know**
 
 Thank you, hope it was worth reading.
+
+[istanbul]: https://github.com/gotwarlost/istanbul
+[coveralls]: https://github.com/nickmerwin/node-coveralls
