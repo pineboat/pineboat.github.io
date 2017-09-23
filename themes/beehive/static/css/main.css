@@ -274,4 +274,15 @@ blockquote, pre, .footer_card {
 .footer_stack_info {
   list-style: none; }
 
+.social_sharing {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap; }
+
+.sharing__link {
+  padding: 5px 10px;
+  display: inline-block;
+  min-width: 20em;
+  text-align: center; }
+
 /*# sourceMappingURL=main.css.map */

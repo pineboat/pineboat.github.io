@@ -1,12 +1,14 @@
 {{ if .IsPage }}
-  <a class="twitter-share-button"
-    href="https://twitter.com/share"
-    data-size="large"
-    data-text="{{ .Params.Subtitle }}"
-    data-url="{{ .Permalink }}"
-    data-hashtags="{{ .Params.tags }}"
-    data-via="pineboat"
-    data-related="vijayabharathib">
-  Share
-  </a>
+<div class="social_sharing">
+  <!-- Sharingbutton Facebook -->
+  <a class="sharing__link" href="https://facebook.com/sharer/sharer.php?u={{- .Permalink -}}" target="_blank" aria-label="">Share on Facebook</a>
+
+  <!-- Sharingbutton Twitter -->
+  <a class="sharing__link" href="https://twitter.com/intent/tweet/?text={{- .Params.Subtitle -}}&amp;url={{- .Permalink -}}&amp;via=pineboat"
+    target="_blank" aria-label="">Tweet this post</a>
+
+  <!-- Sharingbutton Google+ -->
+  <a class="sharing__link" href="https://plus.google.com/share?url={{- .Permalink -}}"
+    target="_blank" aria-label="">Share on Google+</a>
+</div>
 {{ end }}

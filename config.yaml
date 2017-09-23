@@ -6,6 +6,8 @@ canonifyURLs: true
 paginate: 10
 googleAnalytics: "UA-80881928-2"
 publishDir: "public"
+params:
+  subtitle: "On shipping web"
 author:
   vijayabharathib:
     firstname: "Vijayabharathi"
