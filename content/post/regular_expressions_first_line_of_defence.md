@@ -18,6 +18,10 @@ We will know how to put regular expressions to good use at the end of this post.
 2. Match an email address
 3. Match a link to an external website
 
+## Build a case with performance
+write loop to match million hex numbers
+write regexp to match million hex compare
+
 ## Getting Ready is Easy
 
 ### References
@@ -88,8 +92,60 @@ The expression within slashes should be there within the string under test in th
 
 `'bac'` is there within `'abacus'` but `'abas'` is not there in `'abacus'` as it is. Even though we have those characters scrambled, we do not get a match.
 
-## Find by position
-$ and ^
+## Match Numbers
+
+Let's spice it up a bit. Let's say you want to find out if a string is full of numeric characters.
+
+Here it is
+```js
+/0|1|2|3|4|5|6|7|8|9/.test("42"); //true
+/0|1|2|3|4|5|6|7|8|9/.test("The answer is 42"); //true
+```  
+The second case shouldn't be true. We'll deal with it a bit later.
+
+For now, the pipe symbol, `|` means OR. We've used it as bitwise OR and conditional OR with double pipes (||). That's the same guy.
+
+I could call that easy and call it a day. But you would scream for something better right? We are a developers. We spend the best part of our day thinking about better aliases to save few keystrokes.
+
+Should I type in nine pipe symbols? Nah. Here we go again.
+```js
+/[0123456789]/.test("42"); //true
+/[0123456789]/.test("The answer is 42"); //still true
+```
+Better, 9 pipes replaced with 2 square brackets. 7 characters saved. 77.7% less keystrokes.
+
+By the way, anything within square brackets is considered as `Either this OR that`. In our case, the string should contain either 0, or 1, or 2, or...bear with me, I promised to write 1000 words a day, or 3 or 4 or 5. All right, let's stop. You get it.
+
+Not satisfied, Ok, here we go once again.
+
+```js
+/[0-9]/.test("42"); //true
+/[0-9]/.test("The answer is 42"); //true
+```
+Anything within square brackets [] means OR. `0-9` means zero to nine. So the test looks for characters from zero to nine in the test string.
+
+Let's now address the failing second case. The second case `The answer is 42` matches because our test looks for numeric characters somewhere within the string. **Not start to end**.
+
+Let's bring in ^ and $ to help us. ^ means start of the string. $ means end of the string.
+
+Finally,
+```js
+/^[0-9]$/.test("42"); //false - NOOOOO!
+/^[0-9]$/.test("The answer is 42"); //false
+/^[0-9]+$/.test("4"); //true
+/^[0-9]+$/.test("42"); //true
+/^[0-9]+$/.test("The answer 42"); //false - Hurray  
+```
+Surprisingly, the first one failed when we added ^ and $.
+
+`/^[0-9]$/` in plain English reads like, go to the start of the string. look for a number. check if the string ends right there.
+
+The plus sign (+) in `[0-9]+` comes to our rescue. Plus means, more than one occurrence of the character/pattern in front of it. In our case, more than one numerals.
+
+It also fails the match for our last case `The answer is 42` because, there are no numerals at the start of the string.
+
+### Food for thought
+Can you try to write a regular expression for hexadecimal numbers? I'll not spoil the fun until end of this post.
 
 ## Find Duplicates
 
