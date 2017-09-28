@@ -48,7 +48,7 @@ If that works, you are ready. Don't worry about what it is. That would be a piec
 
 Let's dive in.
 
-## Find a character
+## 01. Find sequence of characters
 
 Let's start small. We need to find if a string has a particular character. Look for the character `'a'` in a string.
 
@@ -92,7 +92,15 @@ The expression within slashes should be there within the string under test in th
 
 `'bac'` is there within `'abacus'` but `'abas'` is not there in `'abacus'` as it is. Even though we have those characters scrambled, we do not get a match.
 
-## Match Numbers
+
+### TL;DR Review
+Symbol | Meaning
+--- | ---
+`/.../` | Slash (/) marks the start and end of the regular expression. Ignore the dots, that's where we place the pattern.
+`/a/` | Character between slashes is pattern matched on string under test.
+`/abc/` | Characters between slashes are looked up as substring during pattern matching test on string under test.
+
+## 02. Numbers in plain sight
 
 Let's spice it up a bit. Let's say you want to find out if a string is full of numeric characters.
 
@@ -103,9 +111,9 @@ Here it is
 ```  
 The second case shouldn't be true. We'll deal with it a bit later.
 
-For now, the pipe symbol, `|` means OR. We've used it as bitwise OR and conditional OR with double pipes (||). That's the same guy.
+For now, the pipe symbol (`|`) means OR. Outside of regular expressions, we've used it as bitwise OR and conditional OR with double pipes (||). That's the same guy.
 
-I could call that easy and call it a day. But you would scream for something better right? We are a developers. We spend the best part of our day thinking about better aliases to save few keystrokes.
+I could call that easy and call it a day. But you would scream for something better, right? We are a developers. We spend the best part of our day thinking about better aliases to save few keystrokes.
 
 Should I type in nine pipe symbols? Nah. Here we go again.
 ```js
@@ -114,7 +122,7 @@ Should I type in nine pipe symbols? Nah. Here we go again.
 ```
 Better, 9 pipes replaced with 2 square brackets. 7 characters saved. 77.7% less keystrokes.
 
-By the way, anything within square brackets is considered as `Either this OR that`. In our case, the string should contain either 0, or 1, or 2, or...bear with me, I promised to write 1000 words a day, or 3 or 4 or 5. All right, let's stop. You get it.
+By the way, anything within square brackets is considered as `Either this OR that`. MDN calls it a character set. In our case, the string should contain either 0, or 1, or 2, or...bear with me, I promised to write 1000 words a day, or 3 or 4 or 5. All right, let's stop. You get it.
 
 Not satisfied, Ok, here we go once again.
 
@@ -132,20 +140,47 @@ Finally,
 ```js
 /^[0-9]$/.test("42"); //false - NOOOOO!
 /^[0-9]$/.test("The answer is 42"); //false
+//Let's throw in a plus
 /^[0-9]+$/.test("4"); //true
 /^[0-9]+$/.test("42"); //true
 /^[0-9]+$/.test("The answer 42"); //false - Hurray  
 ```
 Surprisingly, the first one failed when we added ^ and $.
 
-`/^[0-9]$/` in plain English reads like, go to the start of the string. look for a number. check if the string ends right there.
+`/^[0-9]$/` in plain English reads like, go to the start of the string. look for a single numeral. Check if the string ends right there. That's not what we wanted.
 
 The plus sign (+) in `[0-9]+` comes to our rescue. Plus means, more than one occurrence of the character/pattern in front of it. In our case, more than one numerals.
 
 It also fails the match for our last case `The answer is 42` because, there are no numerals at the start of the string.
 
-### Food for thought
-Can you try to write a regular expression for hexadecimal numbers? I'll not spoil the fun until end of this post.
+### Practice Patterns
+* Can you try to write a pattern for hexadecimal numbers (consisting of numerals 0-9 and letters a-f, with an optional # in front)?
+* How about a binary number? Can you test if a string is full of just 0 and 1?
+
+I'll not spoil the fun until end of this post.
+
+### Toppings
+
+Oh, almost forgot. `[0-9]` which stands for any of the numeric character set also has a shorthand version `\d`.
+
+```js
+/^\d+$/.test("4"); //true
+/^\d+$/.test("42"); //true
+/^\d+$/.test("The answer 42"); //false - Hurray
+```
+
+### TL;DR Review
+Symbol | Meaning
+--- | ---
+`[123]` | Expression within square brackets are character set. Any one of the character match will pass the test. Just ONE character.
+`[0-9]` | Looks for a single numeric digit between 0 to 9.
+`[0-5]` | Looks for a single numeric digit between 0 to 5.
+`[a-z]` | Looks for a single letter between a to z.
+`[A-F]` | Looks for a single letter between A to F.
+`[123]+` | Plus (+) looks for one or more occurrence of the characters within the set. This one matches "23132" substring that consists of 1, 2 & 3 within a larger string "abc23132"
+&#124;  | Pipe symbol stands for OR
+`\d` | A shorthand for numerals
+`\D` | A shorthand for non-numeric characters
 
 ## Find Duplicates
 
@@ -184,7 +219,7 @@ Here is the expression.
 /(\w)(\w)\2\1/.test("abab"); //false
 ```
 
-First `(\w)` matches a and remembers it as `\1`. Second `(\w)` matches b and rembers it as `\2`. Then the expression expects `\2` to occur first then followed by `\1`. Hence, `abba` is the only string that matches the expression.
+First `(\w)` matches a and remembers it as `\1`. Second `(\w)` matches b and remembers it as `\2`. Then the expression expects `\2` to occur first then followed by `\1`. Hence, `abba` is the only string that matches the expression.
 
 ### Exercises to firm up the learning
 
