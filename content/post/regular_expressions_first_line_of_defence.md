@@ -14,15 +14,18 @@ We are going to get our head around regular expressions today. At least, regular
 
 We will know how to put regular expressions to good use at the end of this post. We'd have solved the following simple problems and learned loads in the process.
 
-1. Find Duplicates
+1. [Why Regular Expressions](#why-regular-expressions)
+2. [Get Your Environment Ready Instantly](#getting-ready-instantly)
+3. [Start small with letters](#01-start-small-with-letters)
+2. Find Duplicates
 2. Match an email address
 3. Match a link to an external website
 
-## Build a case with performance
+## Why regular expressions?
 write loop to match million hex numbers
 write regexp to match million hex compare
 
-## Getting Ready is Easy
+## Getting Ready Instantly
 
 ### References
 Most of the times, I find this page adequate to get going: [Regular Expressions from MDN][REGEXP-MDN]. In fact, that page is all you need. You can stop reading this post. Right now. Close.
@@ -48,7 +51,7 @@ If that works, you are ready. Don't worry about what it is. That would be a piec
 
 Let's dive in.
 
-## 01. Find sequence of characters
+## 01. Start Small With Letters
 
 Let's start small. We need to find if a string has a particular character. Look for the character `'a'` in a string.
 
@@ -182,9 +185,9 @@ Symbol | Meaning
 `\d` | A shorthand for numerals
 `\D` | A shorthand for non-numeric characters
 
-## Find Duplicates
+## 03. Find Duplicates
 
-You've been given a string. It has been infused with duplicate characters. Your job is to remove duplicates and return a string that cannot be reduced further.
+You've been given a string. Find out if it has been infused with duplicate characters before sunset.
 
 Here is the solution for duplicate characters appearing immediately after an occurrence:
 ```js
@@ -208,11 +211,12 @@ Symbol | Meaning
 
 Let's translate our expression `(\w)\1` to plain English. Match any alpha-numeric character on a given string, remember it as \1, check if that character appears right next to the first occurrence.
 
-### Extend
+### Extension 1 - Reverse Pairs
 
 Let's say we want to find two characters appearing in reverse order right next to each other. That is like `abba`. `ab` is reversed as `ba` and is right next to each other.
 
 Here is the expression.
+
 ```js
 /(\w)(\w)\2\1/.test("aabb"); //false
 /(\w)(\w)\2\1/.test("abba"); //true
@@ -221,10 +225,121 @@ Here is the expression.
 
 First `(\w)` matches a and remembers it as `\1`. Second `(\w)` matches b and remembers it as `\2`. Then the expression expects `\2` to occur first then followed by `\1`. Hence, `abba` is the only string that matches the expression.
 
-### Exercises to firm up the learning
+### Extension 2 - No duplicates 
+
+This time, we are going to look at sequence of characters without duplicates. No character should be followed by the same character. Plain and simple.
+
+Here, take a look at the solution.
+
+```js
+/^(\w)(?!\1)$/.test("a"); //true 
+/^(\w)(?!\1)$/.test("ab"); //false 
+/^(\w)(?!\1)$/.test("aa"); //false 
+```
+
+Not the one we wanted, but close. A combination of brackets, question mark and exclamation mark (?!), is called a **look ahead**. `a(?!b)` matches `a` only if it is not followed by `b`. But it doesn't seem to be working. 
+
+```js
+/^((\w)(?!\1))+$/.test("madam"); //false - no recurrence
+/^(?:(\w)(?!\1))+$/.test("madam"); //true - no recurrence
+/^(?:(\w)(?!\1))+$/.test("maam"); //false  - can't have aa
+```
+**Question mark is the most powerful (and complex) character in the entire regular expression vocabulary**. You'll see as we go forward.
+
+We had a solution. `(\w)(?!\1)` looks for character without recurrence. We had to group it and look for 1 or more occurences of such pair. That's all.
+
+If we group the pattern within plain brackets like `((\w)(?!\1))`, the `\1` does not represent`(\w)`, it represents higher level bracket pair that groups the pattern. So it fails.
+
+What we need is a **forgetful** grouping option. That's where the question mark, ?, comes in again. (?:) means a simple grouping without remembering the match. It helps us use the plus `+` against the overall grouping, which works like magic.
+
+### TL;DR Review
+
+Symbol | Meaning
+--- | ---
+`\w` | represents all the alpha-numeric characters. If you capitalize 'w' and use `\W'`, that would mean all characters **other than** alpha-numeric.
+`( )` | expression within a bracket is remembered for later use.
+`\1` | remembers and uses the match from first expression that is within brackets. \2 from second set of brackets. And so on.
+`a(?!b)` | This one, a combination of brackets, question mark and exclamation mark (?!), is called a **look ahead**. This matches `a` only if it is not followed by `b`. 
+`a(?=b)` | The other side of the coin. Match `a` only if it is followed by `b`.
+`(?:a)` | Look for `a` but don't remember it. You can't use `\1` pattern to reuse this match.
+
+## 04. Match Alternating Characters
+
+The usecase is simple. Match a string that uses only two characters. Those two characters should alternate throughout the length of the string. Two sample tests for "abab" and "xyxyx" will do.
+
+It wasn't easy. I got it wrong more than I got it right. This [answer][ALTERNATING-ANSWER] had what I wanted.
+
+Here is the solution.
+
+```js
+/^(\S)(?!\1)(\S)(\1\2)*$/.test("abab"); //true
+/^(\S)(?!\1)(\S)(\1\2)*$/.test("xyxyx"); //false
+/^(\S)(?!\1)(\S)(\1\2)*$/.test("$#$#"); //true
+/^(\S)(?!\1)(\S)(\1\2)*$/.test("#$%"); //false
+/^(\S)(?!\1)(\S)(\1\2)*$/.test("$ $ "); //false
+```
+This is where you say, **"I had enough!"** and throw in the towel. But, wait for the **Aha moment!**.
+
+Let's first make sense out of results before we arrive at 'how?'. `abab` matches. But `xyxyx` fails, because our pattern doesn't known how to handle that last x. We'll get there. `$#$#` matches, this is no different from `abab`. `#$%` fails as there is a third character. `$ $ ` fails though they are pairs, because space is excluded in our pattern.
+
+Let's take a look at tools added to our belt. It'll start to make sense soon.
+
+### Breakdown 
+
+Pattern | Meaning
+--- | ---
+`\S` | represents all characters excluding white space
+`a*` | Asterisk or Star, looks for 0 or more occurrences of the preceding character/pattern
+
+Now comes the plain English version. 
+* Start from the start `/^`
+* Look for a non-white space character `(\S)`.
+* Remember it as `\1`.
+* Look ahead and see if the first character is not followed by the same character `(?!\1)`
+* If we are good so far, look for another character `(\S)`.
+* Remember it as `\2`.
+* Then look for 0 or more pairs of first two matches `(\1\2)*`
+* Look for such pattern until end of the string `$/`.
+
+Apply that to our test cases. `abab` matches. But `xyxyx` fails, because our pattern doesn't known how to handle that last x. We'll get there. `$#$#` matches, this is no different from `abab`. `#$%` fails as there is a third character.
+
+
+### Extend 
+Let's fix that one failing case `xyxyx`. As we've seen, the last trailing x is the problem. We have a solution for `xyxy`. All we need is a pattern to say "look for an additional match of the first character".
+
+As usual, let's start with the solution.
+
+```js
+/^([\S])(?!\1)([\S])(\1\2)*\1?$/.test("xyxyx"); //true
+/^([\S])(?!\1)([\S])(\1\2)*\1?$/.test("$#$#$"); //true
+```
+A question mark `?` after a character or pattern means 0 or 1 match for the preceding pattern. In our case, `\1?` means, 0 or 1 match of the first character remembered. Easy.
+
+### TL;DR Review
+Pattern | Meaning
+--- | ---
+`\S` | represents all characters excluding white space (such as space, new lines etc). Note that it is capital S.
+`a*` | Asterisk or Star, looks for 0 or more occurrences of the preceding character (in this case, 0 or more 'a'). Remember plus (+) which looks for 1 or more? Yeah, these guys are cousins.
+a(?!b) | This one, a combination of brackets, question mark and exclamation mark (?!), is called a **look ahead**. This matches `a` only if it is not followed by `b`. For example, matches `a` in `aa`, `ax`, `a$` but does not match `ab`. Though it uses bracket, it does not remember the matching character after `a`.
+`\s` | Small caps `s` matches a single white space character (such as space, new line...etc).
+a(?=b) | The other side of the coin. This one matches `a` that is followed by `b`.
+`^ab*$` | You may think this one translates to 0 or more occurrences of `ab`, but it matches `a` followed by 0 or more `b`. An example? Sure! This one matches `abbb`, `a`, `ab`, but does not match `abab`
+`^(ab)*$` | The other side of the coin. This one matches 0 or more pairs of `ab`. That means, it will match empty string `""`, `ab`, `abab`, but not `abb`. 
+`a?` | ? matches 0 or 1 occurrence of preceding character or pattern. \1? matches 0 or 1 recurrence of first remembered match. 
+
+** Invite plus and asterisk back to your working memory. `+` means 1 or more. `*` means 0 or more. `?` means 0 or 1. They are the three musketeers in our RegExp army.
+
+
+## A Strong Password 
+
+/^(?=.{8,})(?=.*[$#%]+)(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*\d+).*$/.test("8aaafderaA$%")
+
+This does not have any negative conditions yet. such as, should not include single quote...etc.
 
 ## Match an email address
 
 ## Match a link to an external website
 
 [REGEXP-MDN]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+
+[ALTERNATING-ANSWER]: https://stackoverflow.com/questions/45504400/regex-match-pattern-of-alternating-characters
