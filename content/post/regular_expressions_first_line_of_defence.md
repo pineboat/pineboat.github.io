@@ -6,6 +6,9 @@ subtitle = "Have you stayed off from Regular Expressions because they look compl
 tags = ["Regular Expressions","JavaScript"]
 title = "How to Make Regular Expressions Your First Line of Defence"
 draft=true
+image="/img/004_regular_expressions/balloon_pattern.jpg"
+image_alt="balloon with patterns"
+image_credit="Image from https://unsplash.com/photos/q99oeAG46BY"
 +++
 
 Very much like any programming language, regular expression is a succinct language in its own right. Take that as a sign language to analyze strings. It is difficult to learn. Very difficult to remember. Close to impossible to implement right when all you have is few hours to push the code.
@@ -292,6 +295,7 @@ Pattern | Meaning
 `a*` | Asterisk or Star, looks for 0 or more occurrences of the preceding character/pattern
 
 Now comes the plain English version. 
+
 * Start from the start `/^`
 * Look for a non-white space character `(\S)`.
 * Remember it as `\1`.
@@ -320,7 +324,7 @@ Pattern | Meaning
 --- | ---
 `\S` | represents all characters excluding white space (such as space, new lines etc). Note that it is capital S.
 `a*` | Asterisk or Star, looks for 0 or more occurrences of the preceding character (in this case, 0 or more 'a'). Remember plus (+) which looks for 1 or more? Yeah, these guys are cousins.
-a(?!b) | This one, a combination of brackets, question mark and exclamation mark (?!), is called a **look ahead**. This matches `a` only if it is not followed by `b`. For example, matches `a` in `aa`, `ax`, `a$` but does not match `ab`. Though it uses bracket, it does not remember the matching character after `a`.
+`a(?!b)` | This one, a combination of brackets, question mark and exclamation mark (?!), is called a **look ahead**. This matches `a` only if it is not followed by `b`. For example, matches `a` in `aa`, `ax`, `a$` but does not match `ab`. Though it uses bracket, it does not remember the matching character after `a`.
 `\s` | Small caps `s` matches a single white space character (such as space, new line...etc).
 a(?=b) | The other side of the coin. This one matches `a` that is followed by `b`.
 `^ab*$` | You may think this one translates to 0 or more occurrences of `ab`, but it matches `a` followed by 0 or more `b`. An example? Sure! This one matches `abbb`, `a`, `ab`, but does not match `abab`
@@ -332,14 +336,119 @@ a(?=b) | The other side of the coin. This one matches `a` that is followed by `b
 
 ## A Strong Password 
 
+This is the longest section in the entire post. Introduces very few new operators/patterns. But reuses many patterns. In the process, I also ended up with an optimized shorter version. I left it until the end of this section, because the other rules are equally important.
+
+Now, the problem. Remember that registration form that took several attempts before you could meet their strong password requirements? Yeah, we are going to build that validation. The password should be minimum 15 character long. It should contain lowercase and uppercase letters. At least one numeral and a symbol. It can have 
+
+This is a tricky one. Once you start consuming letters, you can't come back to check if they meet any other condition. **There in lies our clue. We can't look back, but we can look ahead!**
+
+### Number of characters
+
+Let's first test if the string password is 15 chars long. Pretty simple. Use `.length` on the password string. Done, right? No, who needs a simple solution? Let's spice it up.
+
+```js
+/^(?=.{15,})$/.test("Minimum15") //false 
+/^(?=.{15,})$/.test("Minimum15Letters") //false
+
+/^(?=.{15,}).*$/.test("Minimum15") //false
+/^(?=.{15,}).*$/.test("Minimum15Letters") //true
+```
+You may remember `(?=)` from our previous work on ["no duplicates"](#extension-2-no-duplicates). That's a **look ahead** use. The dot (`.`) is an interesting character. It means, any character. {15,} stands for at least 15 receding dots in this case. No maximum limit.
+
+Let's translate `/^(?=.{15,})$/`. Start from the beginning of the string. Look ahead for 15 characters. Don't remember the match. Come back to the beginning and check if the string ends there.
+
+Doesn't sound right. Does it?
+
+Which is why we brought in the variation `/^(?=.{15,}).*$/`. It reads like this. Start from the beginning. Look ahead for 15 characters. Don't remember the match. Come back to the beginning. Consume all the characters and see if you reach the end of the string. 
+
+This makes sense now. Doesn't it? 
+
+Which is why `Minimum15` fails and `Minium15Letters` passes the pattern.
+
+### At least one number
+
+This is going to be easy.
+
+```js
+/^(?=.*\d+).*$/.test(""); //false
+/^(?=.*\d+).*$/.test("a"); //false
+/^(?=.*\d+).*$/.test("8"); //true
+/^(?=.*\d+).*$/.test("a8b"); //true
+/^(?=.*\d+).*$/.test("ab890"); //true
+
+```
+
+In English, start from the beginning of the string `/^`. Look ahead for 0 or more other characters `?=.*`. Check if 1 or more numbers follow `\d+`.  Once it matches, come back to the beginning (because we were in look ahead). Consume all the characters in the string until end of the string `.*$/`.
+
+### At Least One Lowercase Letter
+
+This one follows the same patter as above.
+
+```js
+/^(?=.*[a-z]+).*$/.test(""); //false
+/^(?=.*[a-z]+).*$/.test("A330"); //false
+/^(?=.*[a-z]+).*$/.test("a"); //true
+```
+
+Translation? Sure. Start from the... ok. Instead of `\d+`, we have `[a-z]` which is a character set of letters from `a` to `z`.
+
+### At least one Uppercase Letter
+Let's not overkill. `[A-Z]` instead of `[a-z]` from the previous section will do.
+
+### At least one symbol
+
+This is challenging. One way to match symbols is to place a list of symbols in a character set.
+
+```js
+
+```
+
+```js
 /^(?=.{8,})(?=.*[$#%]+)(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*\d+).*$/.test("8aaafderaA$%")
+```
 
 This does not have any negative conditions yet. such as, should not include single quote...etc.
 
+### Happy ending to the symbol
+The seed for this idea came from [another solution][REGEXP-SYMBOL] to the symbol problem.
+
+We are going to generate a stripped down version of the password in this solution. Take out all the \d and \w. You'll have a string full of symbols which should match `[ -~]`. It reads like space, hyphen and a tilda.
+
+Over to the working pattern:
+
+```js
+var pw="Minimum15Ch@racters";
+symbol_only=pw.replace(/\w+/g,""); 
+console.log(symbol_only); // prints @
+/^[ -~]+$/.test(symbol_only); //true 
+```
+
+Why space to Tilda? Remember a-z? [ASCII table](http://www.asciitable.com/) has 125 characters. zero(0) to 31 are not relevant to us. Space starts from 32 going all the way up to 126 which is tilda(~). 
+
+This covers all the symbols, letters and numbers we need.
+
+But why should we mutate the password and remove all letters and numbers? Because this range has letters and numbers, testing this directly on the password wouldn't prove that we have a symbol. It'll only prove that we have one of the characters within this range. That could be any character.
+
+Once you remove all the letters and numbers, what's left should be symbols. And we can test if we have at least one symbol with a broad range `[ -~]`. 
+
+One final piece of the puzzle. The `/g` part of the replace function. `g` stands for global search and replace. Let's see the result without the `g` switch.
+
+```js
+var pw="Minimum15Ch@racters";
+pw.replace(/\w+/,""); //@racters;
+```
+
+You see, the patter **without** global `g` switch finds only one match and replaces it with empty string we've given. When you give it extra power with the `g` switch, it does global find and replace of all the matches for a given pattern.
+
+
 ## Match an email address
 
+
 ## Match a link to an external website
+/^https?\:\/\/\w+\.{1}\w+$/
 
 [REGEXP-MDN]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
 
 [ALTERNATING-ANSWER]: https://stackoverflow.com/questions/45504400/regex-match-pattern-of-alternating-characters
+
+[REGEXP-SYMBOL]: https://stackoverflow.com/questions/8359566/regex-to-match-symbols
