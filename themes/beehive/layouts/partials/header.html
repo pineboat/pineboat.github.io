@@ -16,7 +16,15 @@
         {{ else }}
           <li><a class="c-nav-link" href="/">Home</a></li>
         {{ end }}
-      {{ range .Site.Sections.page }}
+      {{ range .Site.Menus.main }}
+          <li class="">
+            <a href="{{ .URL }}" class= "c-nav-link">
+              {{- .Name -}}
+            </a>
+          </li>
+      {{ end }}
+      {{/* range .Site.RegularPages }}
+        <li> {{ .URL }} </li>
         {{ if eq .Permalink $.Permalink }}
           <li class="active">
             <a href="{{ .Permalink }}" class= "c-nav-link current">
@@ -30,7 +38,7 @@
             </a>
           </li>
         {{ end }}
-      {{ end }}
+      {{ end */}}
       </ul>
     </nav>
 </header>

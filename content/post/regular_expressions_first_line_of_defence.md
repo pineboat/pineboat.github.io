@@ -397,17 +397,13 @@ Let's not overkill. `[A-Z]` instead of `[a-z]` from the previous section will do
 
 ### At least one symbol
 
-This is challenging. One way to match symbols is to place a list of symbols in a character set.
+This is challenging. One way to match symbols is to place a list of symbols in a character set. `/^(?=.*[-+=_)(\*&\^%\$#@!~`"':;|\\}\]{[/?.>,<]+).*$/.test("$")` That's all the symbols in a character set. Properly escaped where necessary. It'll take months for me to write it in plain English. 
+
+So to save all of us from eternal pain, here is a simple one.
 
 ```js
-
+/^(?=[^\w])(?=[ -~]).*$/.test("!");
 ```
-
-```js
-/^(?=.{8,})(?=.*[$#%]+)(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*\d+).*$/.test("8aaafderaA$%")
-```
-
-This does not have any negative conditions yet. such as, should not include single quote...etc.
 
 ### Happy ending to the symbol
 The seed for this idea came from [another solution][REGEXP-SYMBOL] to the symbol problem.
@@ -440,8 +436,31 @@ pw.replace(/\w+/,""); //@racters;
 
 You see, the patter **without** global `g` switch finds only one match and replaces it with empty string we've given. When you give it extra power with the `g` switch, it does global find and replace of all the matches for a given pattern.
 
+### Put the strong password together
+
+Bringing it all together, we get this nice looking piece of regular expression. Remember, we are just allowing symbols $, # and % in this one. If you want to allow all other symbols, go one page up.
+
+```js
+/^(?=.{15,})(?=.*[$#%]+)(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*\d+).*$/
+```
+
+### Food for thought
+This does not have any negative conditions yet. such as, should not include single quote...etc. Try including a negative condition and see how it works out. 
+
+Tip: [^a-z] means any character other than a to z. The opposite of [a-z].
+
 
 ## Match an email address
+
+### Warning for Production
+
+Regular expression alone may not help validate emails. Some would even argue that regular expressions should not be used as it can never match 100% of the emails. Think about all the fancy domain names poping up. You need to validate email twice. Once on the client side to help users avoid misspelled addresses. Start with a semantic input tag type `<input type='email'>`. Validate it once again on the server by actually sending a confirmation email.
+
+### RegExp for Email 
+
+Google for regular expression for an email address. One such result from [perl module](http://www.ex-parrot.com/~pdw/Mail-RFC822-Address.html) goes for more than a page. Regular expressions will not match 100% of all valid email addresses. You'll end up with a large one that is at best illegible.
+
+But let's build an imaginary use case. One where you are building an internal app and you want to limit email addresses to your company domain. You allow email addresses with a DOT(.) and no other symbol is allowed.
 
 
 ## Match a link to an external website

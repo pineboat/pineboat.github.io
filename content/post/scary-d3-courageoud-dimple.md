@@ -5,7 +5,7 @@ publishdate = "2017-11-08T10:30:07+05:30"
 subtitle = ""
 tags = []
 title = "scary d3 courageous dimple"
-draft="true"
+draft=true
 +++
 
 ## Add a title to your chart

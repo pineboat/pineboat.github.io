@@ -6,6 +6,18 @@ canonifyURLs: true
 paginate: 10
 googleAnalytics: "UA-80881928-2"
 publishDir: "public"
+pygmentsCodeFences: true
+pygmentsUseClasses: true
+menu:
+  main:
+      - Name: "About"
+        Identifier: "about"
+        URL: "/page/about/"
+        weight: 220
+      - Name: "Privacy"
+        Identifier: "privacy"
+        URL: "/page/privacy_policy/"
+        weight: 110
 params:
   subtitle: "On shipping web"
 author:
