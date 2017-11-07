@@ -1,7 +1,7 @@
 +++
 author = "vijayabharathib"
-date = "2017-11-05T22:15:59+05:30"
-publishdate = "2017-11-05T22:15:59+05:30"
+date = "2017-12-05T22:15:59+05:30"
+publishdate = "2017-12-05T22:15:59+05:30"
 subtitle = "Have you stayed off from Regular Expressions because they look complex. Befriend them in this practical guide."
 tags = ["Regular Expressions","JavaScript"]
 title = "How to Make Regular Expressions Your First Line of Defence"
@@ -53,6 +53,11 @@ Do it right now. Just type this on your browser console.
 If that works, you are ready. Don't worry about what it is. That would be a piece of cake when you are done.
 
 Let's dive in.
+
+FFFFIXXXXXX
+```js
+** how do you use a variable in regexp syntax above? you can't . you use `new RegExp(var_name,flags)` syntax.** 
+```
 
 ## 01. Start Small With Letters
 
