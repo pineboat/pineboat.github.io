@@ -17,18 +17,21 @@ Very much like any programming language, regular expression is a succinct langua
 
 Willing to invest 20 minutes and come out enlightened in RegExp? Settle down then. We have a ToC showing what's in store.
 
-* [Get Your Environment Ready Instantly](#get-your-playground-ready)
+* [Get Your Playground Ready](#00-get-your-playground-ready)
 * [Start small with letters](#01-start-small-with-letters)
-* Find Duplicates
-* Match an email address
-* Match a link to an external website
+* [Patterns in Numbers](#02-patterns-in-numbers)
+* [Recurrence Match to Find Duplicates](#03-recurrence-match-to-find-duplicates)
+* [Alternating sequence](#04-alternating-sequence)
+* [Match an email address](#05-match-an-email-address)
+* [Look Ahead Rules](#06-look-ahead-rules)
+* [Conclusion](#07-conclusion)
 
 ## Why regular expressions?
 Everyone has their own 'why', don't we? A million reasons. May be one of them is to test if the string is a valid hex color code?
 
-I'll leave the `why` with you and cover the `how`.
+I'll let the universe throw the `why` at you and help you cover the `how`.
 
-## Get Your Playground Ready
+## 00. Get Your Playground Ready
 
 ### References
 Most of the times, I find this page adequate to get going: [Regular Expressions from MDN][REGEXP-MDN]. In fact, that page is all you need. You can stop reading this post. Right now. Close.
@@ -41,7 +44,11 @@ Still with me. Thanks. You need a sandbox to play around. Luckily, one is availa
 
 To start with, we are going to use `/expression/.test('string')` syntax.
 
-`expression` is any regular expression that we build. `string` is the, er, string under test. The `test` method returns true/false depending on the match.
+`expression` is any regular expression that we build. `string` is the, er, string under test. The `test` method returns true/false depending on the match. 
+
+Slashes mark the start and end of the expression. The expression between `/` is a literal. **Once again, they are treated as literal characters.** Variable names wouldn't be resolved down to their contents.
+
+To make it dynamic, we'll have to use `new RegExp(variable_name)` syntax, which we **wouldn't use until the end.**
 
 **Do it right now.** Just type this on your browser console.
 
@@ -53,11 +60,6 @@ To start with, we are going to use `/expression/.test('string')` syntax.
 If that works, you are ready. Don't worry about what it is. That's what we are going to breakdown into pieces in the following lines.
 
 Let's dive in.
-
-FFFFIXXXXXX
-```js
-** how do you use a variable in regexp syntax above? you can't . you use `new RegExp(var_name,flags)` syntax.** 
-```
 
 ## 01. Start Small With Letters
 
@@ -111,7 +113,7 @@ Symbol | Meaning
 `/a/` | Character between slashes is pattern matched on string under test.
 `/abc/` | Characters between slashes are looked up as substring during pattern matching test on string under test.
 
-## 02. Numbers in plain sight
+## 02. Patterns in Numbers
 
 Let's spice it up a bit. Let's say you want to find out if a string is full of numeric characters.
 
@@ -300,7 +302,7 @@ Symbol | Meaning
 `\D` | A shorthand for non-numeric characters. Anything other than numerals that'll be matched by `\d`.
 
 
-## 03. Find Duplicates
+## 03. Recurrence Match to Find Duplicates
 
 This is the actual problem for which I started paying attention to regular expressions, which eventually led to this post. You've been given a string. Find out if it has been infused with duplicate characters before sunset.
 
@@ -407,7 +409,7 @@ Symbol | Meaning
 `a(?=b)` | The other side of the coin. Match `a` only if it is followed by `b`.
 `(?:a)` | **Forgetful grouping**. Look for `a` but don't remember it. You can't use `\1` pattern to reuse this match.
 
-## 04. Match Alternating Characters
+## 04. Alternating Sequence
 
 The usecase is simple. Match a string that uses only two characters. Those two characters should alternate throughout the length of the string. Two sample tests for "abab" and "xyxyx" will do.
 
@@ -416,13 +418,15 @@ It wasn't easy. I got it wrong more than I got it right. This [answer][ALTERNATI
 Here is the solution.
 
 ```js
-/^(\S)(?!\1)(\S)(\1\2)*$/.test("abab"); //true
-/^(\S)(?!\1)(\S)(\1\2)*$/.test("xyxyx"); //false
-/^(\S)(?!\1)(\S)(\1\2)*$/.test("$#$#"); //true
-/^(\S)(?!\1)(\S)(\1\2)*$/.test("#$%"); //false
-/^(\S)(?!\1)(\S)(\1\2)*$/.test("$ $ "); //false
+let e=/^(\S)(?!\1)(\S)(\1\2)*$/;
+e.test("abab"); //true
+e.test("xyxyx"); //false
+e.test("$#$#"); //true
+e.test("#$%"); //false
+e.test("$ $ "); //false
 ```
-This is where you say, **"I had enough!"** and throw in the towel. But, wait for the **Aha moment!**. You are feets away from the gold ore, not the right time to stop digging.
+
+This is where you say, **"I had enough!"** and throw in the towel. But, wait for the **Aha moment!**. You are 3 feet away from the gold ore, not the right time to stop digging.
 
 Let's first make sense out of results before we arrive at 'how?'. `abab` matches. `$#$#` matches, this is no different from `abab`. `#$%` fails as there is a third character. `$ $ ` fails though they are pairs, because space is excluded in our pattern.
 
@@ -430,107 +434,141 @@ All is well except, `xyxyx` fails, because our pattern doesn't know how to handl
 
 Let's take a look at tools added to our belt. It'll start to make sense soon.
 
-### Breakdown 
+### One piece at a time
+You already know most of the pieces. `\S` is the opposite of `\s`. `\S` looks for non white space characters.
 
-Pattern | Meaning
---- | ---
-`\S` | represents all characters excluding white space
-`a*` | Asterisk or Star, looks for 0 or more occurrences of the preceding character/pattern
+Now comes the plain English version of `/^(\S)(?!\1)(\S)(\1\2)*$/`. 
 
-Now comes the plain English version. 
-
-* Start from the start `/^`
+* Start from the start `/^` - Duh!
 * Look for a non-white space character `(\S)`.
 * Remember it as `\1`.
-* Look ahead and see if the first character is not followed by the same character `(?!\1)`
+* Look ahead and see if the first character is not followed by the same character `(?!\1)`. Remember **negative look ahead**.
 * If we are good so far, look for another character `(\S)`.
 * Remember it as `\2`.
-* Then look for 0 or more pairs of first two matches `(\1\2)*`
+* Then look for **0 or more pairs of first two matches** `(\1\2)*`
 * Look for such pattern until end of the string `$/`.
 
-Apply that to our test cases. `abab` matches. But `xyxyx` fails, because our pattern doesn't known how to handle that last x. We'll get there. `$#$#` matches, this is no different from `abab`. `#$%` fails as there is a third character.
+Apply that to our test cases. `"abab"` and `"$#$#"` match. 
 
+### Tail End
 
-### Extend 
-Let's fix that one failing case `xyxyx`. As we've seen, the last trailing x is the problem. We have a solution for `xyxy`. All we need is a pattern to say "look for an additional match of the first character".
+After looking at the solution you may think this does not demand a separate section. But the simplicity of it is elegant. Let's fix that one failing case `xyxyx`. As we've seen, the last trailing x is the problem. We have a solution for `xyxy`. All we need is a pattern to say **"look for an optional occurrence of first character"**. 
 
 As usual, let's start with the solution.
 
 ```js
-/^([\S])(?!\1)([\S])(\1\2)*\1?$/.test("xyxyx"); //true
-/^([\S])(?!\1)([\S])(\1\2)*\1?$/.test("$#$#$"); //true
+/^(\S)(?!\1)(\S)(\1\2)*\1?$/.test("xyxyx"); //true
+/^(\S)(?!\1)(\S)(\1\2)*\1?$/.test("$#$#$"); //true
 ```
-A question mark `?` after a character or pattern means 0 or 1 match for the preceding pattern. In our case, `\1?` means, 0 or 1 match of the first character remembered. Easy.
+Question mark strikes again. There is no escaping him. It's better we make him our friend than our enemy. A question mark `?` after a character or pattern means 0 or 1 match for the preceding pattern. In our case, `\1?` means, 0 or 1 match of the first character remembered through first set of brackets. Let's not forget our star. `(\1\2)*` looks for 0 or more pairs. 
+
+Easy. Relax.
 
 ### TL;DR Review
+
 Pattern | Meaning
---- | ---
+------- | -------
 `\S` | represents all characters excluding white space (such as space, new lines etc). Note that it is capital S.
 `a*` | Asterisk or Star, looks for 0 or more occurrences of the preceding character (in this case, 0 or more 'a'). Remember plus (+) which looks for 1 or more? Yeah, these guys are cousins.
 `a(?!b)` | This one, a combination of brackets, question mark and exclamation mark (?!), is called a **look ahead**. This matches `a` only if it is not followed by `b`. For example, matches `a` in `aa`, `ax`, `a$` but does not match `ab`. Though it uses bracket, it does not remember the matching character after `a`.
 `\s` | Small caps `s` matches a single white space character (such as space, new line...etc).
-a(?=b) | The other side of the coin. This one matches `a` that is followed by `b`.
+`a(?=b)` | The other side of the coin. This one matches `a` that is followed by `b`.
 `^ab*$` | You may think this one translates to 0 or more occurrences of `ab`, but it matches `a` followed by 0 or more `b`. An example? Sure! This one matches `abbb`, `a`, `ab`, but does not match `abab`
 `^(ab)*$` | The other side of the coin. This one matches 0 or more pairs of `ab`. That means, it will match empty string `""`, `ab`, `abab`, but not `abb`. 
 `a?` | ? matches 0 or 1 occurrence of preceding character or pattern. \1? matches 0 or 1 recurrence of first remembered match. 
 
-** Invite plus and asterisk back to your working memory. `+` means 1 or more. `*` means 0 or more. `?` means 0 or 1. They are the three musketeers in our RegExp army.
 
+## 05. Match an email address
 
-## A Strong Password 
+### Warning for Production
 
-This is the longest section in the entire post. Introduces very few new operators/patterns. But reuses many patterns. In the process, I also ended up with an optimized shorter version. I left it until the end of this section, because the other rules are equally important.
+Regular expression alone may not help validate emails. Some would even argue that regular expressions should not be used as it can never match 100% of the emails. 
 
-Now, the problem. Remember that registration form that took several attempts before you could meet their strong password requirements? Yeah, we are going to build that validation. The password should be minimum 15 character long. It should contain lowercase and uppercase letters. At least one numeral and a symbol. It can have 
+Think about all the fancy domain names poping up. Also consider inclusion of symbols within email addresses, such as dot (.) and plus (+).
+
+You need to validate email twice. Once on the client side to help users avoid misspelled addresses. Start with a semantic input tag type `<input type='email'>`. Some of the browsers automatically validate it without any extra scripting on the front end.
+
+Validate it once again on the server by actually sending a confirmation email. 
+
+Haven't you seen one such lately? Just try to subscribe to this [pineboat](https://www.pineboat.in) , you'll get an actual email asking you to confirm if that is yours. That confirmation is a solid proof that your email is valid.
+
+That was smooth selling, wasn't it? 
+
+### RegExp for Email 
+
+Now that we added the disclaimer, you'd actually want to see a pattern right? No, search for regular expression for an email address. One such result from [perl module](http://www.ex-parrot.com/~pdw/Mail-RFC822-Address.html) goes for more than a page.
+
+So, I am not even going to attempt it. Such long regular expressions are generated by computers through pattern builders. Not for mere mortals like us.
+
+## 06. Look Ahead Rules
+
+If you are a coffee person, this is the right time to get a strong one. Because we are at last section of this post, but the longest one so far. 
+
+Introduces very few new operators/patterns. But reuses many patterns. As usual, we reserve the shortest optimized one for last. **The ASCII range is the best part of this post.** Because, I learned it while researching for this post.
+
+Now, the problem. Remember that registration form that took several attempts before you could meet their strong password requirements? Weak, good, strong, and very strong? Yeah, we are going to build that validation. 
+
+The password should,
+* have minimum 4 character.
+* contain lowercase
+* contain uppercase
+* contain a number
+* and a symbol 
 
 This is a tricky one. Once you start consuming letters, you can't come back to check if they meet any other condition. **There in lies our clue. We can't look back, but we can look ahead!**
 
-### Number of characters
+### Length of the string
 
 Let's first test if the string password is 15 chars long. Pretty simple. Use `.length` on the password string. Done, right? No, who needs a simple solution? Let's spice it up.
 
 ```js
-/^(?=.{15,})$/.test("Minimum15") //false 
-/^(?=.{15,})$/.test("Minimum15Letters") //false
+/^(?=.{4,})$/.test("abc") //false 
+/^(?=.{4,})$/.test("abcd") //false
 
-/^(?=.{15,}).*$/.test("Minimum15") //false
-/^(?=.{15,}).*$/.test("Minimum15Letters") //true
+/^(?=.{4,}).*$/.test("abc") //false
+/^(?=.{4,}).*$/.test("abcd") //true
 ```
-You may remember `(?=)` from our previous work on ["no duplicates"](#extension-2-no-duplicates). That's a **look ahead** use. The dot (`.`) is an interesting character. It means, any character. {15,} stands for at least 15 receding dots in this case. No maximum limit.
+* You may remember `(?=)` from our previous work on ["no duplicates"](#extension-2-no-duplicates). That's a **look ahead** use. 
+* **The dot** (`.`) is an interesting character. It means, **any character**. 
+* `{4,}` stands for at least 4 preceding characters. No maximum limit.
+* `\d{4}` would look for exactly 4 numerals.
+* `\w{4,20}` would look for 4 to 20 alpha-numeric characters.
 
-Let's translate `/^(?=.{15,})$/`. Start from the beginning of the string. Look ahead for 15 characters. Don't remember the match. Come back to the beginning and check if the string ends there.
+Let's translate `/^(?=.{4,})$/`. Start from the beginning of the string. Look ahead for at least 4 characters. Don't remember the match. Come back to the beginning and check if the string ends there.
 
-Doesn't sound right. Does it?
+Doesn't sound right. Does it? At least the last bit.
 
-Which is why we brought in the variation `/^(?=.{15,}).*$/`. It reads like this. Start from the beginning. Look ahead for 15 characters. Don't remember the match. Come back to the beginning. Consume all the characters and see if you reach the end of the string. 
+Which is why we brought in the variation `/^(?=.{4,}).*$/`. An extra dot and a star. It reads like this. Start from the beginning. Look ahead for 4 characters. Don't remember the match. Come back to the beginning. Consume all the characters using `.*` and see if you reach the end of the string. 
 
 This makes sense now. Doesn't it? 
 
-Which is why `Minimum15` fails and `Minium15Letters` passes the pattern.
+Which is why `abc` fails and `abcd` passes the pattern.
 
 ### At least one number
 
 This is going to be easy.
 
 ```js
-/^(?=.*\d+).*$/.test(""); //false
-/^(?=.*\d+).*$/.test("a"); //false
-/^(?=.*\d+).*$/.test("8"); //true
-/^(?=.*\d+).*$/.test("a8b"); //true
-/^(?=.*\d+).*$/.test("ab890"); //true
+e=/^(?=.*\d+).*$/
+e.test(""); //false
+e.test("a"); //false
+e.test("8"); //true
+e.test("a8b"); //true
+e.test("ab890"); //true
 
 ```
 
-In English, start from the beginning of the string `/^`. Look ahead for 0 or more other characters `?=.*`. Check if 1 or more numbers follow `\d+`.  Once it matches, come back to the beginning (because we were in look ahead). Consume all the characters in the string until end of the string `.*$/`.
+In English, start from the beginning of the string `/^`. Look ahead for 0 or more characters `?=.*`. Check if 1 or more numbers follow `\d+`.  Once it matches, come back to the beginning (because we were in look ahead). Consume all the characters in the string until end of the string `.*$/`.
 
 ### At Least One Lowercase Letter
 
 This one follows the same patter as above.
 
 ```js
-/^(?=.*[a-z]+).*$/.test(""); //false
-/^(?=.*[a-z]+).*$/.test("A330"); //false
-/^(?=.*[a-z]+).*$/.test("a"); //true
+e=/^(?=.*[a-z]+).*$/;
+e.test(""); //false
+e.test("A330"); //false
+e.test("a"); //true
 ```
 
 Translation? Sure. Start from the... ok. Instead of `\d+`, we have `[a-z]` which is a character set of letters from `a` to `z`.
@@ -545,69 +583,118 @@ This is challenging. One way to match symbols is to place a list of symbols in a
 So to save all of us from eternal pain, here is a simple one.
 
 ```js
-/^(?=[^\w])(?=[ -~]).*$/.test("!");
+//considers space as symbol
+let e1;
+e1=/^(?=.*[^a-zA-Z0-9])[ -~]+$/
+e1.test("_"); //true
+e1.test(" "); //true
+
+//does not take space
+let e2;
+e2=/^(?=.*[^a-zA-Z0-9])[!-~]+$/
+e2.test(" "); //false
+e2.test("_"); //true
+
+//the underscore exception
+let e3;
+e3=/^(?=.*[\W])[!-~]+$/
+e3.test("_"); //false
 ```
 
-### Happy ending to the symbol
-The seed for this idea came from [another solution][REGEXP-SYMBOL] to the symbol problem.
+Wait, what's that `^` coming again from the middle of no where? If you have reached this far, this is where you realize that unassuming innocent `^` that marks start of a string is a double agent. Which means, the end is not too far. He has been exposed.
 
-We are going to generate a stripped down version of the password in this solution. Take out all the \d and \w. You'll have a string full of symbols which should match `[ -~]`. It reads like space, hyphen and a tilda.
+Within a character set, `^` negates the character set. That is, `[^a-z]` means, any character other than `a` to `z`. 
 
-Over to the working pattern:
+`[^a-zA-Z0-9]` then stands for any character other than lower case alphabets, upper case alphabets, and numerals.
+
+We could have used `\W` instead of the long character set. But `\W` stands for all alpha-numeric characters **including underscore _.** As you can see in the third set of examples above, that will not accept underscore as a valid symbol.
+
+### CharSet Range
+The curious case of `[!-~]`. They stand next to each other in the keyboard, but their ASCII values are diagonally opposite. 
+
+Remember a-z? A-Z? 0-9? These are not constants. They are actually based on ASCII range of their values. 
+
+[ASCII table](http://www.asciitable.com/) has 125 characters. zero (0) to 31 are not relevant to us. Space starts from 32 going all the way up to 126 which is tilda(~). Exclamation mark is 33.
+
+So `[!-~]` covers all the symbols, letters and numbers we need. The seed for this idea came from [another solution][REGEXP-SYMBOL] to the symbol problem.
+
+### Assemble the Troops
+
+Bringing it all together, we get this nice looking piece of regular expression `/^(?=.{5,})(?=.*[a-z]+)(?=.*\d+)(?=.*[A-Z]+)(?=.*[^\w])[ -~]+$/`. 
+
+That's definitely haunting, even though we've been studying them individually. 
+
+This is where the syntax for building expression object dynamically comes in handy. We are going to build each piece separately and assemble them later.
 
 ```js
-var pw="Minimum15Ch@racters";
-symbol_only=pw.replace(/\w+/g,""); 
-console.log(symbol_only); // prints @
-/^[ -~]+$/.test(symbol_only); //true 
+//start with prefix
+let p = "^";
+//look ahead
+
+// min 4 chars
+p += "(?=.{4,})";
+// lower case
+p += "(?=.*[a-z]+)";
+// upper case
+p += "(?=.*[A-Z]+)";
+// numbers
+p += "(?=.*\\d+)";
+// symbols
+p += "(?=.*[^ a-zA-Z0-9]+)";
+//end of lookaheads
+
+//final consumption 
+p += "[ -~]+";
+
+//suffix
+p += "$";
+//Construct RegExp
+let e = new RegExp(p);
+// tests 
+e.test("aB0#"); //true
+
+e.test(""); //false
+e.test("aB0"); //false
+e.test("ab0#"); //false
+e.test("AB0#"); //false
+e.test("aB00"); //false
+e.test("aB!!"); //false
+
+// space is in our control
+e.test("aB 0"); //false
+e.test("aB 0!"); //true
+
 ```
 
-Why space to Tilda? Remember a-z? [ASCII table](http://www.asciitable.com/) has 125 characters. zero(0) to 31 are not relevant to us. Space starts from 32 going all the way up to 126 which is tilda(~). 
+If your eyes are not tired yet, you'd have noticed two strange syntax in the above code.
 
-This covers all the symbols, letters and numbers we need.
+* One, we didn't use `/^`, instead we used just `^`. We didn't use `$/` to end the expression either, instead just `$`. The reason is, `RegExp` constructor automatically adds starting and trailing slashes for us.
 
-But why should we mutate the password and remove all letters and numbers? Because this range has letters and numbers, testing this directly on the password wouldn't prove that we have a symbol. It'll only prove that we have one of the characters within this range. That could be any character.
+* Second, to match numbers, we used `\\d` instead of the usual `\d`. This is because the variable `p` is just a normal string within double quotes. To insert a backslash, you need to escape the backslash itself. `\\d` resolves to `\d` within the regular expression constructor.
 
-Once you remove all the letters and numbers, what's left should be symbols. And we can test if we have at least one symbol with a broad range `[ -~]`. 
+Apparently, there should be server side validations for passwords too. Think about SQL injection vulnerabilities if your framework / language doesn't handle it already. 
 
-One final piece of the puzzle. The `/g` part of the replace function. `g` stands for global search and replace. Let's see the result without the `g` switch.
+## 07. Conclusion
 
-```js
-var pw="Minimum15Ch@racters";
-pw.replace(/\w+/,""); //@racters;
-```
+That brings us to the end of the story. But this is the beginning of a journey. 
 
-You see, the patter **without** global `g` switch finds only one match and replaces it with empty string we've given. When you give it extra power with the `g` switch, it does global find and replace of all the matches for a given pattern.
+We just scratched the pattern matching portion of RegExp with `test` method. `exec` method builds on this foundation to return matched sub-strings based on pattern.
 
-### Put the strong password together
+String object has methods such as `match`, `search`, `replace`, and `split` that widely uses regular expressions.
 
-Bringing it all together, we get this nice looking piece of regular expression. Remember, we are just allowing symbols $, # and % in this one. If you want to allow all other symbols, go one page up.
+Hope this sets you off to explore those capabilities further with a solid understanding on composing patterns for RegExp.
 
-```js
-/^(?=.{15,})(?=.*[$#%]+)(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*\d+).*$/
-```
+## 08. CTA
+No, after all this difficulty we've been through, I am not going to ask you to subscribe. 
 
-### Food for thought
-This does not have any negative conditions yet. such as, should not include single quote...etc. Try including a negative condition and see how it works out. 
+Just make good software.
 
-Tip: [^a-z] means any character other than a to z. The opposite of [a-z].
+If any code blocks presented here do not work, leave a comment on this [github issue](https://github.com/pineboat/pineboat.github.io/issues/3) I created specially for this post.
 
 
-## Match an email address
+Hope it was useful! Share it if others would benefit.
 
-### Warning for Production
-
-Regular expression alone may not help validate emails. Some would even argue that regular expressions should not be used as it can never match 100% of the emails. Think about all the fancy domain names poping up. You need to validate email twice. Once on the client side to help users avoid misspelled addresses. Start with a semantic input tag type `<input type='email'>`. Validate it once again on the server by actually sending a confirmation email.
-
-### RegExp for Email 
-
-Google for regular expression for an email address. One such result from [perl module](http://www.ex-parrot.com/~pdw/Mail-RFC822-Address.html) goes for more than a page. Regular expressions will not match 100% of all valid email addresses. You'll end up with a large one that is at best illegible.
-
-But let's build an imaginary use case. One where you are building an internal app and you want to limit email addresses to your company domain. You allow email addresses with a DOT(.) and no other symbol is allowed.
-
-
-## Match a link to an external website
-/^https?\:\/\/\w+\.{1}\w+$/
+You've been wonderful. Appreciate your time. This content is far long by recent standards. Thanks for reading. 
 
 [REGEXP-MDN]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
 
