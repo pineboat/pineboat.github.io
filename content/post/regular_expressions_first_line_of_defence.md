@@ -1,21 +1,23 @@
-+++
-author = "vijayabharathib"
-date = "2017-12-05T22:15:59+05:30"
-publishdate = "2017-12-05T22:15:59+05:30"
-subtitle = "Have you stayed off from Regular Expressions because they look complex. Befriend them in this practical guide."
-tags = ["Regular Expressions","JavaScript"]
-title = "How to Make Regular Expressions Your First Line of Defence"
-draft=true
-image="/img/004_regular_expressions/balloon_pattern.jpg"
-image_alt="balloon with patterns"
-image_credit="Image from https://unsplash.com/photos/q99oeAG46BY"
-+++
+---
+author: "vijayabharathib"
+date: "2017-11-12T08:15:59+05:30"
+publishdate: "2017-11-12T08:15:59+05:30"
+subtitle: "Have you stayed off from Regular Expressions because they look complex. Grok them in this 30-minute practical guide."
+tags: ["Regular Expressions","JavaScript","RegExp"]
+title: "How to Make Regular Expressions Your Ally"
+draft: false
+image: "/img/004_regular_expressions/balloon_pattern.jpg"
+image_alt: "balloon with patterns"
+image_credit: "Image from https://unsplash.com/photos/q99oeAG46BY"
+---
 
-Are you one of those people who stay away from RegExp because it looks like a foreign language? I was. Not anymore. Just remember all those sounds, traffic signs, smells that you can recognize. Regular expressions are no different. Take that as a sign language to analyze strings. We are going to get our head around regular expressions today. At least, regularly used expressions.
+Are you one of those people who stay away from RegExp because it looks like a foreign language? I was one. Not anymore. 
+
+Just remember all those sounds, traffic signs, smells that you can recognize. Regular expressions are no different. Take that as a sign language to analyze strings. We are going to get our head around regular expressions today. At least, regularly used expressions.
 
 Very much like any programming language, regular expression is a succinct language in its own right. We will know how to put regular expressions to good use at the end of this post. We'd have solved the following simple problems and learned loads in the process.
 
-Willing to invest 20 minutes and come out enlightened in RegExp? Settle down then. We have a ToC showing what's in store.
+Willing to invest 30 minutes and come out enlightened in RegExp? Settle down then. We have a ToC showing what's in store.
 
 * [Get Your Playground Ready](#00-get-your-playground-ready)
 * [Start small with letters](#01-start-small-with-letters)
@@ -27,7 +29,7 @@ Willing to invest 20 minutes and come out enlightened in RegExp? Settle down the
 * [Conclusion](#07-conclusion)
 
 ## Why regular expressions?
-Everyone has their own 'why', don't we? A million reasons. May be one of them is to test if the string is a valid hex color code?
+Everyone has their own 'why', don't we? May be one of them is to test if the string is a valid hex color code? May be you are writing a processor library such as [sass](https://github.com/search?l=&q=regexp+repo%3Asass%2Fsass&ref=advsearch&type=Code&utf8=%E2%9C%93) that leverages RegExp.
 
 I'll let the universe throw the `why` at you and help you cover the `how`.
 
@@ -38,7 +40,11 @@ Most of the times, I find this page adequate to get going: [Regular Expressions 
 
 ### Tools for the job
 
-Still with me. Thanks. You need a sandbox to play around. Luckily, one is available on your browser. Just use your console. `F12` opens up developer console in Chromium browser. You can find the developer tools under the menu as well.
+Still with me. Thanks. You need a sandbox to play around. Luckily, one is available on your browser. 
+
+Just use your console.
+
+`F12` opens up developer console in Chromium browser. You can find the developer tools under the menu as well.
 
 ### Befriend the syntax
 
@@ -46,9 +52,11 @@ To start with, we are going to use `/expression/.test('string')` syntax.
 
 `expression` is any regular expression that we build. `string` is the, er, string under test. The `test` method returns true/false depending on the match. 
 
-Slashes mark the start and end of the expression. The expression between `/` is a literal. **Once again, they are treated as literal characters.** Variable names wouldn't be resolved down to their contents.
+Slashes mark the start and end of the expression. Treat them like double quotes (") and single quotes (') that you use to mark start and end of a plain string. 
 
-To make it dynamic, we'll have to use `new RegExp(variable_name)` syntax, which we **wouldn't use until the end.**
+The expression between `/` is a literal. **Once again, they are treated as literal characters.** Variable names wouldn't be resolved down to their contents. 
+
+To make it dynamic, we'll have to go via the constructor route, using `new RegExp(variable_name)` syntax. **This will come to rescue towards the end of the post.**
 
 **Do it right now.** Just type this on your browser console.
 
@@ -80,15 +88,15 @@ We've seen that `/expression/` is how we build regular expressions. So no questi
 
 **Same code**
 ```js
-let exp=/a/;
-exp.test("abc"); //true
-exp.test("bcd"); //false
-exp.test("cba"); //true
+let e=/a/;
+e.test("abc"); //true
+e.test("bcd"); //false
+e.test("cba"); //true
 ```
 
-The expression between slashes is just a single character `'a'` in our case. We are looking only for that one character. Slashes mark the start and end of the regular expression. Treat them like double quotes (") and single quotes (') that you use to mark start and end of a plain string.
+The expression between slashes is just a single character `'a'` in our case. We are looking only for that one character.
 
-### Extend Your Reach to Multiple Characters
+### Reach Multi-Characters
 
 Let's scale the solution. **What if you want to find more than one character?**
 
@@ -119,9 +127,9 @@ Let's spice it up a bit. Let's say you want to find out if a string is full of n
 
 Here it is
 ```js
-let regExp=/0|1|2|3|4|5|6|7|8|9/;
-regExp.test("42"); //true
-regExp.test("The answer is 42"); //true
+let e=/0|1|2|3|4|5|6|7|8|9/;
+e.test("42"); //true
+e.test("The answer is 42"); //true
 ```  
 First of all, the pattern looks pretty long. But the same long streak of characters **can be expressed in just two characters**. I reserved it towards end of this section, for a dramatic closure. 
 
@@ -134,8 +142,9 @@ I could call that easy and call it a day. But you would scream for something bet
 Should I type in nine pipe symbols? Nah. Here we go again.
 
 ```js
-/[0123456789]/.test("42"); //true
-/[0123456789]/.test("The answer is 42"); //still true
+e=/[0123456789]/
+e.test("42"); //true
+e.test("The answer is 42"); //still true
 ```
 Better, 9 pipes replaced with 2 square brackets. 7 characters saved. 77.7% less keystrokes.
 
@@ -144,18 +153,22 @@ By the way, anything within square brackets is considered as `Either this OR tha
 What are you saying? It still looks quite lengthy? Not satisfied, Ok, here we go once again.
 
 ```js
-/[0-9]/.test("42"); //true
-/[0-9]/.test("The answer is 42"); //true
+e=/[0-9]/;
+e.test(42); //true
+e.test("42"); //true
+e.test("The answer is 42"); //true!
 ```
 
 How about that? Looks much cleaner, doesn't it? Anything within square brackets [] means OR. `0-9` marks a range, means zero to nine. So the test looks for characters from zero to nine in the test string.
 
-### The prefix pattern and suffix patterns
+As you can see, the test takes numbers too.
+
+### The prefix and suffix patterns
 
 Let's now address that failing second case. `The answer is 42` matches our test because our pattern looks for numeric characters somewhere within the string. **Not start to end**.
 
 Let's bring in `^` and `$` to help us. 
-* `^` means start of the string. He is a double agent and he'll trip us off. Look for his second avatar later in the sections. 
+* `^` means start of the string. He is a double agent and he'll trip us off. His second avatar is unmasked only in the last section.
 * `$` means end of the string.
 
 Let's get the prefix pattern sorted out.
@@ -183,21 +196,22 @@ That should sound in your head like, "look for js and then end of the string". B
 That paves the road to pattern match start to end, you might as well call it end to end.
 
 ```js
-/^[0-9]$/.test("42"); //false - NOOOOO!
-/^[0-9]$/.test("The answer is 42"); //false
-/^[0-9]$/.test("7"); //true 
+let e=/^[0-9]$/
+e.test("42"); //false - NO!
+e.test("The answer is 42"); //false
+e.test("7"); //true 
 ```
 Surprisingly, the first one failed when we added ^ and $.
 
 `/^[0-9]$/` in plain English reads like, go to the start of the string. **Look for a single numeral from the character set**. Check if the string ends right there. That's the reason the last entry returned `true`. It is just a single number, start to end.
 
-That's not what we wanted. We wanted to test more than one digit, start to end, but only numerals.
-
-### Tale of three musketeers
+That's not what we wanted. We wanted to test if the string had one or more numerals.
 
 We are very close. One last thing we need to learn is, how to instruct the pattern to look for more than one character in the set.
 
-A question mark (?), a plus (+) and an asterisk (*) met on a trip. Each is differently sighted. The humble question mark says, I can see none or just one. Plus (+) says, I need to see at least one or more. Asterisk says, I get you both, I can see none, one, or more. 
+### Tale of three musketeers
+
+A question mark (`?`), a plus (`+`) and an asterisk (`*`) met at a battle ground. Each is differently sighted. The humble question mark says, I can see none or just one. Plus (+) says, I need to see at least one or more. Asterisk says, I get you both, I can see none, one, or more. 
 
 **One of them is cleverly hiding what he is capable of.**
 
@@ -211,13 +225,13 @@ The question mark gets on stage first.
 /^a?$/.test("aa"); //false
 ```
 
-* `/a?/` matches empty string `""` as `?` stands for 0 or 1.
-* `/a?/` matches `a` - one match
-* `/a?/` matches `b` - matches 0 occurrence
-* `/a?/` matches `aa` - one match and the second `a` is not part of the pattern.
+* Matches empty string `""` as `?` stands for 0 or 1.
+* Matches `a` - one match
+* Matches `b` - matches 0 occurrence
+* Matches `aa` - one match and the second `a` is not part of the pattern.
 * `/^a?$/` does not match `aa` as it looks for zero or one `a`, start to end, nothing more, nothing less. 
 
-The plus (+) looks at question mark and remarks, "I'm impressed, but you are so binary!". And takes the stage to show off.
+The plus (+) looks at question mark and remarks, "I'm impressed, but your focus is so binary!". And takes the stage to show off.
 
 ```js
 /a+/.test("a"); //true
@@ -236,7 +250,7 @@ All those returning `true` have one or more `a`. We even managed to get a whole 
 
 `false` should make sense now, but a word on the last one that returned false. `/^a+$/` looks for `a` start to end, no other characters allowed. Which is why  `ab` failed the test.
 
-Finally, start (*) of the show gets on stage. Boasts that, "I can duel you both at once" and says, "I can match zero, one or more".
+Finally, start (*) of the show gets on stage. Boasts that, "I can duel alone or duel you both at once" and says, "I can match zero, one or more".
 
 ```js
 /a*/.test("a"); //true
@@ -259,9 +273,10 @@ Now, if we need to look for only numerals, one or more, start to end, what do we
 
 ```js
 //Let's throw in a plus
-/^[0-9]+$/.test("4"); //true
-/^[0-9]+$/.test("42"); //true
-/^[0-9]+$/.test("The answer 42"); //false - Hurray  
+let e=/^[0-9]+$/
+e.test("4"); //true
+e.test("42"); //true
+e.test("The answer 42"); //false - Hurray  
 ```
 
 The plus sign (+) in `[0-9]+` comes to our rescue. Plus means, more than one occurrence of the character/pattern in front of it. In our case, more than one numerals.
@@ -273,16 +288,15 @@ It also fails the match for our last case `The answer is 42` because, there are 
 * Can you try to write a pattern for hexadecimal numbers (consisting of numerals 0-9 and letters a-f, with an optional # in front)?
 * How about a binary number? Can you test if a string is full of just 0 and 1?
 
-I'll not spoil the fun until end of this post.
-
 ### That Dramatic End
 
 Oh, almost forgot. `[0-9]` which stands for any of the numeric character set also has a shorthand version `\d`.
 
 ```js
-/^\d+$/.test("4"); //true
-/^\d+$/.test("42"); //true
-/^\d+$/.test("The answer 42"); //false - Hurray
+let e=/^\d+$/;
+e.test("4"); //true
+e.test("42"); //true
+e.test("The answer 42"); //false - Hurray
 ```
 Just two characters denoting numerals. And No, it doesn't get any shorter than that. 
 
@@ -304,13 +318,16 @@ Symbol | Meaning
 
 ## 03. Recurrence Match to Find Duplicates
 
-This is the actual problem for which I started paying attention to regular expressions, which eventually led to this post. You've been given a string. Find out if it has been infused with duplicate characters before sunset.
+This is the actual problem I was trying to solve. I dived deep into regular expressions, which eventually led to this post. 
+
+You've been given a string. Find out if it has been infused with duplicate characters before sunset.
 
 Here is the solution for duplicate characters appearing immediately after an occurrence:
 
 ```js
-/(\w)\1/.test("abc"); //false
-/(\w)\1/.test("abb"); //true
+let e=/(\w)\1/;
+e.test("abc"); //false
+e.test("abb"); //true
 ```
 
 The expression does not match any part of the string `abc` as there are no duplicate characters in sequence. So it returns false. But it matches `bb` part of the string `abb` and returns true.
@@ -349,9 +366,10 @@ Let's say we want to find two characters appearing in reverse order right next t
 Here is the expression.
 
 ```js
-/(\w)(\w)\2\1/.test("aabb"); //false
-/(\w)(\w)\2\1/.test("abba"); //true
-/(\w)(\w)\2\1/.test("abab"); //false
+let e=/(\w)(\w)\2\1/;
+e.test("aabb"); //false
+e.test("abba"); //true
+e.test("abab"); //false
 ```
 
 First `(\w)` matches `a` and remembers it as `\1`. Second `(\w)` matches `b` and remembers it as `\2`. Then the expression expects `\2` to occur first followed by `\1`. Hence, `abba` is the only string that matches the expression.
@@ -363,9 +381,10 @@ This time, we are going to look at sequence of characters with no duplicates. No
 Here, take a look at the solution.
 
 ```js
-/^(\w)(?!\1)$/.test("a"); //true 
-/^(\w)(?!\1)$/.test("ab"); //false 
-/^(\w)(?!\1)$/.test("aa"); //false 
+let e=/^(\w)(?!\1)$/;
+e.test("a"); //true 
+e.test("ab"); //false 
+e.test("aa"); //false 
 ```
 
 Not the one we wanted, but close. The middle one shouldn't be false. But we threw in a few more symbols that need explaining. But that means confronting the most powerful musketeer once again.
@@ -374,15 +393,18 @@ Not the one we wanted, but close. The middle one shouldn't be false. But we thre
 
 Remember the three musketeers we met earlier. The humble **question mark is actually the most powerful manipulator** that can get other symbols to do hid bidding. That is, if you take the backslash for granted, of course.
 
-A combination of brackets, question mark and exclamation mark `(?!)`, is called a **look ahead**. A negative look ahead to be precise. `a(?!b)` matches `a` only if it is **not** followed by `b`. Across Javascript ecosystem, exclamation mark means **NOT**. But its cousin `CSS` takes a `U` turn and `!important` means it is actually very important and should not be overridden. I almost scrolled past [Chen's tweet](https://twitter.com/vijayabharathib/status/910772769964548096) thinking he marked it as not important. Lest I digress.
+A combination of brackets, question mark and exclamation mark `(?!)`, is called a **look ahead**. A negative look ahead to be precise. `a(?!b)` matches `a` only if it is **not** followed by `b`. 
+
+Across Javascript ecosystem, exclamation mark means **NOT**. But its cousin `CSS` takes a `U` turn and `!important` means it is actually very important and should not be overridden. I almost scrolled past [Chen's tweet](https://twitter.com/vijayabharathib/status/910772769964548096) thinking it is marked not important. Lest I digress.
 
 On the other hand, `(?=)` is a positive **look ahead**. `a(?=b)` matches `a` only if it is followed by `b`.
 
 We had a solution. `(\w)(?!\1)` looks for a character without recurrence. **But only for one character.** We need to group it and look for 1 or more occurrences of characters, with the use of plus (+). That's all. 
 
 ```js
-/^((\w)(?!\1))+$/.test("madam"); //false
-/^((\w)(?!\1))+$/.test("maam"); //false 
+let e=/^((\w)(?!\1))+$/;
+e.test("madam"); //false
+e.test("maam"); //false 
 ```
 
 But it doesn't seem to be working. If we group the pattern within plain brackets like `((\w)(?!\1))`, the `\1` does not represent`(\w)`, it represents higher level bracket pair that groups the pattern. So it fails.
@@ -390,8 +412,9 @@ But it doesn't seem to be working. If we group the pattern within plain brackets
 What we need is a **forgetful** grouping option. That's where the question mark, `?`, strikes back. It pairs with a colon, `(?:)` and wipes out any function of memory that the brackets can bring in. One last time.
 
 ```js 
-/^(?:(\w)(?!\1))+$/.test("madam"); //true - no recurrence
-/^(?:(\w)(?!\1))+$/.test("maam"); //false  - can't have aa
+let e=/^(?:(\w)(?!\1))+$/;
+e.test("madam"); //true
+e.test("maam"); //false
 ```
 
 This time, the first level of brackets are not remembered, thanks to `?:`, hence, `\1` remembers the match returned by `\w`. It helps us use the plus `+` against the overall grouping to find similar pairs of characters start to end, which works like magic.
@@ -413,17 +436,17 @@ Symbol | Meaning
 
 The usecase is simple. Match a string that uses only two characters. Those two characters should alternate throughout the length of the string. Two sample tests for "abab" and "xyxyx" will do.
 
-It wasn't easy. I got it wrong more than I got it right. This [answer][ALTERNATING-ANSWER] directed me down the right street.
+It wasn't easy. I got it wrong on several attempts. This [answer][ALTERNATING-ANSWER] directed me down the right street.
 
 Here is the solution.
 
 ```js
 let e=/^(\S)(?!\1)(\S)(\1\2)*$/;
 e.test("abab"); //true
-e.test("xyxyx"); //false
 e.test("$#$#"); //true
 e.test("#$%"); //false
 e.test("$ $ "); //false
+e.test("xyxyx"); //false
 ```
 
 This is where you say, **"I had enough!"** and throw in the towel. But, wait for the **Aha moment!**. You are 3 feet away from the gold ore, not the right time to stop digging.
@@ -457,10 +480,13 @@ After looking at the solution you may think this does not demand a separate sect
 As usual, let's start with the solution.
 
 ```js
-/^(\S)(?!\1)(\S)(\1\2)*\1?$/.test("xyxyx"); //true
-/^(\S)(?!\1)(\S)(\1\2)*\1?$/.test("$#$#$"); //true
+let e=/^(\S)(?!\1)(\S)(\1\2)*\1?$/;
+e.test("xyxyx"); //true
+e.test("$#$#$"); //true
 ```
-Question mark strikes again. There is no escaping him. It's better we make him our friend than our enemy. A question mark `?` after a character or pattern means 0 or 1 match for the preceding pattern. In our case, `\1?` means, 0 or 1 match of the first character remembered through first set of brackets. Let's not forget our star. `(\1\2)*` looks for 0 or more pairs. 
+Question mark strikes again. There is no escaping him. It's better we make him our ally than our enemy. A question mark `?` after a character or pattern means 0 or 1 match for the preceding pattern. It is non-greedy in gobbling up characters. 
+
+In our case, `\1?` means, 0 or 1 match of the first character remembered through first set of brackets. 
 
 Easy. Relax.
 
@@ -490,7 +516,7 @@ You need to validate email twice. Once on the client side to help users avoid mi
 
 Validate it once again on the server by actually sending a confirmation email. 
 
-Haven't you seen one such lately? Just try to subscribe to this [pineboat](https://www.pineboat.in) , you'll get an actual email asking you to confirm if that is yours. That confirmation is a solid proof that your email is valid.
+Haven't you seen one such lately? Just try to subscribe to this [pineboat](https://www.pineboat.in), you'll get an actual email asking you to confirm if that is yours. That confirmation is a solid proof that your email is valid.
 
 That was smooth selling, wasn't it? 
 
@@ -509,7 +535,7 @@ Introduces very few new operators/patterns. But reuses many patterns. As usual, 
 Now, the problem. Remember that registration form that took several attempts before you could meet their strong password requirements? Weak, good, strong, and very strong? Yeah, we are going to build that validation. 
 
 The password should,
-* have minimum 4 character.
+* have minimum 4 chars
 * contain lowercase
 * contain uppercase
 * contain a number
@@ -519,16 +545,18 @@ This is a tricky one. Once you start consuming letters, you can't come back to c
 
 ### Length of the string
 
-Let's first test if the string password is 15 chars long. Pretty simple. Use `.length` on the password string. Done, right? No, who needs a simple solution? Let's spice it up.
+Let's first test if the string password is 4 chars long. Pretty simple. Use `.length` on the password string. Done, right? No, who needs a simple solution? Let's spice it up.
 
 ```js
-/^(?=.{4,})$/.test("abc") //false 
-/^(?=.{4,})$/.test("abcd") //false
+e1=/^(?=.{4,})$/;
+e1.test("abc") //false 
+e1.test("abcd") //false
 
-/^(?=.{4,}).*$/.test("abc") //false
-/^(?=.{4,}).*$/.test("abcd") //true
+e2=/^(?=.{4,}).*$/;
+e2.test("abc") //false
+e2.test("abcd") //true
 ```
-* You may remember `(?=)` from our previous work on ["no duplicates"](#extension-2-no-duplicates). That's a **look ahead** use. 
+* You may remember `(?=)` from our previous work on ["no duplicates"](#extension-2-no-duplicates). That's a **look ahead** use. It **does not consume** any character.
 * **The dot** (`.`) is an interesting character. It means, **any character**. 
 * `{4,}` stands for at least 4 preceding characters. No maximum limit.
 * `\d{4}` would look for exactly 4 numerals.
@@ -567,11 +595,11 @@ This one follows the same patter as above.
 ```js
 e=/^(?=.*[a-z]+).*$/;
 e.test(""); //false
-e.test("A330"); //false
+e.test("A"); //false
 e.test("a"); //true
 ```
 
-Translation? Sure. Start from the... ok. Instead of `\d+`, we have `[a-z]` which is a character set of letters from `a` to `z`.
+Translation? Sure. Start from the... ok. Instead of `\d+`, we have `[a-z]+` which is a character set of letters from `a` to `z`.
 
 ### At least one Uppercase Letter
 Let's not overkill. `[A-Z]` instead of `[a-z]` from the previous section will do.
@@ -624,7 +652,7 @@ Bringing it all together, we get this nice looking piece of regular expression `
 
 That's definitely haunting, even though we've been studying them individually. 
 
-This is where the syntax for building expression object dynamically comes in handy. We are going to build each piece separately and assemble them later.
+This is where the syntax for dynamically building expression object comes in handy. We are going to build each piece separately and assemble them later.
 
 ```js
 //start with prefix
