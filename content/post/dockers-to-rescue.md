@@ -1,11 +1,11 @@
 ---
-title: "docker lifecycle"
+title: "know this to never fear docker again"
 subtitle: "dockers"
 tags: ["containers","dockers","terminal"]
 author: "vijayabharathib"
-date: "2017-12-23T22:45:25+05:30"
-publishdate: "2017-12-23T22:45:25+05:30"
-draft: "true"
+date: "2018-12-23T22:45:25+05:30"
+publishdate: "2018-12-23T22:45:25+05:30"
+draft: true
 ---
 
 docker logs -f <container_name> | follows the logs until ctrl+c
@@ -24,3 +24,11 @@ docker tag <hash> <user/image:tag> add a tag to an unnamed image before pushing 
 docker info | list details about docker images
 docker run -i -t | run an interactive bash in the container
 docker-compose exec /bin/bash | run interactive bash in the container 
+
+docker run <image_name> <command> - permanent on the image
+docker-compose exec on conatainer is fleeting
+
+webpacker.yml configuration has 'localhost'. changing it to '0.0.0.0' helps hot reloading work ok
+
+image is like class 
+container is like object
