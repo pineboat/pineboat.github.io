@@ -77,13 +77,14 @@ The syntax is very simple.
 alias new_cmd='never-ending-command; and another command'
 ```
 
-The recent one I have set up is for docker commands. Should serve as example.
+**You add this at the end of `.bashrc` file in your home folder.** Normally `~/.bashrc` is where it is located. The recent one I have set up is for docker commands. Should serve as example.
 
 ```bash
 alias dc='docker-compose'
 alias de='docker-compose exec'
 alias up='cd ~/Projects/docker_project/; dc up'
 ```
+You wouldn't be able to use it right away, you might have to logout and log back in. However, you can refresh the bash shell with this command `source ~/.bashrc`. This will let you use your aliases immediately.
 
 Are you thinking what I am thinking? Forget about git aliases? What do we name bash alias for `git pull --rebase upstream master`?
 
