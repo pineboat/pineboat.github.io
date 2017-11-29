@@ -85,18 +85,12 @@ pre {
   white-space: pre-wrap;
   word-wrap: break-word; }
 
-:not(.chroma) > code {
-  color: #f8f8f2;
-  background-color: #272822;
-  padding: 5px;
-  border-radius: 2px; }
-
 @media (min-width: 60em) {
   .site-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: auto;
-    grid-template-areas: "header header" "main aside" "footer footer"; } }
+    grid-template-areas: "header header" "main aside" "footer aside"; } }
 .site-main {
   margin: 0 auto;
   max-width: 38em;
@@ -314,7 +308,7 @@ blockquote, pre, .footer_card {
 
 /* Keyword */
 .chroma .s3e8 {
-  color: #C792EA; }
+  color: #66d9ef; }
 
 /* KeywordNamespace */
 .chroma .s3eb {
@@ -347,7 +341,7 @@ blockquote, pre, .footer_card {
 
 /* NameOther */
 .chroma .s7df {
-  color: #eff; }
+  color: #a6e22e; }
 
 /* NameTag */
 .chroma .s7e2 {
@@ -378,9 +372,6 @@ blockquote, pre, .footer_card {
   color: #f92672; }
 
 /* Punctuation */
-.chroma .s1388 {
-  color: #89DDF3; }
-
 /* Comment */
 .chroma .s1770 {
   color: #75715e; }

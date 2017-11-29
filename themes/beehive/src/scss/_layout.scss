@@ -3,12 +3,11 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: auto;
-    grid-template-areas: "header header" "main aside" "footer footer";
+    grid-template-areas: "header header" "main aside" "footer aside";
   }
 }
 
-.site-main {
-  margin: 0 auto;
+.site-main {   margin: 0 auto;
   max-width: 38em;
   padding: 5px;
   grid-area: main;

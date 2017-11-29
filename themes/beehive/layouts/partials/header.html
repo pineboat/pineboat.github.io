@@ -23,6 +23,9 @@
             </a>
           </li>
       {{ end }}
+          <li><a href="{{ "index.xml" | absLangURL }}" class="c-nav-link">
+            <img style="vertical-align: middle" class="rss_feed" title="RSS feed" src="images/rss-box.svg" alt="rss feed logo" />
+          </li>
       {{/* range .Site.RegularPages }}
         <li> {{ .URL }} </li>
         {{ if eq .Permalink $.Permalink }}

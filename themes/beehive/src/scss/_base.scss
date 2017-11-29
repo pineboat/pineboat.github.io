@@ -114,10 +114,3 @@ pre {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
-
-:not(.chroma) > code {
-  color: #f8f8f2;
-  background-color: #272822;
-  padding: 5px;
-  border-radius: 2px;
-}

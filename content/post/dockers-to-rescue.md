@@ -32,3 +32,10 @@ webpacker.yml configuration has 'localhost'. changing it to '0.0.0.0' helps hot 
 
 image is like class 
 container is like object
+
+to generate secret_key_base
+ruby -rsecurerandom -e "puts SecureRandom.hex(64)"
+
+check environment variables, on heroku,  for 
+* serving static files
+* and logs to stdout
