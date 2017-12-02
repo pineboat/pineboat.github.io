@@ -16,9 +16,9 @@
   <meta name="theme-color" content="#ffffff">
 <!-- Site Title, Description, Author, and Favicon -->
 {{ if .IsHome }}
-  <title>{{ print "Home" " | " $.Site.Title " - " $.Site.Params.Subtitle }}</title>
+  <title>{{ print "Home" " | " $.Site.Title " ⛵ " $.Site.Params.Subtitle }}</title>
 {{ else }}
-  <title>{{ print .Title " | " $.Site.Title " - " $.Site.Params.Subtitle }}</title>
+  <title>{{ print .Title " | " $.Site.Title " ⛵ " $.Site.Params.Subtitle }}</title>
 {{- end -}}
 {{- with  .Description | default .Params.Subtitle | default .Site.Params.Subtitle |  default .Summary }}
   <meta name="description" content="{{ . }}">
