@@ -15,10 +15,10 @@ html {
   h1 {
     font-size: 2.5em;
     line-height: 1.2em; }
-
   h2 {
     font-size: 2em;
     line-height: 1.1em; } }
+
 h1, h2, h3, h4, h5, h6 {
   font-family: Georgia, Times, serif;
   font-weight: 700; }
@@ -40,8 +40,10 @@ h4 {
 a, a h1, a h2, a h3, a h4, a h6, a h5 {
   color: #fc6;
   text-decoration: none; }
+
 a:visited, a:visited h1, a:visited h2, a:visited h3, a:visited h4, a:visited h6, h5 a:visited {
   color: #cf9; }
+
 a:hover, a:hover h1, a:hover h2, a:hover h3, a:hover h4, a:hover h5, h6 a:hover {
   color: #f9a;
   text-decoration: underline;
@@ -91,6 +93,7 @@ pre {
     grid-template-columns: 2fr 1fr;
     grid-template-rows: auto;
     grid-template-areas: "header header" "main aside" "footer aside"; } }
+
 .site-main {
   margin: 0 auto;
   max-width: 38em;
@@ -124,17 +127,28 @@ pre {
   .site-logo .o-logo {
     margin: 0; }
 
+@keyframes surf {
+  0% {
+    transform: rotate(0deg); }
+  33% {
+    transform: rotate(-5deg) translate(-5px, -5px); }
+  66% {
+    transform: rotate(7deg) translate(5px, -5px); }
+  90% {
+    transform: rotate(-5deg) translate(-3px, 5px); } }
+
 a.c-logo-link {
   display: block;
   margin: 10px auto;
   width: 100px;
   height: 100px;
-  text-align: center;
-  vertical-align: middle; }
+  text-align: center; }
 
 .c-logo-image {
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  transform-origin: 50% 90%;
+  animation: surf 15s infinite alternate ease-in-out; }
 
 .o-site-nav {
   margin: 20px; }
@@ -182,6 +196,7 @@ a.c-nav-link {
   .c-meta-length,
   .c-meta-date {
     flex-basis: 33%; } }
+
 .c-tag-list {
   display: inline-flex;
   align-items: flex-start;
@@ -258,7 +273,8 @@ a.c-nav-link {
   display: flex;
   flex-wrap: wrap; }
 
-blockquote, pre, .footer_card {
+blockquote,
+pre, .footer_card {
   background: rgba(255, 255, 255, 0.1);
   padding: 10px;
   border-radius: 3px;
@@ -269,7 +285,7 @@ blockquote, pre, .footer_card {
   max-width: 20em; }
 
 .mc_referral {
-  font-size: .8em; }
+  font-size: 0.8em; }
 
 .footer_stack_info {
   list-style: none; }
@@ -291,9 +307,26 @@ blockquote, pre, .footer_card {
   background-color: #272822; }
 
 /* Error */
-.chroma .ss4 {
+.chroma .err {
   color: #960050;
   background-color: #1e0010; }
+
+/* LineTableTD */
+.chroma .lntd {
+  vertical-align: top;
+  padding: 0;
+  margin: 0;
+  border: 0; }
+
+/* LineTable */
+.chroma .lntable {
+  border-spacing: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  width: 100%;
+  overflow: auto;
+  display: block; }
 
 /* LineHighlight */
 .chroma .hl {
@@ -301,101 +334,221 @@ blockquote, pre, .footer_card {
   display: block;
   width: 100%; }
 
+/* LineNumbersTable */
+.chroma .lnt {
+  margin-right: 0.4em;
+  padding: 0 0.4em 0 0.4em;
+  display: block; }
+
 /* LineNumbers */
 .chroma .ln {
   margin-right: 0.4em;
   padding: 0 0.4em 0 0.4em; }
 
 /* Keyword */
-.chroma .s3e8 {
+.chroma .k {
+  color: #66d9ef; }
+
+/* KeywordConstant */
+.chroma .kc {
+  color: #66d9ef; }
+
+/* KeywordDeclaration */
+.chroma .kd {
   color: #66d9ef; }
 
 /* KeywordNamespace */
-.chroma .s3eb {
+.chroma .kn {
   color: #f92672; }
 
-/* Name */
+/* KeywordPseudo */
+.chroma .kp {
+  color: #66d9ef; }
+
+/* KeywordReserved */
+.chroma .kr {
+  color: #66d9ef; }
+
+/* KeywordType */
+.chroma .kt {
+  color: #66d9ef; }
+
 /* NameAttribute */
-.chroma .s7d1 {
+.chroma .na {
   color: #a6e22e; }
 
 /* NameClass */
-.chroma .s7d4 {
+.chroma .nc {
   color: #a6e22e; }
 
 /* NameConstant */
-.chroma .s7d5 {
+.chroma .no {
   color: #66d9ef; }
 
 /* NameDecorator */
-.chroma .s7d6 {
+.chroma .nd {
   color: #a6e22e; }
 
 /* NameException */
-.chroma .s7d8 {
+.chroma .ne {
   color: #a6e22e; }
 
 /* NameFunction */
-.chroma .s7d9 {
+.chroma .nf {
   color: #a6e22e; }
 
 /* NameOther */
-.chroma .s7df {
+.chroma .nx {
   color: #a6e22e; }
 
 /* NameTag */
-.chroma .s7e2 {
+.chroma .nt {
   color: #f92672; }
 
 /* Literal */
-.chroma .sbb8 {
+.chroma .l {
   color: #ae81ff; }
 
 /* LiteralDate */
-.chroma .sbb9 {
+.chroma .ld {
   color: #e6db74; }
 
 /* LiteralString */
-.chroma .sc1c {
+.chroma .s {
+  color: #e6db74; }
+
+/* LiteralStringAffix */
+.chroma .sa {
+  color: #e6db74; }
+
+/* LiteralStringBacktick */
+.chroma .sb {
+  color: #e6db74; }
+
+/* LiteralStringChar */
+.chroma .sc {
+  color: #e6db74; }
+
+/* LiteralStringDelimiter */
+.chroma .dl {
+  color: #e6db74; }
+
+/* LiteralStringDoc */
+.chroma .sd {
+  color: #e6db74; }
+
+/* LiteralStringDouble */
+.chroma .s2 {
   color: #e6db74; }
 
 /* LiteralStringEscape */
-.chroma .sc25 {
+.chroma .se {
   color: #ae81ff; }
 
+/* LiteralStringHeredoc */
+.chroma .sh {
+  color: #e6db74; }
+
+/* LiteralStringInterpol */
+.chroma .si {
+  color: #e6db74; }
+
+/* LiteralStringOther */
+.chroma .sx {
+  color: #e6db74; }
+
+/* LiteralStringRegex */
+.chroma .sr {
+  color: #e6db74; }
+
+/* LiteralStringSingle */
+.chroma .s1 {
+  color: #e6db74; }
+
+/* LiteralStringSymbol */
+.chroma .ss {
+  color: #e6db74; }
+
 /* LiteralNumber */
-.chroma .sc80 {
+.chroma .m {
+  color: #ae81ff; }
+
+/* LiteralNumberBin */
+.chroma .mb {
+  color: #ae81ff; }
+
+/* LiteralNumberFloat */
+.chroma .mf {
+  color: #ae81ff; }
+
+/* LiteralNumberHex */
+.chroma .mh {
+  color: #ae81ff; }
+
+/* LiteralNumberInteger */
+.chroma .mi {
+  color: #ae81ff; }
+
+/* LiteralNumberIntegerLong */
+.chroma .il {
+  color: #ae81ff; }
+
+/* LiteralNumberOct */
+.chroma .mo {
   color: #ae81ff; }
 
 /* Operator */
-.chroma .sfa0 {
+.chroma .o {
   color: #f92672; }
 
-/* Punctuation */
+/* OperatorWord */
+.chroma .ow {
+  color: #f92672; }
+
 /* Comment */
-.chroma .s1770 {
+.chroma .c {
+  color: #75715e; }
+
+/* CommentHashbang */
+.chroma .ch {
+  color: #75715e; }
+
+/* CommentMultiline */
+.chroma .cm {
+  color: #75715e; }
+
+/* CommentSingle */
+.chroma .c1 {
+  color: #75715e; }
+
+/* CommentSpecial */
+.chroma .cs {
+  color: #75715e; }
+
+/* CommentPreproc */
+.chroma .cp {
+  color: #75715e; }
+
+/* CommentPreprocFile */
+.chroma .cpf {
   color: #75715e; }
 
 /* GenericDeleted */
-.chroma .s1b59 {
+.chroma .gd {
   color: #f92672; }
 
 /* GenericEmph */
-.chroma .s1b5a {
+.chroma .ge {
   font-style: italic; }
 
 /* GenericInserted */
-.chroma .s1b5d {
+.chroma .gi {
   color: #a6e22e; }
 
 /* GenericStrong */
-.chroma .s1b60 {
+.chroma .gs {
   font-weight: bold; }
 
 /* GenericSubheading */
-.chroma .s1b61 {
+.chroma .gu {
   color: #75715e; }
-
-/* Text */
-
-/*# sourceMappingURL=main.css.map */
