@@ -1,0 +1,21 @@
+{
+    "name": "PineBoat",
+    "short_name": "PineBoat",
+    "description": "Pineboat ⛵ On shipping web, a blog by Vijayabharathi Balasubramanian",
+    "start_url": ".",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png?v=dLmn4p7mYk",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-256x256.png?v=dLmn4p7mYk",
+            "sizes": "256x256",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#ff4466",
+    "background_color": "#ff4466",
+    "display": "standalone"
+}

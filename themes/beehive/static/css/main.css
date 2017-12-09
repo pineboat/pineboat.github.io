@@ -12,6 +12,8 @@ html {
   font-size: 18px; }
 
 @media (min-width: 40em) {
+  body {
+    border-top: 10px solid #c04; }
   h1 {
     font-size: 2.5em;
     line-height: 1.2em; }
@@ -59,8 +61,7 @@ ul {
 
 body {
   margin: 0;
-  border: 0;
-  border-top: 10px solid #c04; }
+  border: 0; }
 
 input:not([type=submit]):not([type=file]) {
   width: 100%;
@@ -103,7 +104,7 @@ pre {
 .site-header {
   grid-area: header; }
 
-.site-bar {
+.side-bar {
   grid-area: aside; }
 
 .site-footer {
@@ -151,9 +152,9 @@ a.c-logo-link {
   animation: surf 15s infinite alternate ease-in-out; }
 
 .o-site-nav {
-  margin: 20px; }
+  margin: 10px 5px; }
   .o-site-nav a {
-    padding: 10px 20px; }
+    padding: 10px; }
 
 ul.c-nav-links {
   padding: 0; }
@@ -263,7 +264,9 @@ a.c-nav-link {
     cursor: default; }
 
 .side-bar {
-  padding: 10px; }
+  padding: 10px;
+  background: #112;
+  border-left: 1px solid #334; }
 
 .site-footer {
   border-top: 0.5em solid #c04;

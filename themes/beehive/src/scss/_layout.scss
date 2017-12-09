@@ -7,7 +7,8 @@
   }
 }
 
-.site-main {   margin: 0 auto;
+.site-main {   
+  margin: 0 auto;
   max-width: 38em;
   padding: 5px;
   grid-area: main;
@@ -17,7 +18,7 @@
   grid-area: header;
 }
 
-.site-bar {
+.side-bar {
   grid-area: aside;
 }
 

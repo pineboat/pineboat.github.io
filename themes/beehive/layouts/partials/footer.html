@@ -1,9 +1,9 @@
 <footer class="site-footer" role="contentinfo">
   <ul class="footer_stack_info footer_card">
-    <li>Theme design by <a href="https://github.com/vijayabharathib">Vijayabharathi B</a></li>
-    <li>Powered by <a href="https://gohugo.io/">Hugo</a> and 
+    <li>Theme design by <a rel="noopener" href="https://github.com/vijayabharathib">Vijayabharathi B</a></li>
+    <li>Powered by <a rel="noopener" href="https://gohugo.io/">Hugo</a> and 
       <a href="https://netlify.com">Netlify</a></li>
-    <li><a href="https://github.com/vijayabharathib/beehive_hugo_theme">Beehive</a> Theme on Github</li>
+    <li><a rel="noopener" href="https://github.com/vijayabharathib/beehive_hugo_theme">Beehive</a> Theme on Github</li>
   </ul>
   <ul class="footer_stack_info footer_card">
     <li>
@@ -14,4 +14,6 @@
       Sitemap</a>
     </li>
   </ul>
+
+   {{- partial "service_worker.html" . }}
 </footer>

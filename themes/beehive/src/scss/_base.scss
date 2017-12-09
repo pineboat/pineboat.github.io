@@ -16,11 +16,14 @@ html {
 }
 
 @media (min-width: 40em) {
+  body{
+    border-top: 10px solid $color-brand;
+  }
   h1 {
     font-size: 2.5em;
     line-height: 1.2em;
   }
-
+  
   h2 {
     font-size: 2em;
     line-height: 1.1em;
@@ -84,7 +87,6 @@ ul {
 body {
   margin: 0;
   border: 0;
-  border-top: 10px solid $color-brand;
 }
 
 input:not([type=submit]):not([type=file]) {

@@ -1,0 +1,20 @@
+{{ define "main"}}
+  <article role="main" class="o-post">
+    <h1>{{ .Title }}</h1>
+    {{ partial "post_meta.html" . }}
+    <p class="c-post-subtitle">{{ .Params.subtitle }}</p>
+    {{ if isset .Params "image" }}
+      <div class="c-post-image">
+        <img class="c-image" alt="{{ .Params.image_alt }}" src="{{ .Params.image }}">
+        <p class="c-image-credit">{{ .Params.image_credit }}</p>
+      </div>
+    {{ end }}
+    {{ .Content }}
+    <ul class="c-post-author">
+    {{ range (where .Site.Pages ".Params.id" .Params.author ) }}
+      <li> By <a href="{{ .Permalink }}">{{ print .Params.firstname " " .Params.lastname }}</a> </li>
+    {{ end }}
+    </ul>
+    {{ partial "twitter_share.html" . }}
+  </article>
+{{ end }}
