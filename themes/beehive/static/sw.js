@@ -1,57 +1,64 @@
 importScripts("js/cache-polyfill.js");
-var CACHE_KEY='beehive_v12';
-
-//This is the service worker with the combined offline experience (Offline page + Offline copy of pages)
-
-//Install stage sets up the offline page in the cahche and opens a new cache
+var CACHE_KEY='beehive_v20';
+let files_to_preload=[
+  '/',
+  '/offline/',
+  '/img/site_logo.svg',
+  '/css/main.css'];
 self.addEventListener('install', function(event) {
   event.waitUntil(preLoad());
 });
 
 var preLoad = function(){
-  return caches.open(CACHE_KEY).then(function(cache) {
-    return cache.addAll(['/offline/', '/index.html']);
+  return caches.open(CACHE_KEY).then(cache => {
+    return cache.addAll(files_to_preload);
   });
 }
 
 self.addEventListener('fetch', function(event) {
-  event.respondWith(checkResponse(event.request).catch(function() {
-    return returnFromCache(event.request)}
-  ));
-  event.waitUntil(addToCache(event.request));
+  const request=event.request;
+  const url=new URL(request.url);
+  if (request.method != "GET") return;
+  let networkResponse=fromNetwork(request.clone());
+  event.waitUntil(networkResponse);
+  let response=fromCache(request).catch(()=>{
+    return networkResponse;
+  });
+  event.respondWith(response);
 });
 
-var checkResponse = function(request){
-  return new Promise(function(fulfill, reject) {
-    fetch(request).then(function(response){
-      if(response.status !== 404) {
-        fulfill(response)
-      } else {
-        reject()
-      }
-    }, reject)
-  });
-};
-
-var addToCache = function(request){
-  return caches.open(CACHE_KEY).then(function (cache) {
-    return fetch(request).then(function (response) {
-      return cache.put(request, response);
-    });
-  });
-};
-
-var returnFromCache = function(request){
+var fromCache = function(request){
+  let url=new URL(request.url);
   return caches.open(CACHE_KEY).then(function (cache) {
     return cache.match(request).then(function (matching) {
-     if(!matching || matching.status == 404) {
-       return cache.match('offline/')
-     } else {
-       return matching
-     }
-    });
+      if(!matching || matching.status == 404) {
+        throw Error("No cache match for ",url.href);
+      } else {
+        return matching
+      }
+    })
   });
 };
+
+var offlineContent= function(request){
+  return caches.open(CACHE_KEY).then(function (cache) {
+        return cache.match('offline/')
+  });
+};
+
+var fromNetwork = function(request){
+  let url=new URL(request.url);
+  return fetch(request).then(function (response) {
+      const chain = Promise.resolve(response.clone());
+      caches.open(CACHE_KEY).then(function (cache) {
+        cache.put(request, response);
+      });
+      return chain;
+    }).catch(err=>{
+      return offlineContent(request);
+    });
+};
+
 
 self.addEventListener("activate", function(event) {
   event.waitUntil(

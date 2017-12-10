@@ -69,7 +69,8 @@ input:not([type=submit]):not([type=file]) {
   padding: 5px;
   font-size: large;
   border: none;
-  margin-top: 5px; }
+  margin-top: 5px;
+  background: #ddd; }
 
 input[type="submit"] {
   border: none;
@@ -78,11 +79,16 @@ input[type="submit"] {
   width: 100%;
   padding: 5px;
   margin-top: 20px;
-  background: #ffc;
-  color: #f04;
-  font-family: "acuta",Georgia,Times,Serif;
+  color: #ddd;
+  font-family: Georgia,Times,Serif;
   font-weight: 700;
-  cursor: pointer; }
+  cursor: pointer;
+  box-shadow: 2px 2px 2px #001;
+  background: #112;
+  transition: all 300ms ease; }
+  input[type="submit"]:hover {
+    color: #cf9;
+    box-shadow: 1px 1px 1px #000; }
 
 pre {
   white-space: pre-wrap;

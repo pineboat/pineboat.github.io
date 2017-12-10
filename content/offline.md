@@ -2,7 +2,7 @@
 author = "vijayabharathib"
 date = "2017-12-09T10:16:59+05:30"
 publishdate = "2017-12-09T10:17:59+05:30"
-subtitle = "Either you are offline. Or you might have visited a broken link. Do not loose hope, you can still find something useful within these pages."
+subtitle = "This is an offline page. Looks like we can't reach the network. Do not loose hope, you can still find something useful within these pages."
 tags = ["offline"]
 title = "Have you gone offline?"
 draft=false
@@ -21,15 +21,20 @@ draft=false
 <svg style="margin: 0 auto;" class="icon icon-signal_wifi_off"><use xlink:href="#icon-signal_wifi_off"></use></svg>
 </p>
 
-## You seem to have gone offline
-Progressive web apps (PWA) help you with the following functionalities.
+## If you are seeing this
 
-* It stays alive when you go offline. 
-* You can install it as an app to your mobile's home screen.
+If you are seeing this, it might mean the network is disconnected. Check your data connectivity. It may also mean you tried to visit a page which was removed / never existed.
+
+## You can still read already visited pages
+
+**How's that possible?** That's the power of progressive web app (PWA). Here are few cool things you can do.
+
+* Stays alive when you go offline. 
+* You can install this as an app to your mobile's home screen.
 * You can visit previously visited posts even when you are offline (as long as you have not cleared browser cache recently).
 
-## May be a broken link?
-You might have landed here due to a broken link, such as something I might have removed. Or something that never existed ever.
+## Start over from home
 
-In either case 
-**Hit the home link at the top or [here](/)** to start reading again!
+**Hit the home link at the top or [here](/)** to start from home. You can possibly read again!
+
+Hope this helps. **Any trouble**, visit the github respository and **[log an issue](https://github.com/pineboat/pineboat.github.io/issues/)**.
