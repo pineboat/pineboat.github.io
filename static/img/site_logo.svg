@@ -5,9 +5,9 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
-   width="236"
-   height="110"
-   viewBox="0 0 236 110"
+   width="100"
+   height="46"
+   viewBox="0 0 100 46"
    id="svg2"
    version="1.1"
    >
@@ -39,10 +39,9 @@
     </metadata>
   <g
      id="layer1"
-     transform="translate(-116,-464.79025)">
+     transform="matrix(0.42459753,0,0,0.42092156,-49.253313,-195.94161)">
     <g
-       id="g4542"
-       >
+       id="g4542">
       <path
          id="path4136"
          d="M 296.85372,574.79022 H 170.66344 l 63.09514,-109.28399 z"
