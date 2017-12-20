@@ -8,6 +8,7 @@ googleAnalytics: "UA-80881928-2"
 publishDir: "public"
 pygmentsCodeFences: true
 pygmentsUseClasses: true
+pygmentsUseClassic: true
 menu:
   main:
       - Name: "About"

@@ -1,27 +1,66 @@
 ---
 draft: true
 author: "vijayabharathib"
-title: "Don't be afraid of service workers."
-subtitle: "They are plain Javascript bots, ready to comply"
+title: "Promises."
+subtitle: "You cannot think straight when you make promises."
 date: "2107-11-12T08:15:59+05:30"
 publishdate: "2107-11-12T08:15:59+05:30"
-tags: ["Service Workers","Javascript","PWA"]
+tags: ["Promises","Javascript","Asynchronous"]
 image: "/img/newlogo.png"
 image_alt: "important message about image"
 image_credit: "credit the image owner"
 ---
+Asynchronous execution was there in Javascript for long. Promises are not new either. The support is 72% (**TK - validate?**). This post is to help you on the path to understand asynchronous javascript execution and where promises fit in the picture.
+
+## TL;DR 
+1. You can attach a callback to a promise and it'll use the last result of the promise. No risk of missing events trying to race with the async requests.
+2. Callbacks are usually nested, but promises can be composed
+3. Both values and promises can be returned as a valid result and chained
+4. Promises help you handle errors better. There can be a single point of handling failures. Multiple error handling is also available. 
 
 Things you need to understand
 **Single threaded**. But that's not all, as Jake says, the browser has a queue shared by other activities such as painting the elements. Which is why long running javascript activity can block user interactions.
 
-## Run to completion
-A function with call-backs is run-to-completion until the very end of the program without interruption. Even if the callback is initiated in the middle, it goes through the queue and wait for its turn.
+## Is promise an alternative to callback?
+I thought so. But No. In fact, Promise heavily uses callbacks as we'll soon see. Asynchronous activities have used plain callbacks so far. The difference between plain callbacks and promises are in handling responses and errors. 
 
-Which is why, adding event handlers after starting a request works. Because, event handlers will be added irrespective of the time we get a response.
+Another difference is, callbacks are usually nested leading to the proverbial 'hell', while promises are composed to a series of actions. This series of actions are not blocking the queue in the name of **run-to-completion**. They will run until they complete, but not by blocking the queue, but one action at a time, in their own time and space.
+
+## Event Loops
+I read the comparison of Event loop as a brain in YDKJS. It was in many ways, the right way to form a mental model of even loop. That is if you first understand how brain works.
+
+You can't multi-task. Plain and simple. You can switch tasks. There are certain tasks that need no focus, such as buttoning a shirt. 
+
+But there is a reason why we are not supposed to use mobile phones while driving. You cannot focus on both driving and the conversation. Especially if it takes significant contribution from your part. 
+
+Imagine someone asks a question about a distant memory **TK replace with actual question** or something that involves calculation? You need to hand the control over to the memory/calculation - which pushes driving down in priority. And your reflex goes down unless it is brought back to stack by a near miss!
+
+You can apply the same logic to event loop in browser. **Event loop manages stack and queue.**
+
+Here is a psuedo code. 
+
+```js
+while(browser.alive){
+    if(stack.empty && !queue.empty){
+        stack.push(queue.next)
+    }
+}
+```
+As a side note, imagine being able to open the programming of our brains and read the conditionals. It will save years of research.
+
+## Run to completion
+That begs the question, what is 'Run to completion'? 
+
+Any javascript function with certain number of lines of code will run until the very end of the program without interruption. Even if there is a callback that is initiated in the middle, it is added to the tail end of the event loop (a task queue) and waits for its turn.
+
+Which is why, adding event handlers after starting a request works. Because, event handlers will be added irrespective of the time we get a response. 
+
+## Going back in time with promises
+There is a chance the async operation was so fast, that it finished before we could attach an event handler in the next line of code. The callback will then be sitting idle for an event to fire without knowing that train is long gone.
+
+Promises again come to rescue. You can invoke a callback on a promise and it'll use the last result (which is usually a response of async operation). Even if the promise was completed sometime in the past.
 
 My reference is the book [ExploringJS](http://exploringjs.com/es6/ch_async.html). An improvised version to demonstrate run to completion.
-
-
 
 ```js
 setTimeout(()=>{
@@ -104,7 +143,7 @@ Let's say you want to request a data from server and update the UI. Let's look a
 * Prepare shell UI **simultaneously** (0 seconds)
 * Update UI (2 seconds)
 
-The last options is what we call asynchronous. **Multi-threaded?** 
+The last options is what we call asynchronous.  
 
 **insert a picture showing this visually**
 **find some examples from real libraries**
@@ -114,45 +153,20 @@ The last options is what we call asynchronous. **Multi-threaded?**
 
 * can we have a promise to do things in order (using then). how about refactoring that simon game playback using promises?
 
-* Understand service worker api/lifecycle
-* Understand cache api
-* Understand the confusing fetch call
-* Understand why cache.put returns void & chaining
-* Think about caching strategy
-* Versioning cache 
-* Lighthouse
-* Netlify has different caching strategy (304)
-* Where to go from here?
-    * testing
-    * logging clients errors for static sites
-* disk cache busting issue
-* cache first (behind one refresh)
+## Callback Heaven and Hell
+When I first started with Javascript, passing functions as arguments took some time to wrap my head around. But I realized quite soon how powerful it can be. I started solving many problems in an efficient manner with call backs. That's what I'd call heaven.
 
+But one can take it too far. So far long that you reach the end of heaven and open the gates of hell. Anonymous callbacks inside one another to create a horizontal pyramid. This page on the internet , [http://callbackhell.com/], that helps you escape. It's just one page, give it a try.
 
-[ ] raise an issue on pwa builder for two network requests
-[ ] find out why mozilla short code was not working
+The site talks about one of the conventions in callbacks is to handle errors first. Which means, each callback should have proper error handling within themselves.
 
+Callbacks also invert control of program flow. **TK. Validate this more.** 
 
-the sw.js has to be in root most folder to access all other files. otherwise, it'll be limited to access only sub folder.
+Have a look into callbacks from [YDKJS](https://github.com/getify/You-Dont-Know-JS/blob/3f9efe8aefb6d2b8ff9db983802acf62f7905edb/async%20%26%20performance/ch2.md).
 
-register sw after page is loaded. https://developers.google.com/web/fundamentals/primers/service-workers/registration
+## Risk of registering too late in callbacks
 
-```js
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load',function(){
-            navigator.serviceWorker
-                .register('sw.js')
-                .then(function(registration){
-                    console.log("Your own service worker. Ready to comply.",registration.scope);
-                },function(err){
-                    console.log("Sorry, service worker didn't check in today",err);
-                });
-        });
-    }
+you might miss your chance.
 
-```
-service workers internals:
-https://developers.google.com/web/fundamentals/primers/service-workers/
-
-service worker gotchas : 
-https://www.netlify.com/blog/2017/10/31/service-workers-explained/
+## Cached results of settled promises
+This is where promise shines. you can use the result of a settled promise much later when you register an event (or call `then` on the result). Promises got you covered there.
