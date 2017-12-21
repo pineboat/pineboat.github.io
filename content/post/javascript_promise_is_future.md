@@ -168,5 +168,63 @@ Have a look into callbacks from [YDKJS](https://github.com/getify/You-Dont-Know-
 
 you might miss your chance.
 
-## Cached results of settled promises
+## Use a settled promise anytime
 This is where promise shines. you can use the result of a settled promise much later when you register an event (or call `then` on the result). Promises got you covered there.
+
+```js
+let promise=Promisified();
+// do
+// 100
+// other 
+// things
+promise.then(works);
+```
+This is the cool part. You'll never miss an event by seconds. Promises protect you against registering event handlers late in the game. In the above example, we've seen the callback within `then` is executed on the result from the `Promisified` function call.
+
+That promise might have been settled minutes ago. But the results are available for you to take advantage of.
+
+## Then is Asynchronous (queued)
+Then part of promise does not get run-to-completion priority because other lines in the function will get run-to-completion.
+
+let's look at an example.
+```js
+    promise
+        .then(f1)
+        .then(f2)
+        .catch(e);
+    getStage();
+    getActors();
+```
+Run-to-protection prioritizes `getStage()` and `getActors()` after promise is invoked. Since they are part of the current scope, they get immediate space in the stack. This is because `then` and `catch` are asynchronous and should be added to the queue. 
+
+This is where I was tripped off. I mutated a variable inside `then` and tried to use it within `getStage`. It works, but since `getStage` runs first, the variable will not be mutated until much later.
+
+This could lead to serious debugging issues. Watch this.
+
+```js
+//insert axios react example
+```
+
+## Then can handle errors too
+
+```js
+promise
+    .then(handleResult
+        ,handleError);
+```
+the error handle method above can handle any error from `promise` but cannot handle any error from within `handleResult`.
+
+Which is why, a catch after then is a recommended practice. It'll handle all errors. 
+
+But a combination of both can help you handle errors from `promise` and error from `handleResult` differently.
+
+For example,
+
+```js
+promise.then(handleResult,handleErrorFromPromise)
+.catch(handleErrorFromResultCallback);
+```
+## Promise.all
+## Promise.race
+## Promise.resolve()
+## Promise.reject()
