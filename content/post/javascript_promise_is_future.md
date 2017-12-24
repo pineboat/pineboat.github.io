@@ -10,6 +10,10 @@ image: "/img/newlogo.png"
 image_alt: "important message about image"
 image_credit: "credit the image owner"
 ---
+Promises without fully understanding the underlying constructs can be harmful in both JavaScript and other aspects. 
+
+I dived head first into using promises [without adequate understanding][problem-with-promises]. 
+
 Asynchronous execution was there in Javascript for long. Promises are not new either. The support is 72% (**TK - validate?**). This post is to help you on the path to understand asynchronous javascript execution and where promises fit in the picture.
 
 ## TL;DR 
@@ -20,6 +24,12 @@ Asynchronous execution was there in Javascript for long. Promises are not new ei
 
 Things you need to understand
 **Single threaded**. But that's not all, as Jake says, the browser has a queue shared by other activities such as painting the elements. Which is why long running javascript activity can block user interactions.
+
+## The axios story
+
+when you debug, it might work, as you manually step through each line. the axios get function might return a valid value before you execute next. But in reality, `undefined` is returned.
+
+This is one of the rare occasions where `console.log` trumps `debugger`. You'll be able to see `undefined` error first and then the result of `axios` get.
 
 ## Is promise an alternative to callback?
 I thought so. But No. In fact, Promise heavily uses callbacks as we'll soon see. Asynchronous activities have used plain callbacks so far. The difference between plain callbacks and promises are in handling responses and errors. 
@@ -55,6 +65,23 @@ Any javascript function with certain number of lines of code will run until the 
 
 Which is why, adding event handlers after starting a request works. Because, event handlers will be added irrespective of the time we get a response. 
 
+## Who is the boss? Queue Stack or Heap?
+No, wait, come back. I can understand `heap` can invoke a sense of unmanageable pile of papers to manage. Drives adrenelene up. The best antidote is to imagine a tiny pile. Take a deep breath and exhale slowly.
+
+And find who is the boss here.
+
+* Stack takes orders from Queue
+* Queue takes orders from the Heap
+* Heap takes orders from the Stack
+
+Don't tell me **The Browser** is the boss, I'll confront you with **The User**. In a way, you are right in this context. . 
+
+```js
+setTimeout(function(){
+    console.log("Meet heap, queue and then let's talk");
+},0);
+
+```
 ## Going back in time with promises
 There is a chance the async operation was so fast, that it finished before we could attach an event handler in the next line of code. The callback will then be sitting idle for an event to fire without knowing that train is long gone.
 
@@ -225,6 +252,23 @@ promise.then(handleResult,handleErrorFromPromise)
 .catch(handleErrorFromResultCallback);
 ```
 ## Promise.all
+All of them need to be resolved
 ## Promise.race
+As soon as one of them is resolved
+
 ## Promise.resolve()
 ## Promise.reject()
+
+## State of Promise 
+You know a lot about promises now. But knowing the status terminology will help in conversations. Though you are not going to use `settled` and `pending` in code (**REALLY? TK**).
+
+* Resolved
+* Rejected
+* Settled (Resolved || Rejected)
+* Pending (!Resolved && !Rejected)
+
+References:
+* Exploring JS 
+* [Problem with Promises][problem-with-promises]
+
+[problem-with-promises]:https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html

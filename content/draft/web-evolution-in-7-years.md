@@ -11,3 +11,5 @@ draft: true
 ---
 
 http://www.httparchive.org
+
+d3.js playback option
