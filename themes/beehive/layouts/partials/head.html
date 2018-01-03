@@ -28,7 +28,7 @@
 
 {{- partial "opengraph_card.html" . -}}
 {{- partial "twitter_card.html" . -}}
-
+{{- partial "google_rich_card.html" . -}}
 
 {{ if ne (in .Permalink "localhost") true }}
   {{ template "_internal/google_analytics_async.html" . }}

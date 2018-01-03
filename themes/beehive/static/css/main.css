@@ -1,3 +1,4 @@
+/** fixed variables reused across other modules**/
 * {
   box-sizing: border-box; }
   *::selection {
@@ -13,7 +14,7 @@ html {
 
 @media (min-width: 40em) {
   body {
-    border-top: 10px solid #c04; }
+    border-top: 10px solid #f04; }
   h1 {
     font-size: 2.5em;
     line-height: 1.2em; }
@@ -23,7 +24,8 @@ html {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: Georgia, Times, serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: #bbc; }
 
 h1 {
   font-size: 2em; }
@@ -40,14 +42,14 @@ h4 {
   margin: 2em 0 1em 1em; }
 
 a, a h1, a h2, a h3, a h4, a h6, a h5 {
-  color: #fc6;
+  color: #cf9;
   text-decoration: none; }
 
 a:visited, a:visited h1, a:visited h2, a:visited h3, a:visited h4, a:visited h6, h5 a:visited {
-  color: #cf9; }
+  color: #fc6; }
 
 a:hover, a:hover h1, a:hover h2, a:hover h3, a:hover h4, a:hover h5, h6 a:hover {
-  color: #f9a;
+  color: #adf;
   text-decoration: underline;
   cursor: pointer; }
 
@@ -79,16 +81,16 @@ input[type="submit"] {
   width: 100%;
   padding: 5px;
   margin-top: 20px;
-  color: #ddd;
+  color: #233;
   font-family: Georgia,Times,Serif;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 2px 2px 2px #001;
-  background: #112;
+  box-shadow: 2px 2px 2px #111;
+  background: #adf;
   transition: all 300ms ease; }
   input[type="submit"]:hover {
-    color: #cf9;
-    box-shadow: 1px 1px 1px #000; }
+    box-shadow: 1px 1px 1px #000;
+    text-decoration: underline; }
 
 pre {
   white-space: pre-wrap;
@@ -137,12 +139,16 @@ pre {
 @keyframes surf {
   0% {
     transform: rotate(0deg); }
-  33% {
+  5% {
     transform: rotate(-5deg) translate(-5px, -5px); }
-  66% {
+  10% {
     transform: rotate(7deg) translate(5px, -5px); }
-  90% {
-    transform: rotate(-5deg) translate(-3px, 5px); } }
+  15% {
+    transform: rotate(-5deg) translate(-3px, 5px); }
+  20% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(0deg); } }
 
 a.c-logo-link {
   display: block;
@@ -155,7 +161,7 @@ a.c-logo-link {
   width: 100%;
   height: 100%;
   transform-origin: 50% 90%;
-  animation: surf 15s infinite alternate ease-in-out; }
+  animation: surf 120s infinite alternate ease-in-out; }
 
 .o-site-nav {
   margin: 10px 5px; }
@@ -312,8 +318,12 @@ pre, .footer_card {
 
 /* Background */
 .chroma {
-  color: #f8f8f2;
-  background-color: #272822; }
+  background-color: #334; }
+
+code {
+  background-color: #334;
+  padding-left: 2px;
+  padding-right: 2px; }
 
 /* Error */
 .chroma .err {

@@ -17,7 +17,7 @@ html {
 
 @media (min-width: 40em) {
   body{
-    border-top: 10px solid $color-brand;
+    border-top: 10px solid $color-pink-light;
   }
   h1 {
     font-size: 2.5em;
@@ -33,6 +33,7 @@ html {
 h1, h2, h3, h4, h5, h6 {
   font-family: $font-family-heading-default;
   font-weight: 700;
+  color: $color-headline;
 }
 
 h1 {
@@ -55,18 +56,18 @@ h4 {
 
 a {
   &, h1,h2,h3,h4,h6,h5 {
-    color: $color-orange-light;
+    color: $color-link;
     text-decoration: none;
   }
   &:visited {
     &, h1,h2,h3,h4,h6,h5 & {
-      color: $color-green-light;
+      color: $color-link-visited;
     }
   }
   &:hover{
     &, h1,h2,h3,h4,h5,h6 & {
       //border-bottom: 1px solid $color-yellow-light;
-      color: $color-red-light;
+      color: $color-link-hover;
       text-decoration: underline;
       cursor: pointer;
     }
@@ -106,16 +107,16 @@ input[type="submit"]{
   width: 100%;
   padding: 5px;
   margin-top: 20px;
-  color: #ddd;
+  color: $color-teal-dark;
   font-family: Georgia,Times,Serif;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 2px 2px 2px #001;
-  background: #112;
+  box-shadow: 2px 2px 2px #111;
+  background: $color-blue-light;
   transition: all 300ms ease;
   &:hover {
-    color: $color-green-light;
     box-shadow: 1px 1px 1px #000;
+    text-decoration: underline;
   }
 }
 

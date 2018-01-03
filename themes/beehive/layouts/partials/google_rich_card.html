@@ -1,0 +1,27 @@
+<script type="application/ld+json">
+    { 
+        "@context": "http://schema.org",
+        {{ if eq .Section "author" }}
+            "@type": "Person"
+            {{- with .Title | default .Site.Title }}
+                "name": "{{ . }}",
+            {{- end }}
+            "sameAs": [
+                "https://www.linkedin.com/in/{{.Params.id}}/",
+                "https://www.twitter.com/{{.Params.id}}/",
+                "https://www.github.com/{{.Params.id}}",
+                "https://medium.com/@{{.Params.id}}"
+            ],
+        {{ else }}
+            "@type": "BlogPosting",
+            {{- with .Title | default .Site.Title }}
+            "headline": "{{ . }}",
+            {{- end }}
+        {{ end }}
+        {{ if isset .Params "image" }}
+            "image": [
+            "{{ .Params.image | absURL }}"
+            ]
+        {{ end }}
+}
+</script>
