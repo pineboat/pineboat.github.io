@@ -29,8 +29,10 @@
 {{- partial "opengraph_card.html" . -}}
 {{- partial "twitter_card.html" . -}}
 {{- partial "google_rich_card.html" . -}}
-
 {{ if ne (in .Permalink "localhost") true }}
-  {{ template "_internal/google_analytics_async.html" . }}
+  <script>
+    window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date; ga('create', '{{- $.Site.GoogleAnalytics -}}', 'auto');ga('set','anonymizeIp',true); ga('send', 'pageview');
+  </script>
+  <script async src='https://www.google-analytics.com/analytics.js'></script>
 {{ end }}
 </head>
