@@ -700,6 +700,29 @@ If your eyes are not tired yet, you'd have noticed two strange syntax in the abo
 
 * Second, to match numbers, we used `\\d` instead of the usual `\d`. This is because the variable `p` is just a normal string within double quotes. To insert a backslash, you need to escape the backslash itself. `\\d` resolves to `\d` within the regular expression constructor.
 
+Update: wrote this as part of [my talk](https://slides.com/vijayabharathibalasubramanian/regular-expressions-in-javascript) and thought it might be a useful alternative:
+
+```js
+const isPasswordValid = pwd => {
+	let rules=[
+    	".{8,}", 	// minimum 8 characters
+    	"[a-z]", 	// at least one lowercase
+    	"[A-Z]", 	// at least one uppercase
+    	"\\d",		// at least one digit
+    	"[^ a-zA-Z0-9]" //at least one symbol
+	];
+
+	let validate = rule => new RegExp(rule).test(pwd);
+	return rules.every(validate);
+}
+
+let pwd="Pa$$w0rd";
+isPassswordValid(pwd); //true
+
+pwd="Pasword";
+isPasswordValid(pwd); //false
+```
+
 Apparently, there should be server side validations for passwords too. Think about SQL injection vulnerabilities if your framework / language doesn't handle it already. 
 
 ## 07. Conclusion
