@@ -1,5 +1,5 @@
 importScripts("js/cache-polyfill.js");
-var CACHE_KEY='beehive_v21';
+var CACHE_KEY='beehive_v22';
 let files_to_preload=[
   '/',
   '/offline/',
