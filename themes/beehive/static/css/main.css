@@ -92,10 +92,6 @@ input[type="submit"] {
     box-shadow: 1px 1px 1px #000;
     text-decoration: underline; }
 
-pre {
-  white-space: pre-wrap;
-  word-wrap: break-word; }
-
 @media (min-width: 60em) {
   .site-grid {
     display: grid;
@@ -288,8 +284,7 @@ a.c-nav-link {
   display: flex;
   flex-wrap: wrap; }
 
-blockquote,
-pre, .footer_card {
+blockquote, .footer_card {
   background: rgba(255, 255, 255, 0.1);
   padding: 10px;
   border-radius: 3px;
@@ -315,6 +310,11 @@ pre, .footer_card {
   display: inline-block;
   min-width: 20em;
   text-align: center; }
+
+.highlight {
+  padding: 0 1em;
+  background: #334;
+  overflow: auto; }
 
 /* Background */
 .chroma {

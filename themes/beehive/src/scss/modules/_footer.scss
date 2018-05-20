@@ -14,8 +14,7 @@
   width: 100%;
 }
 
-blockquote,
-pre {
+blockquote{
   @extend %card;
 }
 
