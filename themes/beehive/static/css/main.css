@@ -290,6 +290,8 @@ blockquote, .footer_card {
   border-radius: 3px;
   margin: 10px auto 0 auto;
   width: 100%; }
+  blockquote h2, .footer_card h2 {
+    margin-top: 0; }
 
 .footer_card {
   max-width: 20em; }
