@@ -1,5 +1,3 @@
----
-draft: true
 author: "vijayabharathib"
 title: "Think Event Loop When You Want to Run to Completion"
 subtitle: "Event loop in the browser and the promise to Run to Completion are the two key aspects of Asynchronous JavaScript"
@@ -17,6 +15,7 @@ Any block of Javascript code that enters the main thread will run until completi
 This post aims to help you get started on **Event Loop** and **Run To Completion** with a simplified mental model. That model should help you reach deeper into these topics. Your final stop will be the specs before you master the art of asynchronous JavaScript behavior in Browser environment.
 
 
+
 ## Run to completion
 
 Any javascript function/scope of code will run until the very end of the program without interruption. Even if there is a callback that is initiated in the middle. I am not talking about an immediate function call. A function call that is sent to the parallel thread for processing, such as the ones initiated via `setTimeout`. 
@@ -28,10 +27,10 @@ Let's look at an example. **Don't try this at home**. If you must, better put it
 ```js
 let infinite=true;
 setTimeout(function(){
-  infinite=false;
+ infinite=false;
 },10000);
 while(infinite){
-  console.log("still running",Date.now());
+ console.log("still running",Date.now());
 }
 ```
 
@@ -72,7 +71,7 @@ console.log("print first");
 setTimeout(asyncPrint,0);
 console.log("print last");
 function asyncPrint(){
-  console.log("print between");
+ console.log("print between");
 }
 //Result
 //print first
@@ -115,8 +114,8 @@ Here is a psuedo code.
 
 ```js
 while(browser.alive){
-    if(stack.empty && !queue.empty){
-        stack.push(queue.next)
+ if(stack.empty && !queue.empty){
+ stack.push(queue.next)
     }
 }
 ```
@@ -133,7 +132,7 @@ Take a deep breath and exhale slowly. And find who is the boss here.
 
 Don't tell me **The Browser** is the boss, I'll confront you with **The Operating System**. Someone will throw in **The user is the boss** and eventually, we might end up facing **The God**.  
 
-In a way, all those answers are right, but I am not so sure about **The God**. What we do know is, Event loop controls the queue to dictate what goes into stack and when. 
+In a way, all those answers are right, but I am not so sure about **The God**. It's more like [holacracy](https://en.wikipedia.org/wiki/Holacracy). What we do know is, Event loop controls the queue to dictate what goes into stack and when. 
 
 Event loop gets input from several parts of the browser, such as JavaScript callbacks, network requests, calculating styles, layout and rendering/painting.
 
@@ -142,14 +141,14 @@ These browser tasks are optimized by browsers differently. They sometime wait in
 ```js
 
 setTimeout(function(){
-    console.log("Detach from stack);
+ console.log("Detach from stack);
 },0);
 
 ```
 
 This `setTimeOut` is executed when it lands on stack, sends the anonymous function to heap. There it waits until time out (in this case 0ms). After timeout, the function call is added to the end of the queue. It gets its turn on the stack once all tasks in front of the queue are cleared.
 
-## Why setTimeout is detached?
+## Why `setTimeout` is Detached?
 This question comes up very often on discussions related to Async. Why the `setTimeout` function call detaches itself from the current stack? Why doesn't it run like all other functions?
 
 The answer is very clear when you try to rephrase the question. 
@@ -160,13 +159,13 @@ You get the answer, don't you? Because you do not want to block the event loop. 
 
 ```js
 function blockingTimeOut(callBack,timeOut,params){
-  let start=Date.now();
-  while(((Date.now()-start)/1000)<timeout);
-  callBack(params);
+ let start=Date.now();
+ while(((Date.now()-start)/1000)<timeout);
+ callBack(params);
 }
 
 function log(str){
-  console.log(str);
+ console.log(str);
 }
 ```
 
@@ -200,21 +199,21 @@ callb("standalone");
 
 ```
 
-Writing a function that blocks event loop and freezes your application is easy. But writing a function that calls another function at a later point in time without blocking the event loop is not easy. That's why `setTimeout` API is there for you. 
+Writing a function that blocks event loop and freezes your application is easy. But writing a function that calls another function at a later time without blocking the event loop is not easy. That's why `setTimeout` API is there for you. 
 
 ## Why Infinite Loop Freezes Browsers?
 
-That's because, event loop is not only for the JavaScript developer. Event loop is just a controller that decides what takes stage on the main thread next. While JavaScript calls are thrown at Event loop at the whims of the developer, the browser also throws several tasks at the event loop.
+That's because, event loop is not only for the JavaScript developer. Event loop is just a controller that decides what takes stage on the main thread next. While JavaScript calls are thrown at Event loop at the whim of the developer, the browser also throws several tasks at the event loop.
 
-But the browser is a bit empathetic about event loop. It knows the troubles of being an event loop. So, it takes some of the decision making away from event loop and throws things at the loop when the it thinks the loop is rested enough to give it another run or when something has been in the waiting for a long time and can wait no more.
+But the browser is a bit empathetic about event loop. It knows the troubles of being an event loop. So, the browser takes some of the decision making away from event loop. Instead, it throws things at the loop when it thinks the loop is rested enough to give it another run. There are also cases when the browser has been holding a task in the waiting for a long time and can wait no more. Nature's call!
 
-Now if you think about frozen browser, chances are, your infinite loop is taking the whole main thread and user interactions and other tasks are either with the browser to figure out what's the next best time to allocate it or waiting in the queue for event loop to show a green signal.
+Now if you think about frozen browser, chances are, your infinite loop is taking the whole main thread. User interactions and other tasks are either with the browser to figure out what's the next best time to allocate it. Or they are waiting in the queue for event loop to show a green signal.
 
 **I thought that infinite loops are the only things that can block the main thread. I was wrong.** I stumbled upon this [great talk by Jake](https://www.youtube.com/watch?v=cCOL7MC4Pl0), where he explains more about how microtasks can also block rendering. 
 
-A web page feels frozen when it is not reacting to user interactions and there seems to be no recognizable activity. Responsiveness of page is usually the result of rendering UI changes. 
+A web page feels frozen when it is not reacting to user interactions. Responsiveness of page is usually the result of rendering UI changes. 
 
-I learned this from the talk mentioned about. When there are tasks that have higher priority over UI changes, such as microtasks. If there are enough microtasks in the queue, then the browser may appear frozen until all those microtasks are over. 
+When there are tasks that have higher priority over UI changes, such as microtasks. If there are enough microtasks in the queue, then the browser may appear frozen until all those microtasks are completed. 
 
 ## Onward - Unfreeze 
 
@@ -223,19 +222,23 @@ I learned this from the talk mentioned about. When there are tasks that have hig
 Play with different order of the following function.
 ```js
 function test(){
-    setTimeout(console.log,0,"log1");
-	  Promise
+ setTimeout(console.log,0,"log1");
+ Promise
       .resolve()
       .then(()=>console.log("promise"));
-    setTimeout(console.log,0,"log2");
+ setTimeout(console.log,0,"log2");
 }
 
 test();
 ```
 
-There are a few things on the spec that I kept secret to simplify things. That's the existence of aliens, UFOs and multiple [event loops][event-loops]. And you thought one event loop can rule them all? Wait, there are also different priorities for different tasks such as [microtasks][microtasks], multiple queues for each event loop and how their order is maintained through [task sources](https://html.spec.whatwg.org/multipage/webappapis.html#task-source). 
+There are a few things on the spec that I kept secret to simplify things. That's the existence of aliens, UFOs and multiple [event loops][event-loops]. And you thought one event loop can rule them all? Wait, there is more for you to learn. Here is a list:
+* [Multiple event loops][event-loops]
+* Multiple queues for each event loop
+* Different priorities for different types of tasks such as [microtasks][microtasks]
+* How event loops maintain order through [task sources](https://html.spec.whatwg.org/multipage/webappapis.html#task-source). 
 
-Well, if all that spec reading takes your head on a spinning tour, check out this really [nice talk by Philip Roberts][philip-stuck-in-event-loop] on event loop. And his [demo site][philip-event-loop-demo] is also great. You'll appreciate it more when you've watched the talk. Don't miss [Jake's talk](https://www.youtube.com/watch?v=cCOL7MC4Pl0) I mentioned earlier. 
+Well, if all that spec reading takes your head on a spinning tour, take a break with a video. Here is an [informative talk by Philip Roberts][philip-stuck-in-event-loop] on event loop. And his [demo site][philip-event-loop-demo] is also great. You'll appreciate it more when you've watched the talk. Don't miss [Jake's talk](https://www.youtube.com/watch?v=cCOL7MC4Pl0) I mentioned earlier. 
 
 Thank you so much for staying with me so far. I hope I helped you with some understanding of asynchronous internals. Share this with your friends, if you think they will find it useful.
 
