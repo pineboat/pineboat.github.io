@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="600"
+   height="300"
+   viewBox="0 0 158.75002 79.375002"
+   version="1.1"
+   id="svg8">
+  <defs
+     id="defs2" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="translate(0,-217.6249)">
+    <g
+       id="g919">
+      <g
+         transform="translate(0,20.10834)"
+         id="g1041">
+        <rect
+           style="opacity:1;fill:#333333;fill-opacity:1;stroke:none;stroke-width:0.74140948;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect817"
+           width="157.42175"
+           height="75.172379"
+           x="0.79106385"
+           y="199.98106"
+           ry="3.3286312" />
+        <rect
+           style="opacity:1;fill:#e7edee;fill-opacity:1;stroke:none;stroke-width:0.33560821;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect819"
+           width="41.159508"
+           height="39.230892"
+           x="5.3346462"
+           y="203.45557"
+           ry="0" />
+        <rect
+           ry="0"
+           y="255.63857"
+           x="5.3413453"
+           height="14.827189"
+           width="148.06732"
+           id="rect821"
+           style="opacity:1;fill:#e7edee;fill-opacity:1;stroke:none;stroke-width:0.39132935;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           style="opacity:1;fill:#cc0044;fill-opacity:0.94117647;stroke:none;stroke-width:0.45746461;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path827"
+           d="m 54.255718,228.31164 -5.459837,-1.12408 -5.459836,-1.12407 3.703395,-4.16632 3.703396,-4.16632 1.756441,5.29039 z"
+           transform="rotate(-40.676116,55.782822,223.53067)" />
+        <rect
+           ry="0"
+           y="203.45557"
+           x="111.69722"
+           height="39.230892"
+           width="41.159508"
+           id="rect831"
+           style="opacity:1;fill:#e7edee;fill-opacity:1;stroke:none;stroke-width:0.33560821;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <rect
+           ry="0"
+           y="203.45557"
+           x="57.722195"
+           height="39.230892"
+           width="41.159508"
+           id="rect833"
+           style="opacity:1;fill:#e7edee;fill-opacity:1;stroke:none;stroke-width:0.33560821;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           transform="rotate(-40.676116,81.976539,152.86447)"
+           d="m 54.255718,228.31164 -5.459837,-1.12408 -5.459836,-1.12407 3.703395,-4.16632 3.703396,-4.16632 1.756441,5.29039 z"
+           id="path835"
+           style="opacity:1;fill:#cc0044;fill-opacity:0.94117647;stroke:none;stroke-width:0.45746461;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           style="opacity:1;fill:#cc0044;fill-opacity:0.94117647;stroke:none;stroke-width:0.45746461;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path837"
+           d="m 133.8123,254.58905 -2.75537,-4.84575 -2.75537,-4.84575 5.57422,0.0367 5.57423,0.0367 -2.81885,4.8091 z" />
+        <path
+           d="m 78.249861,254.58904 -2.755371,-4.84575 -2.755378,-4.84574 5.574228,0.0367 5.574228,0.0367 -2.81885,4.80909 z"
+           id="path839"
+           style="opacity:1;fill:#cc0044;fill-opacity:0.94117647;stroke:none;stroke-width:0.45746461;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           style="opacity:1;fill:#cc0044;fill-opacity:0.94117647;stroke:none;stroke-width:0.45746461;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path841"
+           d="m 25.947044,243.83258 2.755371,4.84575 2.755378,4.84574 -5.574228,-0.0367 -5.574228,-0.0367 2.81885,-4.80909 z" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:10.58333397px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458335"
+           x="109.49617"
+           y="264.56387"
+           id="text847"><tspan
+             id="tspan845"
+             x="79.392921"
+             y="264.56387"
+             style="font-size:5.64444494px;text-align:center;text-anchor:middle;stroke-width:0.26458335">QUEUE / EVENT LOOP</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:10.58333397px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458335"
+           x="78.004326"
+           y="211.89346"
+           id="text859"><tspan
+             id="tspan857"
+             x="78.689209"
+             y="211.89346"
+             style="font-size:4.9388895px;text-align:center;text-anchor:middle;stroke-width:0.26458335">JS TASKS / </tspan><tspan
+             x="78.004326"
+             y="225.12263"
+             style="font-size:4.9388895px;text-align:center;text-anchor:middle;stroke-width:0.26458335"
+             id="tspan861">MICROTASKS</tspan></text>
+        <text
+           id="text867"
+           y="211.76324"
+           x="132.50845"
+           style="font-style:normal;font-weight:normal;font-size:10.58333397px;line-height:0.5;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458335"
+           xml:space="preserve"><tspan
+             style="font-size:4.9388895px;line-height:0.5;text-align:center;text-anchor:middle;stroke-width:0.26458335"
+             y="211.76324"
+             x="133.19334"
+             id="tspan875">BROWSER </tspan><tspan
+             style="font-size:4.9388895px;line-height:0.5;text-align:center;text-anchor:middle;stroke-width:0.26458335"
+             y="217.20029"
+             x="132.50845"
+             id="tspan883">TASKS</tspan><tspan
+             style="font-size:4.9388895px;line-height:0.5;text-align:center;text-anchor:middle;stroke-width:0.26458335"
+             y="222.63731"
+             x="132.50845"
+             id="tspan885" /><tspan
+             style="font-size:4.9388895px;line-height:0.5;text-align:center;text-anchor:middle;stroke-width:0.26458335"
+             y="227.92899"
+             x="132.50845"
+             id="tspan887">STYLE</tspan><tspan
+             style="font-size:4.9388895px;line-height:0.5;text-align:center;text-anchor:middle;stroke-width:0.26458335"
+             y="233.36603"
+             x="132.50845"
+             id="tspan889">LAYOUT</tspan><tspan
+             style="font-size:4.9388895px;line-height:0.5;text-align:center;text-anchor:middle;stroke-width:0.26458335"
+             y="238.80305"
+             x="132.50845"
+             id="tspan891">PAINT</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:10.58333397px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458335"
+           x="25.552408"
+           y="211.89346"
+           id="text1012"><tspan
+             id="tspan1010"
+             x="25.552408"
+             y="211.89346"
+             style="font-size:4.9388895px;text-align:center;text-anchor:middle;stroke-width:0.26458335">STACK /</tspan><tspan
+             x="25.552408"
+             y="225.12263"
+             style="font-size:4.9388895px;text-align:center;text-anchor:middle;stroke-width:0.26458335"
+             id="tspan1014">MAIN THREAD</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
