@@ -21,6 +21,8 @@ menu:
         weight: 110
 params:
   subtitle: "On shipping web"
+  analytics: "https://unarstaged.herokuapp.com/visits"
+
 author:
   vijayabharathib:
     firstname: "Vijayabharathi"

@@ -1,0 +1,32 @@
+{{ if $.Site.Params.analytics }}
+<script>
+(function(){
+    let retention=0;
+    let data={visit:{
+        url: window.location.origin + window.location.pathname,
+        referer: document.referrer        
+    }};
+    let options={
+        method: 'post',
+        headers: {
+            'content-type':'application/json'
+        }
+    };
+    function postVisit(url,data,options){
+        data.visit.retention=retention;
+        retention+=10;
+        options.body=JSON.stringify(data);
+
+        fetch(url,options)
+            .then(response=>response.json())
+            .then(json=>{
+                console.log(json);
+                // data.visit.id=json.id;
+                // options.method='put';
+                // setTimeout(postVisit,10000,url,data,options);
+            }).catch(e=>console.log(e));
+    }
+    postVisit({{- $.Site.Params.analytics -}},data,options);
+})();
+</script>
+{{ end }}
