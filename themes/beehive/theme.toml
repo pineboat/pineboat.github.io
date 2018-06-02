@@ -9,7 +9,9 @@ homepage = "http://siteforthistheme.com/"
 tags = []
 features = []
 min_version = "0.21"
-
+[mediaTypes]
+    [mediaTypes."application/javascript"]
+    suffix = "js"
 [author]
   name = ""
   homepage = ""
