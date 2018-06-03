@@ -13,7 +13,8 @@
     <ul class="c-post-author">
     {{ range (where .Site.Pages ".Params.id" .Params.author ) }}
       <li> By <a href="{{ .Permalink }}">{{ print .Params.firstname " " .Params.lastname }}</a> </li>
-    {{ end }}
+      {{ end }}
+      <li><a href="#site-title" >Back to Top 👆</a></li>
     </ul>
     {{ partial "twitter_share.html" . }}
   </article>
