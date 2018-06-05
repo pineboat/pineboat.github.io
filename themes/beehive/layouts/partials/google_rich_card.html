@@ -5,12 +5,7 @@
             "@type":"WebSite",
             "url": "{{- $.Site.BaseURL -}}",
             "keywords": "Web Development, JavaScript, React, Rails, Git, Docker, CSS, HTML, Responsive Web Design",
-            "image": "{{- $.Site.BaseURL -}}img/site_logo.svg",
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://www.google.com/search?q={query}+site%3A{{- $.Site.BaseURL -}}",
-                "query-input": "required"
-              },
+            "image": "{{- $.Site.BaseURL -}}img/site_logo.svg",            
             "author":{
                 "@type":"Person",
                 "name": "Vijayabharathi Balasubramanian"
@@ -29,12 +24,22 @@
             ]
         {{ else }}
             "@type": "BlogPosting",
-            "about": "{{- .Params.subtitle -}}","
+            "about": "{{- .Params.subtitle -}}",
             "wordCount": {{- .FuzzyWordCount -}},
+            "datePublished": "{{- .PublishDate -}}",
+            "publisher":{
+                "@type":"Organization",
+                "name":"Pineboat",
+                "url":"{{- $.Site.BaseURL -}}",
+                "logo":{
+                    "@type":"ImageObject",
+                    "url":"{{- $.Site.BaseURL -}}img/site_logo.svg"
+                }
+            },
             "author": {
                 "@type":"Person"
                 {{ range (where .Site.Pages ".Params.id" .Params.author )}}
-                ,"name":"{{- .Params.firstname -}} {{- .Params.lastname }}",
+                ,"name":"{{- .Params.firstname -}} {{- .Params.lastname }}"
                 {{ end }}
             }
             {{- with .Title | default .Site.Title }}
@@ -42,9 +47,7 @@
             {{- end }}
         {{ end }}
         {{ if isset .Params "image" }}
-            ,"image": [
-            "{{ .Params.image | absURL }}"
-            ]
+            ,"image": "{{ .Params.image | absURL }}"
         {{ end }}
 }
 </script>
