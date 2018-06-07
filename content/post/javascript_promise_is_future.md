@@ -2,14 +2,14 @@
 draft: true
 author: "vijayabharathib"
 title: "JavaScript Promises Can Help You Fix Callback Hell"
-subtitle: "Promises are the new return type of most of the asynchronous web APIs in JavaScript. Promises help you compose functions better than callbacks."
+subtitle: "Promises are the new return type of most of the asynchronous web APIs in JavaScript. Promises help you compose functions better."
 date: "2018-05-30T08:15:59+05:30"
 publishdate: "2018-05-30T08:15:59+05:30"
 tags: ["Javascript","ES6","Promises","Asynchronous","Callbacks"]
 categories: ["Javascript"]
-image: "/img/newlogo.png"
-image_alt: "important message about image"
-image_credit: "credit the image owner"
+image: "/img/007_promises/javascript_promises.png"
+image_alt: "JavaScript Promises"
+image_credit: "Patterns from trianglify.io"
 ---
 Javascript Promises give you excellent control over composing functions. Promises help you with higher flexibility to sequence asynchronous activities and handle errors. **A whole new generation of Web APIs are starting to use Promises**. [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch), [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) and [Notifications](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission) are some of the examples where Promises are taking over callbacks.   
 
@@ -17,7 +17,7 @@ They are very easy to use once you understand the underlying constructs that mak
 
 I didn't read the manual. I dived head first into using promises [without adequate understanding][problem-with-promises]. No third degree burns, but couple of frustrated hours on the debugger. That's the genesis of this article.
 
-This article aims to help you understand Promises in a browser environment. You'll also be able to see where Promises fit in the big picture of asynchronous JavaScript.
+>This article aims to help you understand Promises in a browser environment. You'll also be able to see where Promises fit in the big picture of **Asynchronous JavaScript.**
 
 Promises are not entirely new either. The browser support is [good too](https://caniuse.com/#search=promises) and you can find [polyfills](https://github.com/stefanpenner/es6-promise) if you had to support browsers that do not support Promises yet. 
 
@@ -28,8 +28,7 @@ Here is a preview of what you'll go through:
 * [Warm up with Event Loop](#warm-up-with-event-loop)
 * [Getting Started with Promises](getting-started-with-promises)
 * [What are Promises?](#what-are-promises)
-* [Constructing Promises](#constructing-promises)
-* [Consuming Promises](#consuming-promises)
+* [Constructing & Consuming Promises](#constructing-and-consuming-promises)
 * Callback Heaven and Hell
 * To Block or Not to Block
 * Promise Capabilities
@@ -89,21 +88,100 @@ fetch(apiURL)
   .catch(error => appendError(error));
 ```
 
-That seems to be attractive in terms of composing functions, isn't it? The `catch` is used like catch all errors. As you'll see later in this article, you can also catch errors at specific positions within the flow.
+That seems to be attractive in terms of composing functions, isn't it? The `catch` is used to catch all errors in this instance. As you'll see later in this article, you can also catch errors at specific positions within the flow.
 
 ## What Are Promises?
 
-Here is a definition from [MDN on Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise):
+Here is a definition from [MDN on Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), I have tagged it :
 
->The Promise object represents the eventual completion (or failure) of an asynchronous operation, and its resulting value.
+>The Promise object represents the eventual completion **[1]** (or failure) **[2]** of an asynchronous operation **[3]**, and its resulting value **[4]**.
 
-That could be,
+A network request using `fetch` is a fitting example to explain the tagged numbers.
+
+* `[3]` - network request is an asynchronous operation.
+* `[1]` - its completion will result in the promise resolving, leading to `then` part of the chain.
+* `[2]` - a network failure will reject the promise, leading to `catch` part of the chain.
+* `[4]` - the resulting value from `fetch` is the response
+
+Here is the example for above statements in all its JavaScript glory:
+```js
+fetch(url)
+  .then(processData)
+  .catch(error);
+```
+
+Here are a few situations Promises can handle really well:
+
  * a network request that returns a response
  * a location request that returns coordinates
  * a permission popup the user might accept (or ignore)
  * any computation that might take while to arrive at result 
 
-Promises handle these situations very well.
+## Constructing and Consuming Promises
+
+The syntax for promises look like this:
+
+```js
+const promise = new Promise(
+  (resolve, reject) => {
+  //asynchronous activity
+  //call resolve when things go ok
+  //call reject on error
+});
+
+promise
+  .then(processResult)
+  .catch(handleError);
+```
+
+`processResult` passed to `then` is used as the `resolve` callback. `handleError` passed to `catch` is used as the `reject` callback.
+
+Let's build state of the art BlockChain mining program with that knowledge:
+```js
+const mineBlocks=()=>{
+  return new Promise((resolve, reject) => {
+    result=mineBlockChains();
+    if(result==all_Ok)
+      resolve(result);
+    else
+      reject("All are taken!");
+  });
+}
+
+const block=mineBlocks();
+
+block
+  .then(creditBitCoin)
+  .catch(badNewsFirst);
+
+```
+
+If that was too hi-tech and you hear the earth warming up at the very mention of the word *BlockChain*, here is another example. A [CodeSandBox I've created for Promisified version of geolocation API](https://codesandbox.io/s/jv3x2ypn6y).
+
+A preview of the sandbox here:
+```js
+function locate() {
+  return new Promise((located, lost) => {
+    if ("geolocation" in navigator) {
+      navigator
+        .geolocation
+        .getCurrentPosition(located,lost);
+    } else {
+      lost(new Error("Geolocation is not supported"));
+    }
+  }
+}
+
+//make a call
+let location = geo.locate();
+
+//use results when Promise is resolved
+location
+  .then(showPosition)
+  .catch(positionError);
+```
+
+Pay attention to the deterministic nature of the last 3 lines above. It shows what can you expect without taking too much of cognitive load.
 
 ## Promises vs Callbacks?
 
@@ -267,16 +345,17 @@ promise
 ```
 the error handle method above can handle any error from `promise` but cannot handle any error from within `handleResult`.
 
-Which is why, a catch after then is a recommended practice. It'll handle all errors. 
+Which is why, a catch after then is often used to handle all errors. 
 
 But a combination of both can help you handle errors from `promise` and error from `handleResult` differently.
 
 For example,
 
 ```js
-promise.then(handleResult,handleErrorFromPromise)
-.then(onResolve,handleErrorFromResult)
-.catch(handleErrorFromOnResult);
+promise
+  .then(handleResult,handleErrorFromPromise)
+  .then(onResolve,handleErrorFromResult)
+  .catch(errorOnResolve);
 ```
 ## Promise.all
 All of them need to be resolved
