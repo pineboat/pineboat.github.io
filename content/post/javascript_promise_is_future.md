@@ -1,8 +1,8 @@
 ---
 draft: true
 author: "vijayabharathib"
-title: "Promises."
-subtitle: "Learn JavaScript Promises, the new return type of most of the asynchronous web APIs."
+title: "JavaScript Promises Can Help You Fix Callback Hell"
+subtitle: "Promises are the new return type of most of the asynchronous web APIs in JavaScript. Promises help you compose functions better than callbacks."
 date: "2018-05-30T08:15:59+05:30"
 publishdate: "2018-05-30T08:15:59+05:30"
 tags: ["Javascript","ES6","Promises","Asynchronous","Callbacks"]
@@ -11,9 +11,9 @@ image: "/img/newlogo.png"
 image_alt: "important message about image"
 image_credit: "credit the image owner"
 ---
-Javascript Promises give you excellent control over sequencing asynchronous activities and error handling. A whole new generation of Web APIs are starting to use Promises. [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch), [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) and [Notifications](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission) are some of the examples where Promises are taking over callbacks.   
+Javascript Promises give you excellent control over composing functions. Promises help you with higher flexibility to sequence asynchronous activities and handle errors. **A whole new generation of Web APIs are starting to use Promises**. [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch), [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) and [Notifications](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission) are some of the examples where Promises are taking over callbacks.   
 
-Chances are, you already got your fingers burned by Promises. We are on the same boat. No? Then you must be part of the rare species that read the manual before operating an equipment or a gadget. 
+They are very easy to use once you understand the underlying constructs that make Promises tick. Chances are, you already got your fingers burned by Promises. We are on the same boat. No? Then you must be part of the rare species that read the manual before operating an equipment or a gadget. 
 
 I didn't read the manual. I dived head first into using promises [without adequate understanding][problem-with-promises]. No third degree burns, but couple of frustrated hours on the debugger. That's the genesis of this article.
 
@@ -23,6 +23,11 @@ Promises are not entirely new either. The browser support is [good too](https://
 
 ## Table Of Contents
 
+Here is a preview of what you'll go through:
+
+* [Warm up with Event Loop](#warm-up-with-event-loop)
+* [Getting Started with Promises](getting-started-with-promises)
+* [What are Promises?](#what-are-promises)
 * [Constructing Promises](#constructing-promises)
 * [Consuming Promises](#consuming-promises)
 * Callback Heaven and Hell
@@ -36,31 +41,75 @@ Promises are not entirely new either. The browser support is [good too](https://
 * Promise Glossary
 * References
 
-Before you start, you need to know about [Event loop and Run to completion](/post/javascript-run-to-completion-event-loop-asynchronous-foundations/). They are the two most important functionalities of the browser you need to come to term with. Only then will you be able to understand how asynchronous code is executed and how Promises solve important problems. 
+## Warm up with Event Loop
+
+Before you start using Promises, you need to know about [Event loop and Run to completion](/post/javascript-run-to-completion-event-loop-asynchronous-foundations/). They are the two most important functionalities of the browser you need to come to term with. Only then will you be able to understand how asynchronous code is executed and how Promises solve important problems. 
 
 Read [that article](/post/javascript-run-to-completion-event-loop-asynchronous-foundations/), this can wait. 
 
 All right, now that you know more about **Event Loop** and **Run to Completion**, let's head straight into controversies.
 
-## Getting Started
+## Getting Started with Promises
 
-You need to see an example to appreciate what Promises are capable of.
+We are going to get to the root of the promises. But it helps have a good look at the tree first. You need to see an example to appreciate what Promises are capable of (*Don't worry about the details now*).
 
+Here is one from jQuery days.
 ```js
+$.ajax({
+    url: apiURL,
+    success: function(data){
+      if(data.status!="404"){
+        getStream();
+      }else{ //if status is 404 log error
+        $('.error').append(data.message);
+      }
+    },
+    error: function(e){
+      $('.error').append(e.message);
+    }
+});
 ```
-Now, an example from [MDN for Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) API that uses Promises.
 
+You've handled any errors during the ajax call. You've also checked for the status code in the response. By the way, that's a crude example looking only for 404, but in reality you need to take care of other status codes too. 
+
+Now, ask yourself this question. What happens when `getStream` fails? Who handles it? Obviously, the function `getStream` needs to handle it. You might end up using another `$('.error').append(message)`.
+
+Now, an example with Fetch that uses Promises:
 ```js
-fetch('http://example.com/movies.json')
+fetch(apiURL)
   .then(response => response.json())
-  .then(myJson => console.log(myJson);
+  .then(json=>{
+      if(data.status!="404"){
+        return data;
+      }else{ 
+        throw new Error(response.statusText);
+      }
+  })
+  .then(data => getStream())
+  .catch(error => appendError(error));
 ```
+
+That seems to be attractive in terms of composing functions, isn't it? The `catch` is used like catch all errors. As you'll see later in this article, you can also catch errors at specific positions within the flow.
+
+## What Are Promises?
+
+Here is a definition from [MDN on Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise):
+
+>The Promise object represents the eventual completion (or failure) of an asynchronous operation, and its resulting value.
+
+That could be,
+ * a network request that returns a response
+ * a location request that returns coordinates
+ * a permission popup the user might accept (or ignore)
+ * any computation that might take while to arrive at result 
+
+Promises handle these situations very well.
 
 ## Promises vs Callbacks?
 
-If you enter the world of promises thinking **no more callbacks**, the first thing you notice is the heavy use of callbacks.You'll soon see. 
+If you enter the world of promises thinking **no more callbacks**, the first thing you notice is the heavy use of callbacks. You'll soon see. 
 
-Asynchronous activities have used plain callbacks so far. The difference between plain callbacks and promises are in handling responses and errors. 
+Asynchronous activities have used plain callbacks so far. The difference between plain callbacks and promises are in handling responses and errors. Our first ever example at the top showed this.
 
 Another difference is, callbacks are usually nested leading to the proverbial [callback hell](http://callbackhell.com/), while promises are composed as a series of actions. These actions are not blocking the main thread in the name of **run-to-completion**. They will run until they complete, but not by blocking the main thread, but one action at a time, in their own time and space.
 
