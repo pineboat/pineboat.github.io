@@ -119,24 +119,52 @@ Here are a few situations Promises can handle really well:
 
 ## Constructing and Consuming Promises
 
-The syntax for promises look like this:
+You'll go through a few keywords used to talk about promises first and then on to creating and using your own promises in this section.
+
+### Promise States
+
+Before you move forward. You need to understand these terms. 
+
+* When you first invoke a promise, it will be in **Pending** state. That means the asynchronous operation is still underway.
+* When the asynchronous activity is over, the Promise has to move to **Settled** state. A settled Promise can have these two states.
+  * When successful, the Promise moves to **Resolved** state.
+  * If there is an error, then the state would be **Rejected**.
+
+When to settle the promise, when to resolve it and when to reject it is in the hands of the one creating a promise based object/API.
+
+What to do when the promise has resolved and how to handle a rejection is in the hands of a developer who'll be using that promise based object/API.
+
+Both could be you. But there are times when someone else creates a promise based API and developers end up using them. `fetch` API in the browser is one such example. We do not get to decide when to resolve/reject the `fetch` API, but we end up writing *callbacks* to handle successful resolution and also tragic rejections.
+
+### Syntax & Components
+
+It's time already. Let's dive right into some code. The syntax for promises look like this:
 
 ```js
 const promise = new Promise(
   (resolve, reject) => {
-  //asynchronous activity
-  //call resolve when things go ok
-  //call reject on error
+  //asynchronous computation  
+  let result=asyncActivity();
+  if(result==all_is_well)
+    resolve(result); //call resolve when things are ok
+  else
+    reject("Err.."); //call reject on error
 });
 
 promise
-  .then(processResult)
+  .then(processResult) 
   .catch(handleError);
 ```
 
-`processResult` passed to `then` is used as the `resolve` callback. `handleError` passed to `catch` is used as the `reject` callback.
+A new Promise takes a function as parameter. That function takes two parameters, which are also functions.
 
+The function passed to `new Promise` is the heart of this piece of code. You will do your asynchronous operation within this function. Based on the result, you'll also determine whether to resolve or reject a promise.
+
+`processResult` is used as the `resolve` callback through `then`. `handleError` is used as `reject` callback through `catch`.
+
+### Example 1
 Let's build state of the art BlockChain mining program with that knowledge:
+
 ```js
 const mineBlocks=()=>{
   return new Promise((resolve, reject) => {
@@ -156,6 +184,7 @@ block
 
 ```
 
+### Applied Example
 If that was too hi-tech and you hear the earth warming up at the very mention of the word *BlockChain*, here is another example. A [CodeSandBox I've created for Promisified version of geolocation API](https://codesandbox.io/s/jv3x2ypn6y).
 
 A preview of the sandbox here:
@@ -172,7 +201,7 @@ function locate() {
   }
 }
 
-//make a call
+//make a call to the promise
 let location = geo.locate();
 
 //use results when Promise is resolved
@@ -181,7 +210,10 @@ location
   .catch(positionError);
 ```
 
+The location API is still based on **callbacks**. But you can convert that to promise based one as shown above.
+
 Pay attention to the deterministic nature of the last 3 lines above. It shows what can you expect without taking too much of cognitive load.
+
 
 ## Promises vs Callbacks?
 
