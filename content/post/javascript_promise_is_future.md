@@ -123,18 +123,20 @@ You'll go through a few keywords used to talk about promises first and then on t
 
 ### Promise States
 
-Before you move forward. You need to understand these terms. 
+Before you move forward. You need to understand these terms around state of promises. 
 
-* When you first invoke a promise, it will be in **Pending** state. That means the asynchronous operation is still underway.
-* When the asynchronous activity is over, the Promise has to move to **Settled** state. A settled Promise can have these two states.
-  * When successful, the Promise moves to **Resolved** state.
-  * If there is an error, then the state would be **Rejected**.
+State | Description
+------|------------
+**Pending** | When you first invoke a promise, it will be in **Pending** state. That means the async activity is still underway.
+**Settled** | When the async activity is over, the Promise has to move to **Settled** state. 
+**Resolved** | When **settled successfully**, the Promise moves to **Resolved** state.
+**Rejected** | If there is an **error while settling** the promise, then the state would be **Rejected**.
 
-When to settle the promise, when to resolve it and when to reject it is in the hands of the one creating a promise based object/API.
+The developer who is creating the Promise based API can control when to settle the promise. She will also decide when to resolve it and when to reject it.
 
-What to do when the promise has resolved and how to handle a rejection is in the hands of a developer who'll be using that promise based object/API.
+The developer who is consuming the Promise based API has the next set of controls. She can decide what to do when the promise is resolved. She can also decide how to handle errors when the promise is rejected.
 
-Both could be you. But there are times when someone else creates a promise based API and developers end up using them. `fetch` API in the browser is one such example. We do not get to decide when to resolve/reject the `fetch` API, but we end up writing *callbacks* to handle successful resolution and also tragic rejections.
+Both could be you. But there are times when someone else creates a promise based API and other developers end up using them. [axios] is one such library. `fetch` API in the browser is one another example. We do not get to decide when to resolve/reject the `fetch` API, but we end up writing *callbacks* to handle successful resolution with a response and also tragic rejections due to network errors.
 
 ### Syntax & Components
 
@@ -146,9 +148,11 @@ const promise = new Promise(
   //asynchronous computation  
   let result=asyncActivity();
   if(result==all_is_well)
-    resolve(result); //call resolve when things are ok
+    //call resolve when things are ok
+    resolve(result); 
   else
-    reject("Err.."); //call reject on error
+    //call reject on error
+    reject("Err.."); 
 });
 
 promise
@@ -212,8 +216,167 @@ location
 
 The location API is still based on **callbacks**. But you can convert that to promise based one as shown above.
 
-Pay attention to the deterministic nature of the last 3 lines above. It shows what can you expect without taking too much of cognitive load.
+Pay attention to the deterministic nature of the last 3 lines above. It shows what can you expect without taking too much of cognitive load. ...*and that's what I mean by predicting the future, just in case you came in here expecting something else.*
 
+## Promising Features
+
+There are few really impressive traits about Promises that you need to master. Trust me, they don't just equip you with the power but they also save you from lot of hassle.
+
+### Re-Usable
+One of the key attributes of a Promise is, once settled, you can use the result as many times as you want.
+
+Take a look at this example:
+```js
+let promise=Promise.resolve(1);
+
+//first-time use
+promise
+  .then(x=>x+1) //2
+  .then(x=>x*x) //4
+  .then(console.log); //4
+
+//use it a second time
+promise
+  .then(x=>x+2) //3
+  .then(x=>x*x) //9
+  .then(console.log); //9
+```
+Let's go line by line. The first one with `Promise.resolve()` is the easiest way to convert any data into *promisified* object.
+
+We are just passing the literal value 1 and we are getting a promise object in return. The returned promise wraps around the value 1. It is also settled immediately, as there is no async activity here.
+
+Now, the next set of lines try to use the `promise` object by chaining `then`. `then` takes a function as parameter. I'm using arrow functions to add and multiply the values.
+
+As you can see, `promise` retains its original value of `1` even after we called a few `then` on it. That's why the second time `promise` is used, it starts with value 1.
+
+This is important. 
+
+>A promise once settled, cannot be changed.
+
+You can chain `then` to operate on the original value and arrive at different results. But the original promise stays as it is.
+
+Here is another example demonstrating that:
+
+```js
+let p=Promise.resolve(2);
+let q=p.then(x=>x*5)
+p.then(console.log); //2
+q.then(console.log); //10
+```
+
+That demonstrates that each `then` call returns a promise. Another important trait.
+
+>`then` returns a promise, even if the callback passed to `then` returns a literal value. That's why you are able to chain on `then`
+
+
+**Exception**:
+Final catch in this pattern of re-using promise results. This is related to network responses. I'm using [jsonPlaceholder](https://jsonplaceholder.typicode.com/) service, which is a free API available without any registration, for you to try some samples. It returns an `id`, `userId` and `title`.
+
+See what happens when you use the response object a second time:
+```js
+let result=fetch('https://jsonplaceholder.typicode.com/users');
+result
+  .then(res => res.json())
+  .then(json => console.log(json[0].id)); //1
+
+result
+  .then(res=>res.json())
+  .then(json=>console.log(json[0].username));
+  //TypeError; body stream already read
+```
+
+>Be careful about re-using network responses. These responses are streams. Once consumed, you cannot start from scratch again. Reusing works only for literal values, but not for streams. 
+
+Then how do we re-use network responses? Obviously, you do not want to make another network request for the same data.
+
+Sure, good question. **You clone that response and consume that clone.** That will leave the original response intact for further use at a later point in time.
+
+Here is how it's done:
+```js
+let result=fetch('https://jsonplaceholder.typicode.com/posts/1');
+result
+  .then(res => res.clone()) //the trick!
+  .then(data => data.json())
+  .then(json => console.log(json[0].id)); //1
+
+result
+  .then(r=>r.clone())
+  .then(j=>j.json())
+  .then(json=>console.log(json[0].username));
+  //Bret
+```
+### Chaining
+
+You've seen that we've been chaining outputs using `then`. We've also seen that `then` wraps the return value from callback with a Promise and returns a promise object. That begs the question, **what if you do not return any value from callback?**
+
+```js
+let p=Promise.resolve(2);
+p.then(x=>x*x) //4
+ .then(console.log) //4
+ .then(console.log) //undefined!!?
+```
+What happened here? Promise, that's what happened.
+
+`x=>x*x` returned 4. `then` wrapped it as a promise and returned it. `console.log` received that value and printed it, but it **did not return anything**. So the next `console.log` received `undefined`.
+
+>Always return from `then` / `catch` to be able to chain further.
+
+### Unified Return Type
+
+## Error Handling
+
+```js
+let promise=fetch(url);
+
+promise.then(processResponse)
+       .catch(handleError);
+```
+
+### Then can handle errors too
+
+```js
+promise
+    .then(
+      handleResult,
+      handleError
+    );
+```
+the error handle method above can handle any error from `promise` but cannot handle any error from within `handleResult`.
+
+Which is why, a catch after then is often used to handle all errors. 
+
+But a combination of both can help you handle errors from `promise` and error from `handleResult` differently.
+
+For example,
+
+```js
+promise
+  .then(handleResult,handleErrorFromPromise)
+  .then(onResolve,handleErrorFromResult)
+  .catch(errorOnResolve);
+```
+
+### Multiple Catches
+You can introduce multiple `catch` statements in between. They are called if there are any errors in the preceding statements.
+
+```js
+promise
+  .then(callback1)
+  .then(callback2)
+  .catch(errorUpToNow)
+  .then(callback3)
+  .then(callback4)
+  .catch(anyErrorIn3And4)
+  .then(and)
+  .then(so)
+  .then(on);
+```
+
+### Racing
+
+### Own The Pattern
+
+Box pattern
 
 ## Promises vs Callbacks?
 
@@ -366,28 +529,6 @@ This could lead to serious debugging issues. Watch this.
 
 ```js
 //insert axios react example
-```
-
-## Then can handle errors too
-
-```js
-promise
-    .then(handleResult
-        ,handleError);
-```
-the error handle method above can handle any error from `promise` but cannot handle any error from within `handleResult`.
-
-Which is why, a catch after then is often used to handle all errors. 
-
-But a combination of both can help you handle errors from `promise` and error from `handleResult` differently.
-
-For example,
-
-```js
-promise
-  .then(handleResult,handleErrorFromPromise)
-  .then(onResolve,handleErrorFromResult)
-  .catch(errorOnResolve);
 ```
 ## Promise.all
 All of them need to be resolved
