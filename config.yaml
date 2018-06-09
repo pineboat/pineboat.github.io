@@ -21,7 +21,7 @@ menu:
         weight: 110
 params:
   subtitle: "On shipping web"
-  analytics: "https://unarstaged.herokuapp.com/visits"
+  analytics: "https://unar.herokuapp.com/visits"
 
 author:
   vijayabharathib:
