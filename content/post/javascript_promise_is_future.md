@@ -231,14 +231,14 @@ let promise=Promise.resolve(1);
 
 //first-time use
 promise
-  .then(x=>x+1) //2
-  .then(x=>x*x) //4
+  .then(x=>x+1) //1+1=2
+  .then(x=>x*x) //2*2=4
   .then(console.log); //4
 
 //use it a second time
 promise
-  .then(x=>x+2) //3
-  .then(x=>x*x) //9
+  .then(x=>x+2) //1+2=3
+  .then(x=>x*x) //3*3=9
   .then(console.log); //9
 ```
 Let's go line by line. The first one with `Promise.resolve()` is the easiest way to convert any data into *promisified* object.
@@ -268,9 +268,9 @@ That demonstrates that each `then` call returns a promise. Another important tra
 
 >`then` returns a promise, even if the callback passed to `then` returns a literal value. That's why you are able to chain on `then`
 
+### Streams are Exceptions
 
-**Exception**:
-Final catch in this pattern of re-using promise results. This is related to network responses. I'm using [jsonPlaceholder](https://jsonplaceholder.typicode.com/) service, which is a free API available without any registration, for you to try some samples. It returns an `id`, `userId` and `title`.
+Final catch in this pattern of re-using promise results is related to network responses. I'm using [jsonPlaceholder](https://jsonplaceholder.typicode.com/) service, which is a free mock API available without any registration, for you to try  It returns `id`, `userId` and `title`.
 
 See what happens when you use the response object a second time:
 ```js
@@ -279,6 +279,9 @@ result
   .then(res => res.json())
   .then(json => console.log(json[0].id)); //1
 
+//100 other things
+
+//oh, I want to reuse that result again
 result
   .then(res=>res.json())
   .then(json=>console.log(json[0].username));
@@ -289,11 +292,11 @@ result
 
 Then how do we re-use network responses? Obviously, you do not want to make another network request for the same data.
 
-Sure, good question. **You clone that response and consume that clone.** That will leave the original response intact for further use at a later point in time.
+Sure, good question. **You clone that response stream and consume that cloned stream.** That will leave the original response intact for further use at a later point in time.
 
 Here is how it's done:
 ```js
-let result=fetch('https://jsonplaceholder.typicode.com/posts/1');
+let result=fetch('https://jsonplaceholder.typicode.com/users');
 result
   .then(res => res.clone()) //the trick!
   .then(data => data.json())
@@ -305,6 +308,28 @@ result
   .then(json=>console.log(json[0].username));
   //Bret
 ```
+
+APIs such as [Service Workers][service-workers] may need the response stream as it is [where you clone the response each time to keep it alive]. But if you are sure you just need the data, you can move on to a better solution with the following pattern.
+
+Here is another solution:
+```js
+let result=fetch('https://jsonplaceholder.typicode.com/users');
+let data=result
+        .then(data => data.json());
+
+data
+  .then(json => console.log(json[0].id)); //1
+
+data
+  .then(json=>console.log(json[0].username)); //Bret
+```
+
+In this solution, we've stored jsoned the data in a variable named `data`. That's a promise object. You have the json data wrapped around a promise named `data`. As shown above, you can use the `data` again as many times as you want.
+
+But you cannot use the `result` anymore as you have consumed the response stream.
+
+Note: I claim credit for coining that word `jsoning`, err... that's if no one else has already done so.
+
 ### Chaining
 
 You've seen that we've been chaining outputs using `then`. We've also seen that `then` wraps the return value from callback with a Promise and returns a promise object. That begs the question, **what if you do not return any value from callback?**
@@ -317,9 +342,9 @@ p.then(x=>x*x) //4
 ```
 What happened here? Promise, that's what happened.
 
-`x=>x*x` returned 4. `then` wrapped it as a promise and returned it. `console.log` received that value and printed it, but it **did not return anything**. So the next `console.log` received `undefined`.
+`x=>x*x` returned 4. `then` wrapped it as a promise and returned it. The first `console.log` received that value and printed it, but it **did not return anything**. So the next `console.log` received `undefined`.
 
->Always return from `then` / `catch` to be able to chain further.
+>Always return some value from `then` / `catch` to be able to chain further.
 
 ### Unified Return Type
 
@@ -371,14 +396,87 @@ promise
   .then(so)
   .then(on);
 ```
-
 ### Racing
 
 ### Own The Pattern
 
 Box pattern
 
-## Promises vs Callbacks?
+## Promise as Async MicroTasks
+
+>The whole premise of Promises is that they run asynchronously. The **sequence you see is NOT the order of execution**.
+
+let's look at an example.
+```js
+let p=Promise.resolve("promise");
+setTimeout(console.log,0,"timeout");
+p.then(console.log); //promise
+console.log("insider");
+```
+
+We have three print statements there in the above piece of code. Run this on a browser terminal and see what is printed.
+
+What do we expect?
+```
+* timeout
+* promise
+* insider
+```
+
+What do we get?
+```
+* insider
+* promise
+* timeout
+```
+
+Quite the reverse, isn't it?
+
+If you really followed my request to read about [Event Loop][async-foundations], the following explanation would be easy.
+
+Run to completion ensures that all 4 lines are executed before the function leaves the main thread.
+
+Line 1: create a promise object with a value of `promise` text
+Line 2: send `setTimeout` to Web API thread to run 
+Line 3: send `then` callback to *MicroTask* space
+Line 4: print `insider` right away
+
+Even though Line 2 and Line 3 are sent to run somewhere else, then need access to the main thread to finish their computation.
+
+For example, `setTimeout` gets access to a parallel thread, it is used **only to wait until the timeout**. In this case, 0 seconds. That means, it is sent back to the queue right away.
+
+Promises are also do something similar. In that, they do their async activity away from main thread. But the result of that passed to `then` needs access to main thread.
+
+Now we have a race condition. Sort of, but not really. 
+
+Promises are part of the microtask family. Check this: 
+Jake's great talk on Event Loop](https://www.youtube.com/watch?v=cCOL7MC4Pl0). 
+
+>Microtasks such as promises get priority access to queue followed by other tasks initiated by setTimeout
+
+That's why `promise` is printed right after `insider`. Finally, `timeout` is printed. Here is the whole story:
+
+* `insider` is printed right away from the current scope.
+* `timeout` takes a round-trip
+* `promise` takes a round-trip
+* `timeout` and `promise` meet each other
+* `promise` takes priority
+
+...and they lived happily ever after.
+
+After all this, if you ever write code like this, you'll spend rest of your lives in devtools.
+
+```js
+let data;
+fetch(url).then(res=>{
+  data=res.json();
+});
+render(data); //undefined
+```
+
+You need to remember, `let data;` and `render(data)` will be executed immediately, but `fetch` takes an async round trip via event loop. So `render` is called even before the `fetch` can assign a meaningful value.
+
+## Promises vs Callbacks
 
 If you enter the world of promises thinking **no more callbacks**, the first thing you notice is the heavy use of callbacks. You'll soon see. 
 
@@ -386,100 +484,39 @@ Asynchronous activities have used plain callbacks so far. The difference between
 
 Another difference is, callbacks are usually nested leading to the proverbial [callback hell](http://callbackhell.com/), while promises are composed as a series of actions. These actions are not blocking the main thread in the name of **run-to-completion**. They will run until they complete, but not by blocking the main thread, but one action at a time, in their own time and space.
 
-## Promises capabilities
-1. You can attach handlers before or after a promise had finished running.
-2. You can nest them
-3. You can compose/chain them
-3. Literal return values are automatically packaged promises
-4. You can handle all errors in one place or all over the place
-5. Once you are inside a promise there is no way out.
+## Non-Blocking Promises
 
-Promises seem to be promising too much, don't they? Some of them in the list may apply to usual javascript programs even without promises. But few of them are quite unique (such as attaching handlers after firing actions within promises). We are going to see all that in detail.
-
-## Going back in time with promises
-There is a chance the async operation was so fast, that it finished before we could attach an event handler in the next line of code. The callback will then be sitting idle for an event to fire without knowing that train is long gone.
-
-Promises again come to rescue. You can invoke a callback on a promise and it'll use the last result (which is usually a response of async operation). Even if the promise was completed sometime in the past.
-
-My reference is the book [ExploringJS](http://exploringjs.com/es6/ch_async.html). An improvised version to demonstrate run to completion.
-
-```js
-setTimeout(()=>{
-    console.log("fired without delay");
-},0);
-setTimeout(function () { 
-    console.log('fired after 1s delay');
-}, 1000);
-console.log('fired without setTimeout'); 
-let start=Date.now
-while((Date.now-start)<5000); 
-console.log('fired after 5s delay');
-//fired without setTimeout
-//fired after 5s delay 
-//fired without delay
-//fired after 1s delay
-```
-This may seem peculiar at first. Let's take the first line of code, that triggers a callback immediately. It is printed third in the output. Why wasn't it executed first?
-
-Well, it was executed first. But just the setTimeout. **Not the callback**. The callback with `fired without setTimeout` is placed right at the end of the queue. 
-
-Hence, there is no race condition here **within** the current function. Run-to-completion may sound like blocking, [MDN explains](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop) why it is not so. While our little function does have run-to-completion protection, the event loop can progress requests like IO or network requests initiated earlier in the background and their callback can join the queue.
-
-But it is possible to [create a race-condition-like](https://stackoverflow.com/questions/2734025/is-javascript-guaranteed-to-be-single-threaded/2734311#2734311) scenario ourselves.  
-
-Missing an example of attaching event **TK**
-
-## Both single threaded and multi-threaded
-How can it be? The clue is in **it**. If it means JavaScript, it is single threaded. Javascript gets just one stack and it can do only one thing at a time. But if it means browser, it can do a lot (multi-threaded). The `setTimeout` actually gets a timer from the browser that runs outside of the stack. So does AJAX server requests.
- 
-## Understand promise
-
-Promise changed the linear, synchronous nature of javascript programming. When you are making promises, you can't think straight. This sounds true even in other aspects of life, isn't it?
-
-Introduction by Jake [here](https://developers.google.com/web/fundamentals/primers/promises)
-
-Back to JavaScript, Promise has the following attributes:
-* is an object (after all, we are in JS)
-* has no sense of time. that is, asynchronous
-* is not limited by any other tasks in front or back of the queue (that is, the order of code in your .js file). non-blocking.
-* you can trust it to give an answer (whether you'll like it or not is up to you)
-
+Promises changed the linear, synchronous nature of javascript programming with callbacks. 
 
 You give it a job. It might take its own sweet time, just like any other block of code. But you can trust on it to let you know if the task was fulfilled or something went wrong along the way.
 
-Why promises in js are most promising feature? They are an elegant alternative to callbacks.
+That's why promises are an elegant alternative to plain callbacks.
 
-Let's say you want to request a data from server and update the UI. Let's look at a traditional order.
-
-**Option 1**
+Here is a demonstration. Let's say you want to request a data from server and update the UI. Let's look at a traditional order with synchronous activities.
 
 * Prepare the shell UI (2 seconds)
-* Request and receive Data (2 seconds)
+* Request and receive Data (4 seconds)
 * Update UI (2 seconds)
 
-**Option 2**
+On the whole, that would take about 8 seconds.
 
-* Request and receive data (2 seconds)
-* Prepare shell UI (2 seconds)
+Here is how it looks:
+![image showing three activities happening one after another](/img/007_promises/callback_sequential.png)
+
+The **Promise** async activity sequencing allows you to re-order things and achieve better results.
+
+* Request and receive data in the background(4 seconds)
+* Prepare shell UI **simultaneously** (2 seconds)
 * Update UI (2 seconds)
 
-**Promise**
+This sequence ends in 6 seconds, 2 seconds earlier than the previous approach. Here is a visual:
 
-* Request and receive data in the background(2 seconds)
-* Prepare shell UI **simultaneously** (0 seconds)
-* Update UI (2 seconds)
+![async parallel activities finishing earlier](/img/007_promises/parallel_promise_async.png)
 
-The last options is what we call asynchronous.  
-
-**insert a picture showing this visually**
-**find some examples from real libraries**
-
-
-## Promise Questions
-
-* can we have a promise to do things in order (using then). how about refactoring that simon game playback using promises?
+*Trivia:* I've reused [mozilla css-grid playground](https://mozilladevelopers.github.io/playground/css-grid/) to arrive at those images above. An occupational hazard when you know how to move things around using CSS, that becomes your design tool of choice. Nor Photoshop, neither GIMP, it's CSS. 
 
 ## Callback Heaven and Hell
+
 When I first started with Javascript, passing functions as arguments took some time to wrap my head around. But I realized quite soon how powerful it can be. I started solving many problems in an efficient manner with call backs. That's what I'd call heaven.
 
 But one can take it too far. So far long that you reach the end of heaven and open the gates of hell. Anonymous callbacks inside one another to create a horizontal pyramid. This page on the internet , [http://callbackhell.com/], that helps you escape. It's just one page, give it a try.
@@ -494,44 +531,8 @@ Have a look into callbacks from [YDKJS](https://github.com/getify/You-Dont-Know-
 
 you might miss your chance.
 
-## Use a settled promise anytime
-This is where promise shines. you can use the result of a settled promise much later when you register an event (or call `then` on the result). Promises got you covered there.
-
-```js
-let promise=Promisified();
-// do
-// 100
-// other 
-// things
-promise.then(works);
-```
-This is the cool part. You'll never miss an event by seconds. Promises protect you against registering event handlers late in the game. In the above example, we've seen the callback within `then` is executed on the result from the `Promisified` function call.
-
-That promise might have been settled minutes ago. But the results are available for you to take advantage of.
-
-## Then is Asynchronous (queued)
-Then part of promise does not get run-to-completion priority because other lines in the function will get run-to-completion.
-
-let's look at an example.
-```js
-    promise
-        .then(f1)
-        .then(f2)
-        .catch(e);
-    getStage();
-    getActors();
-```
-Run-to-completion prioritizes `getStage()` and `getActors()` after promise is invoked. Since they are part of the current scope, they get immediate space in the stack. This is because `then` and `catch` are asynchronous and should be added to the queue. 
-
-This is where I was tripped off. I mutated a variable inside `then` and tried to use it within `getStage`. It works, but since `getStage` runs first, the variable will not be mutated until much later.
-
-This could lead to serious debugging issues. Watch this.
-
-```js
-//insert axios react example
-```
 ## Promise.all
-All of them need to be resolved
+What if you have many async activities? All of them need to be resolved
 ## Promise.race
 As soon as one of them is resolved
 
@@ -550,118 +551,10 @@ References:
 * Exploring JS 
 * [Promises/A+ One-Page Specification](https://promisesaplus.com/)
 * [Problem with Promises][problem-with-promises]
+
+
 Remember, the next time you want to use a new feature, tell yourself to read the specs first. No, I'm just kidding.
 
-
-## Appendix - The Axios Story
-
-I recently used [axios][axios] library for one of my projects. It does what it says on the carton: "A Promise Based HTTP Client For The Browser and Node.JS". Here is the simplified version how it started.
-
-```js
-import React from 'react';
-import { render } from 'react-dom';
-import axios from 'axios';
-
-var players=[];
-var data_url="https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
-
-
-axios.get(data_url)
-  .then(renderList)
-  .catch(handleError);
-
-function handleError(err){
-  console.error("Couldn't get " + data_url);
-}
-
-function renderList(list){
-    players=response.data.map((cyclist,index)=>{
-    return (<li key={index}>
-    {cyclist.Name}
-    </li>);
-  });
-  console.log("inside axios:" + players);
-}
-
-const Tour =()=>{
-    console.log("inside app:" + players);
-    return <ul>{ players }</ul>;
-}
-
-render(<Tour />, document.getElementById('root'));
-```
-
-This is the intention:
-
-* Initiate a request for data using `axios`
-* Renter Tour App
-* Update player names once data is received
-
-But I don't see any players. Just an empty array inside the app. But inside the `axios` sequence, I can see the array is hydrated with player names.
-
-Here is what happened instead:
-
-* Initiate a request for data using `axios`
-* Render Tour App with empty player list
-* Update global variable `players` once response is received from `axios`
-
-That's a mind wired to write things in sequence and expecting them to run in sequence. It is missing an important dimension that you don't see readily. Time. All those lines are executed in sequence, but `axios.get` is Promise based. Asynchronous. 
-
-**The `players` is empty when the app was rendered.** It wasn't until a bit later when the `players` variable was filled with the result from `axios.get`, which was running in a *separate thread*, so to speak.
-
-The tricky part is, when you debug the buggy code manually, it might work, as you manually step through each line. Before we move on the the app render function, the `axios.get` function might return a valid value. You'll see everything rendering properly. But in reality, the execution until end of render is faster than `axios.get`, we do not see the results. 
-
-This is one of the rare occasions where `console.log` trumps `debugger`. You'll be able to see `undefined` error first and then the result of `axios` get.
-
-We can make it work by moving the axios inside the app lifecycle event. Here is a working version: **TK: put this in a gist, this is not required**
-
-```js
-import React from 'react';
-import { render } from 'react-dom';
-import axios from 'axios';
-
-var data_url="https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
-
-function transformData(response){
-  return response.data.map((cyclist,index)=>{
-    return <li key={index}>{cyclist.Name}</li>;
-  })
-}
-function handleError(err){
-  console.error("Couldn't get " + data_url);
-}
-
-
-class Tour extends React.Component {
-  constructor(props){
-    super(props);
-    this.state={players: []}
-  }
-  componentDidMount(){
-    axios.get(data_url)
-      .then(transformData)
-      .then(list=>{
-        this.setState({players:list});
-      })
-      .catch(handleError);
-  }
-  render(){
-    return (<ul>
-        { this.state.players }
-    </ul>);
-  }
-}
-
-render(<Tour />, document.getElementById('root'));
-
-```
-Here, the  `axios.get` is part of the app. It is launched after the component is rendered. It doesn't rely on a separate variable to hold the response. Instead, sets the state of the app upon a response. The state then demands re-rendering of the component with the new set of data.
-
-Now that we've seen what happens when we look at an asynchronous code linearly, let's dive right into Promises.
-
-**TK;**
-Promises are part of the microtask family. Check this: 
-Jake's great talk on Event Loop](https://www.youtube.com/watch?v=cCOL7MC4Pl0), don't miss it.
 
 
 [problem-with-promises]:https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html
@@ -669,3 +562,4 @@ Jake's great talk on Event Loop](https://www.youtube.com/watch?v=cCOL7MC4Pl0), d
 [heimdall]: http://marvelcinematicuniverse.wikia.com/wiki/Heimdall
 [sauron]: http://lotr.wikia.com/wiki/Eye_of_Sauron
 [minimum-time-not-guaranteed]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
+[async-foundations]:/post/javascript-run-to-completion-event-loop-asynchronous-foundations/
