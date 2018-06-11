@@ -1,8 +1,8 @@
 ---
 draft: true
 author: "vijayabharathib"
-title: "JavaScript Promises Can Help You Fix Async Hell"
-subtitle: "Promises are the new return type of most of the asynchronous web APIs in JavaScript. They are much friendlier on your brain. They can help you handle errors better."
+title: "Re-Think Promises When You Write Async JavaScript"
+subtitle: "Promises are the new return type of most of the asynchronous web APIs in JavaScript. Much friendlier on your brain. They help you handle errors better. Also, to have more control"
 date: "2018-06-11T05:15:59+05:30"
 publishdate: "2018-06-11T05:15:59+05:30"
 tags: ["Javascript","ES6","Promises","Asynchronous","Callbacks"]
@@ -17,7 +17,7 @@ They are very easy to use once you understand the underlying constructs that mak
 
 I didn't read the manual. I dived head first into using promises [without adequate understanding][problem-with-promises]. No third degree burns, but couple of frustrated hours on the debugger. That's the genesis of this article.
 
->This article aims to help you understand Promises in a browser environment. You'll also be able to see where Promises fit in the big picture of **Asynchronous JavaScript.**
+>This article aims to help you understand Promises in the context of **Asynchronous JavaScript.** Pitfalls of async code and how promises help you with more control.
 
 Promises are not entirely new either. The browser support is [good too](https://caniuse.com/#search=promises) and you can find [polyfills](https://github.com/stefanpenner/es6-promise) if you had to support browsers that do not support Promises yet. 
 
@@ -93,13 +93,13 @@ The same letter in JavaScript:
 ```js
 $.ajax({
     url: apiURL,
-    success: function(data){
+    success: data=>{
       //valid data from HTTP
-      $('#count').append(data);
+      console.log('success',data);
     },
-    error: function(xhr,status){
+    error: (xhr,status)=>{
       //HTTP or parsing error
-      $('#error').append(status);
+      console.log('error',status);
     }
 });
 ```
@@ -126,8 +126,8 @@ Now, an example with [Fetch API][using-fetch] that uses Promises:
 ```js
 fetch(apiURL)
   .then(validate)
-  .then(data => $('#count').append(data)))
-  .catch(error => $('#error').append(status););
+  .then(data => console.log('success',data))
+  .catch(error => console.log('error',error));
 
 //a simple validate function
 function validate(response){
@@ -621,6 +621,89 @@ Had the Promise been rejected, `finally` would then send that rejected Promise b
 
 ## Racing with Promises
 
+Promise API provides a `race` method that allows you to get fastest response from many different possible inputs.
+
+Let's say your data is geographically distributed. You want to try and get data as much as possible, but you do not want to figure out closest data center manually.
+
+You can outsource that job to `Promise.race`. It takes an iterable list of promises, conducts a race and returns the first one to resolve/reject. 
+
+Here is something that you can start with:
+
+```js
+const US=fetch(US_URL);
+const EU=fetch(EU_URL);
+const ASIA=fetch(ASIA_URL);
+
+let fastest=Promise.race([US,EU,ASIA]);
+
+fastest.then(delightUser)
+       .catch(countMistakes);
+
+```
+
+A bit more streamlined version:
+
+```js
+let urlList=[
+  "https://us.pineboat.in",
+  "https://uk.pineboat.in",
+  "https://sa.pineboat.in"
+];
+
+const fastestResponse = list => {
+  let promises=list.map(url => fetch(url));
+  return Promise.race(promises);
+} 
+
+let res=fastestResponse(urlList);
+
+res.then(updateUI)
+   .catch(failInStyle);
+
+```
+
+Here, the `fastestResponse` takes an array of URLs and returns the fastest response when you invoke the function call.
+
+## Iterating Promises
+
+While there can be only one winner in a `race`, UI development is no race. At least not all the time. Sometimes, you need all the runners to reach the line for the race to be successful.
+
+Imagine for a second you are building a Geo Chart that shows sales across countries. All you have is a list of URLs for each country. You need to make a network request to each URL and present their results in the chart. 
+
+Now, you do not want to run a race. Instead, you need all the data. Missing any single data might mislead your CEO. Uh ho!
+
+You are in safe hands with `Promise.all` here. It is very similar to `Promise.race`. It takes an iterable list of promises, like an array of promises. It also returns a single settled promise.
+
+**But `Promise.all` returns a promise that contains the list of values returned from each promise in the list passed to `Promise.all`.** 
+
+SHOW.ME.THE.CODE:
+
+```js
+let urlList=[
+  "https://us.pineboat.in",
+  "https://uk.pineboat.in",
+  "https://sa.pineboat.in"
+];
+
+const everyResponse = list => {
+  let promises=list.map(url => fetch(url));
+  return Promise.all(promises);
+} 
+
+let res=everyResponse(urlList);
+
+res.then(updateCountries)
+   .catch(failInStyle);
+
+const updateCountries = list => {
+  list.forEach( country => updateUI);
+}
+```
+
+In this result, you have access to every result from each individual promises sent to `Promise.all`. That's the whole difference.
+
+In case one of the promises in the list is rejected, `all` method returns a rejected promise with that error message. 
+
 ## Promises Are MicroTasks
 
 >The whole premise of Promises is that they run asynchronously. The **sequence you see is NOT the order of execution**.
@@ -668,8 +751,7 @@ Promises are also do something similar. In that, they do their async activity aw
 
 Now we have a race condition. Sort of, but not really. 
 
-Promises are part of the microtask family. Check this: 
-Jake's great talk on Event Loop](https://www.youtube.com/watch?v=cCOL7MC4Pl0). 
+Promises are part of the microtask family. [Jake's talk on Event Loop](https://www.youtube.com/watch?v=cCOL7MC4Pl0) is an awesome one in understanding where they stand in order of priority. 
 
 >Microtasks such as promises get priority access to queue followed by other tasks initiated by setTimeout
 
@@ -695,13 +777,11 @@ render(data); //undefined
 
 You need to remember, `let data;` and `render(data)` will be executed immediately, but `fetch` takes an async round trip via event loop. So `render` is called even before the `fetch` can assign a meaningful value.
 
-
-
 ## Own The Pattern
 
 The takeaway from this article does not end with an understanding of Promises.
 
-This is an interesting pattern isn't it? You can create your own objects with such pattern. Add immutability to the DNA and send it out to the whole world to see.
+**Thenable** or **Chainable** is an interesting pattern isn't it? You can create your own objects with such a pattern. Add immutability to the DNA and send it out to the whole world to see.
 
 ```js
 const Wrapper = val => ({
@@ -731,6 +811,48 @@ Have a look at [Professor Frisby's Introduction to Composable Functional Javascr
 
 I hope that inspires you to try out different solutions on this pattern.
 
+## Bonus
+
+Remember the first ever code block you read in this article. It was on jQuery. I thought translating that into promisified code could be a fitting end to understanding promises.
+
+```js
+$.ajax({
+    url: apiURL,
+    success: (data)=>{
+      //valid data from HTTP
+      console.log(error);
+    },
+    error: (xhr,status)=>{
+      //HTTP or parsing error
+      console.log(error);
+    }
+});
+```
+
+```js
+const good = data => 
+    console.log(data);
+
+const bad = error => 
+    console.log(error);
+
+const promisifiedAjax = (apiURL) => {
+  return new Promise((resolve,reject)=> {
+    $.ajax({
+        url: apiURL,
+        success: resolve,
+        error: reject
+    });
+  }
+}
+
+let res=promisifiedAjax(apiURL);
+
+res.then(good).catch(bad);
+
+```
+In a way this is similar to promisifying `geolocation` we have done earlier. In case it didn't make sense at that time, hope this serves as a recap as you know more about promises now.
+
 ## References:
 
 * [Callbacks @ YDKJS][ydkjs-callbacks]
@@ -738,8 +860,11 @@ I hope that inspires you to try out different solutions on this pattern.
 * [Promises/A+ One-Page Specification](https://promisesaplus.com/)
 * [Problem with Promises][problem-with-promises]
 
+## Thank you
+
 Remember, the next time you want to use a new feature, tell yourself to read the specs first. No, I'm just kidding.
 
+Hope this has been useful! Thank you for staying with me so far. If you think your friends and colleagues will benefit, do share this wider.
 
 [problem-with-promises]:https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html
 [axios]:https://github.com/axios/axios

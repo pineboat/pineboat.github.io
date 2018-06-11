@@ -5,7 +5,7 @@ publishdate = "2017-09-07T21:05:24+05:30"
 subtitle = "Removed Google Analytics"
 tags = ["privacy","policy"]
 title = "Privacy Policy"
-
+draft = true
 +++
 
 Hi, this is Vijayabharathi, author of this blog. I have used Google analytics within Pineboat.in. Google analytics is a small piece of software that tracks visitor (your) information.
