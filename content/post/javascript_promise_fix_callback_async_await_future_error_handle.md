@@ -2,9 +2,9 @@
 draft: true
 author: "vijayabharathib"
 title: "JavaScript Promises Can Help You Fix Async Hell"
-subtitle: "Promises are the new return type of most of the asynchronous web APIs in JavaScript. They are much friendlier on your brain. Promises help you handle errors better."
-date: "2018-06-11T08:15:59+05:30"
-publishdate: "2018-06-11T08:15:59+05:30"
+subtitle: "Promises are the new return type of most of the asynchronous web APIs in JavaScript. They are much friendlier on your brain. They can help you handle errors better."
+date: "2018-06-11T05:15:59+05:30"
+publishdate: "2018-06-11T05:15:59+05:30"
 tags: ["Javascript","ES6","Promises","Asynchronous","Callbacks"]
 categories: ["Javascript"]
 image: "/img/007_promises/javascript_promises.png"
@@ -62,16 +62,13 @@ Here is a preview of what you'll go through:
 * [The Problem with Inversion of Control](#the-problem-inversion-of-control)
 * [What are Promises?](#what-are-promises)
 * [Constructing & Consuming Promises](#constructing-and-consuming-promises)
-* Callback Heaven and Hell
-* To Block or Not to Block
-* Promise Capabilities
-* Composing Sequence
-* Error Handling
-* Promise Orchestration
-* Scaling Promises
-* Pitfalls Beware
-* Promise Glossary
-* References
+* [Promise Features](#promising-features)
+* [Error Handling](#error-handling)
+* [Promise.finally](#the-inevitable-finally)
+* [Racing with Promises](#racing-with-promises)
+* [Promises Are MicroTasks](#promises-are-microTasks)
+* [Own The Pattern](#own-the-pattern)
+* [References](#references)
 
 ## Warm up with Event Loop
 
@@ -141,6 +138,7 @@ function validate(response){
   }
 }
 ```
+Note: [Arrow functions][arrow-functions] are used in the example above and a lot many times later in this article. Get comfortable with them.
 
 What is different here? Who has more control?
 
@@ -219,6 +217,7 @@ As a recap for possible states, with some JavaScript syntactic sugar:
 It's time already. Let's dive right into some code. The syntax for promises look like this:
 
 ```js
+//Constructing
 const promise = new Promise(
   (resolve, reject) => {
 
@@ -234,6 +233,7 @@ const promise = new Promise(
   } 
 });
 
+//Consuming
 promise
   .then(processResult) 
   .catch(handleError);
@@ -243,15 +243,19 @@ A new Promise takes a function as parameter. That function takes two parameters,
 
 The function passed to `new Promise` is the heart of this piece of code. You will do your asynchronous operation within this function. Based on the result, you'll also determine whether to resolve or reject the promise.
 
-`processResult` is used as the `resolve` callback through `then`. `handleError` is used as `reject` callback through `catch`.
+That's just creating promises.
+
+Consuming needs actual functions being passed. The callback function in place of `resolve` has to be sent to `then` call. `reject` callback is sent to `catch`.
+
+In this example, `processResult` is used as the `resolve` callback through `then`. `handleError` is used as `reject` callback through `catch`.
 
 ### Example 1
 Let's build state of the art BlockChain mining program with that knowledge:
 
 ```js
-const mineBlocks=()=>{
+const startMining=()=>{
   return new Promise((resolve, reject) => {
-    result=mineBlockChains();
+    result=mineBlock();
     if(result==all_Ok)
       resolve(result);
     else
@@ -259,9 +263,9 @@ const mineBlocks=()=>{
   });
 }
 
-const block=mineBlocks();
+const mined=startMining();
 
-block
+mined
   .then(creditBitCoin)
   .catch(badNewsFirst);
 
@@ -289,7 +293,7 @@ function locate() {
 }
 
 //make a call to the promise
-let location = geo.locate();
+let location = locate();
 
 //use results when Promise is resolved
 location
@@ -303,9 +307,65 @@ Now the result of `getCurrentLocation` is retained in `location` and you can dec
 
 Pay attention to the deterministic nature of the last 3 lines above. It shows what can you expect without taking too much of cognitive load. ...*and that's what I mean by predicting the future, just in case you came in here expecting something else.*
 
+### Promise.resolve
+
+Another simpler way to create Promises is to use methods `resolve` or `reject` directly on the Promise. You can pass a literal value or another promise object to these methods.
+
+Take a look at this example:
+```js
+let promise=Promise.resolve(1);
+
+promise
+  .then(x=>x+2) //1+2=3
+  .then(console.log); //3
+```
+
+We are just passing the literal value 1 and we are getting a promise object in return. The returned promise wraps around the value 1. It is also settled immediately, as there is no async activity here.
+
+First `then` call takes the value `1`, adds `2` to it and returns `3`. Next `then` call takes the promise from `then`, unwraps 3, passes it to `console.log` which eventually prints it.
+
+**Warning**: just passing `console.log` to a `then` call breaks the chainability. Keep in mind that this is only for demonstration. Later sections will tell you why it breaks the chain.
+
+What if you pass a promise instead of literal value?
+
+```js
+let p=Promise.resolve(1);
+let q=Promise.resolve(p);
+p.then(console.log); //1
+q.then(console.log); //1
+```
+
+As you can see, even if you pass a promise to `Promise.resolve`, it has internally unwrapped the value. That's why `q.then` prints 1 instead of promise object.
+
+### Promise.reject
+
+This one is easy. The same way you get a promise by directly calling `resolve`, you can get a `rejected` promise by calling `reject.
+
+Watch what happens to `then`:
+```js
+let p=Promise.reject(1);
+p.then(console.log)
+ .catch(e=>console.log("Ouch! " + e ));
+
+// Ouch! 1
+```
+The `then` is ignored in this case, as the promise's state is rejected. Only the `catch` call is invoked. 
+
+Now, what if you pass a rejected promise to `Promise.resolve`? Will it be resolved?
+
+```js
+let p=Promise.reject(1);
+let q=Promise.resolve(p);
+p.then(console.log); //1
+q.then(console.log)
+ .catch(e=>console.log("Ouch!")); //Ouch!
+```
+
+*The answer is, No*. Passing a rejected promise to `Promise.resolve` will still return the rejected promise to you. ...and that makes sense, what would you do with the error within the rejected promise had it been resolved?
+
 ## Promising Features
 
-There are few really impressive traits about Promises that you need to master. Trust me, they don't just equip you with the power but they also save you from lot of hassle.
+There are few really impressive traits about Promises that you need to master. Trust me, with great power comes greater responsibility. You'll save yourself from lot of hassle when you understand these traits.
 
 ### Immutable and Re-Usable
 
@@ -327,11 +387,10 @@ promise
   .then(x=>x*x) //3*3=9
   .then(console.log); //9
 ```
-Let's go line by line. The first one with `Promise.resolve()` is the easiest way to convert any data into *promisified* object.
 
-We are just passing the literal value 1 and we are getting a promise object in return. The returned promise wraps around the value 1. It is also settled immediately, as there is no async activity here.
+First we create a resolved promise with a value 1.
 
-Now, the next set of lines try to use the `promise` object by chaining `then`. `then` takes a function as parameter. I'm using arrow functions to add and multiply the values.
+Next set of lines try to use the `promise` object by chaining `then`. `then` takes a function as parameter. 
 
 As you can see, `promise` retains its original value of `1` even after we called a few `then` on it. That's why the second time `promise` is used, it starts with value 1.
 
@@ -408,9 +467,6 @@ In this solution, we've stored jsoned the data in a variable named `data`. That'
 But you cannot use the `result` anymore as you have consumed the response stream.
 
 Note: I thought of claiming credit for coining that word `jsoning`, but [Google](https://www.google.com/search?q=jsoning) already has more than 4000 results. Phew.
-
-
-
 
 ### Chaining
 
@@ -693,3 +749,4 @@ Remember, the next time you want to use a new feature, tell yourself to read the
 [async-foundations]:/post/javascript-run-to-completion-event-loop-asynchronous-foundations/
 [ydkjs-callbacks]:https://github.com/getify/You-Dont-Know-JS/blob/master/async%20%26%20performance/ch2.md
 [using-fetch]:https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+[arrow-functions]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
