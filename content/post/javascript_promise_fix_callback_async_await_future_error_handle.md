@@ -11,15 +11,16 @@ image: "/img/007_promises/javascript_promises.png"
 image_alt: "JavaScript Promises"
 image_credit: "Patterns from trianglify.io"
 ---
-Javascript Promises give you excellent control over composing functions. Promises help you with higher flexibility to sequence asynchronous activities and handle errors. **A whole new generation of Web APIs are starting to use Promises**. [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch), [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) and [Notifications](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission) are some of the examples where Promises are taking over callbacks.   
+
+JavaScript Promises give you excellent control over composing functions. Promises help you with higher flexibility to sequence asynchronous activities and handle errors. **A whole new generation of Web APIs are starting to use Promises**. [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch), [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) and [Notifications](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission) are some of the examples where Promises are taking over callbacks.   
 
 They are very easy to use once you understand the underlying constructs that make Promises tick. Chances are, you already got your fingers burned by Promises. We are on the same boat. No? Then you must be part of the rare species that read the manual before operating an equipment or a gadget. 
 
 I didn't read the manual. I dived head first into using promises [without adequate understanding][problem-with-promises]. No third degree burns, but couple of frustrated hours on the debugger. That's the genesis of this article.
 
->This article aims to help you understand Promises in the context of **Asynchronous JavaScript.** Pitfalls of async code and how promises help you with more control.
+>This article aims to help you understand Promises in the context of **Asynchronous JavaScript.** The pitfalls of async code and how promises help you with more control.
 
-Promises are not entirely new either. The browser support is [good too](https://caniuse.com/#search=promises) and you can find [polyfills](https://github.com/stefanpenner/es6-promise) if you had to support browsers that do not support Promises yet. 
+Promises are not entirely new. They have been around longer that most of us would imagine. The browser support is [good too](https://caniuse.com/#search=promises) and you can find [polyfills](https://github.com/stefanpenner/es6-promise) if you had to support browsers that do not support Promises yet. 
 
 ## Non-Blocking Promises
 
@@ -76,13 +77,14 @@ Before you start using Promises, you need to know about [Event loop and Run to c
 
 Read [that article](/post/javascript-run-to-completion-event-loop-asynchronous-foundations/), this can wait. 
 
-All right, now that you know more about **Event Loop** and **Run to Completion**, let's head straight into problems.
+Now that you know more about **Event Loop** and **Run to Completion**, let's head straight into problems.
 
 ## The Problem - Inversion of Control
 
 We are going to get to the *root* of the promises. But it helps have a good look at the *tree* first. You need to see an example to appreciate what Promises are capable of (*Don't worry about the details now*).
 
 **Inversion of control** is when you rely on another party to control the flow of your code. Another party could be a third party library or a library written by another developer in your organization, or it could be another piece of code you've written.
+
 
 
 Here is one using callback from jQuery days. Let's write a letter to jQuery:
@@ -93,13 +95,13 @@ The same letter in JavaScript:
 ```js
 $.ajax({
     url: apiURL,
-    success: data=>{
-      //valid data from HTTP
-      console.log('success',data);
+ success: data=>{
+ //valid data from HTTP
+ console.log('success',data);
     },
-    error: (xhr,status)=>{
-      //HTTP or parsing error
-      console.log('error',status);
+ error: (xhr,status)=>{
+ //HTTP or parsing error
+ console.log('error',status);
     }
 });
 ```
@@ -111,7 +113,7 @@ You've handed over several things to jQuery. Here is the list:
 3. jQuery to call `success` when it likes the result
 4. jQuery to call `error` when it is not so happy
 
-That's what **inversion of control**. You gave control to jQuery for a long time. That's not jQuery's fault (or any other library's fault). That just happens to be one of the best ajax solutions we ever had.
+That's what **inversion of control**. You gave control to jQuery for a long time. That's not jQuery's fault (or any other library's fault). That seems to be one of the best ajax solutions we ever had.
 
 Now, ask yourself these questions.
 * What happens when jQuery does not get a response?
@@ -125,20 +127,14 @@ Now, an example with [Fetch API][using-fetch] that uses Promises:
 
 ```js
 fetch(apiURL)
-  .then(validate)
-  .then(data => console.log('success',data))
-  .catch(error => console.log('error',error));
+ .then(validate)
+ .then(data => console.log('success',data))
+ .catch(error => console.log('error',error));
 
-//a simple validate function
-function validate(response){
-  if(response.ok){
-    return response.body;
-  }else{ 
-    throw new Error(response.statusText);
-  }
-}
 ```
 Note: [Arrow functions][arrow-functions] are used in the example above and a lot many times later in this article. Get comfortable with them.
+
+The `validate` function's implementation details are not important now. It just ensures the response is ok to move forward to next level of processing.
 
 What is different here? Who has more control?
 
@@ -171,8 +167,8 @@ The network request using `fetch` is a fitting example to explain the tagged num
 Here is the example for above statements in all its JavaScript glory:
 ```js
 fetch(url)
-  .then(processData)
-  .catch(handleError);
+ .then(processData)
+ .catch(handleError);
 ```
 
 Here are a few situations Promises can handle really well:
@@ -212,6 +208,8 @@ As a recap for possible states, with some JavaScript syntactic sugar:
 * Settled = (Resolved || Rejected);
 * Pending = (!Resolved && !Rejected);
 
+There is no built-in method for promise API to get the current state. You should also avoid trying to get it (as a call on `then` or `catch` will automatically take the sequence forward). However, if you wanted to experiment, start [here](https://stackoverflow.com/questions/30564053/how-can-i-synchronously-determine-a-javascript-promises-state).
+
 ### Syntax & Components
 
 It's time already. Let's dive right into some code. The syntax for promises look like this:
@@ -219,24 +217,24 @@ It's time already. Let's dive right into some code. The syntax for promises look
 ```js
 //Constructing
 const promise = new Promise(
-  (resolve, reject) => {
+ (resolve, reject) => {
 
-  //asynchronous computation  
-  asyncActivity();
-  
-  if(is_all_well){
-    //resolve when things are ok
-    resolve(result); 
-  }else{
-    //reject on error
-    reject("Err..");
-  } 
+ //asynchronous computation  
+ asyncActivity();
+ 
+ if(is_all_well){
+ //resolve when things are ok
+ resolve(result); 
+ }else{
+ //reject on error
+ reject("Err..");
+ } 
 });
 
 //Consuming
 promise
-  .then(processResult) 
-  .catch(handleError);
+ .then(processResult) 
+ .catch(handleError);
 ```
 
 A new Promise takes a function as parameter. That function takes two parameters, which are also functions.
@@ -245,7 +243,7 @@ The function passed to `new Promise` is the heart of this piece of code. You wil
 
 That's just creating promises.
 
-Consuming needs actual functions being passed. The callback function in place of `resolve` has to be sent to `then` call. `reject` callback is sent to `catch`.
+You pass the actual `resolve` and `reject` functions when you consume promises. The callback function in place of `resolve` has to be sent to `then` call. `reject` callback is sent to `catch`.
 
 In this example, `processResult` is used as the `resolve` callback through `then`. `handleError` is used as `reject` callback through `catch`.
 
@@ -255,19 +253,19 @@ Let's build state of the art BlockChain mining program with that knowledge:
 ```js
 const startMining=()=>{
   return new Promise((resolve, reject) => {
-    result=mineBlock();
-    if(result==all_Ok)
-      resolve(result);
-    else
-      reject("All are taken!");
-  });
+ result=mineBlock();
+ if(result==all_Ok)
+ resolve(result);
+ else
+ reject("All are taken!");
+ });
 }
 
 const mined=startMining();
 
 mined
-  .then(creditBitCoin)
-  .catch(badNewsFirst);
+ .then(creditBitCoin)
+ .catch(badNewsFirst);
 
 ```
 In this example, you had control to decide when to call `resolve` or `reject`. There are also scenarios when you let other API take control. Let's see an example.
@@ -276,18 +274,22 @@ In this example, you had control to decide when to call `resolve` or `reject`. T
 
 If that was too hi-tech and you hear the earth warming up at the very mention of the word *BlockChain*, here is another example. 
 
+Try to promisify `geolocation` API, which is still using callbacks directly. The `getCurrentPosition` function takes a `success` callback and an `error` callback. 
+
+You can use them to resolve / reject a promise. 
+
 I've created a [CodeSandBox for Promisified version of geolocation API](https://codesandbox.io/s/jv3x2ypn6y).
 
 A preview of the sandbox here:
 ```js
 function locate() {
-  return new Promise((located, lost) => {
-    if ("geolocation" in navigator) {
-      navigator
-        .geolocation
-        .getCurrentPosition(located,lost);
+ return new Promise((located, lost) => {
+ if ("geolocation" in navigator) {
+ navigator
+ .geolocation
+ .getCurrentPosition(located,lost);
     } else {
-      lost(new Error("Geolocation is not supported"));
+ lost(new Error("Geolocation is not supported"));
     }
   }
 }
@@ -297,8 +299,8 @@ let location = locate();
 
 //use results when Promise is resolved
 location
-  .then(showPosition)
-  .catch(positionError);
+ .then(showPosition)
+ .catch(positionError);
 ```
 
 The location API is still based on **callbacks**. But instead of letting that `getCurrentPosition` directly call the callback functions, we've wrapped it around a promise. 
@@ -316,8 +318,8 @@ Take a look at this example:
 let promise=Promise.resolve(1);
 
 promise
-  .then(x=>x+2) //1+2=3
-  .then(console.log); //3
+ .then(x=>x+2) //1+2=3
+ .then(console.log); //3
 ```
 
 We are just passing the literal value 1 and we are getting a promise object in return. The returned promise wraps around the value 1. It is also settled immediately, as there is no async activity here.
@@ -377,15 +379,15 @@ let promise=Promise.resolve(1);
 
 //first-time use
 promise
-  .then(x=>x+1) //1+1=2
-  .then(x=>x*x) //2*2=4
-  .then(console.log); //4
+ .then(x=>x+1) //1+1=2
+ .then(x=>x*x) //2*2=4
+ .then(console.log); //4
 
 //use it a second time
 promise
-  .then(x=>x+2) //1+2=3 (not 4+2=6)
-  .then(x=>x*x) //3*3=9
-  .then(console.log); //9
+ .then(x=>x+2) //1+2=3 (not 4+2=6)
+ .then(x=>x*x) //3*3=9
+ .then(console.log); //9
 ```
 
 First we create a resolved promise with a value 1.
@@ -408,16 +410,16 @@ See what happens when you use the response object a second time:
 ```js
 let result=fetch('https://jsonplaceholder.typicode.com/users');
 result
-  .then(res => res.json())
-  .then(json => console.log(json[0].id)); //1
+ .then(res => res.json())
+ .then(json => console.log(json[0].id)); //1
 
 //100 other things
 
 //oh, I want to reuse that result again
 result
-  .then(res=>res.json())
-  .then(json=>console.log(json[0].username));
-  //TypeError; body stream already read
+ .then(res=>res.json())
+ .then(json=>console.log(json[0].username));
+ //TypeError; body stream already read
 ```
 
 >Be careful about re-using network responses. These responses are streams. Once consumed, you cannot reuse it from scratch again. Reusing works only for objects and literal values, but not for streams. 
@@ -434,15 +436,15 @@ Here is how it's done:
 ```js
 let result=fetch('https://jsonplaceholder.typicode.com/users');
 result
-  .then(res => res.clone()) //the trick!
-  .then(data => data.json())
-  .then(json => console.log(json[0].id)); //1
+ .then(res => res.clone()) //the trick!
+ .then(data => data.json())
+ .then(json => console.log(json[0].id)); //1
 
 result
-  .then(r=>r.clone())
-  .then(j=>j.json())
-  .then(json=>console.log(json[0].username));
-  //Bret
+ .then(r=>r.clone())
+ .then(j=>j.json())
+ .then(json=>console.log(json[0].username));
+ //Bret
 ```
 
 APIs such as [Service Workers][service-workers] may need the response stream as it is [where you clone the response each time to keep it alive]. But if you are sure you just need the data, you can move on to a better solution with the following pattern.
@@ -451,15 +453,15 @@ Here is another solution:
 ```js
 let result=fetch('https://jsonplaceholder.typicode.com/users');
 let data=result
-        .then(data => data.json());
+ .then(data => data.json());
 
 data
-  .then(json => 
-    console.log(json[0].id)); //1
+ .then(json => 
+ console.log(json[0].id)); //1
 
 data
-  .then(json=>
-    console.log(json[0].username)); //Bret
+ .then(json=>
+ console.log(json[0].username)); //Bret
 ```
 
 In this solution, we've stored jsoned the data in a variable named `data`. That's a promise object. You have the json data wrapped around a promise named `data`. As shown above, you can use the `data` again as many times as you want.
@@ -504,12 +506,13 @@ We are going to look at all of them in detail.
 The `then` call on a promise actually takes two functions. One to handle success and one to handle error.
 
 
+
 ```js
 promise
-    .then(
-      handleResult,
-      handleError
-    );
+ .then(
+ handleResult,
+ handleError
+ );
 ```
 
 The error handler above can handle any error from `promise` async call. It could be a rejected `promise. 
@@ -523,8 +526,8 @@ A `catch` call can look for any errors from the async activity and also from any
 Slightly modified version here:
 ```js
 promise
-    .then(handleResult)
-    .catch(handleError);
+ .then(handleResult)
+ .catch(handleError);
 ```
 
 Now, any rejected `promise` and also any errors from calling `handleResult` are caught by `catch` and processed.
@@ -539,10 +542,10 @@ For example,
 
 ```js
 promise
-  .then(
-    handleResult,
-    handleRejectedPromise
-  ).catch(errorFromHandleResult);
+ .then(
+ handleResult,
+ handleRejectedPromise
+ ).catch(errorFromHandleResult);
 ```
 
 ### Balanced Error Handling
@@ -553,15 +556,15 @@ You can introduce multiple `catch` statements in between. They are called if the
 
 ```js
 promise
-  .then(callback1)
-  .then(callback2)
-  .catch(errorUpToNow)
-  .then(callback3)
-  .then(callback4)
-  .catch(anyErrorIn3And4)
-  .then(and)
-  .then(so)
-  .then(on);
+ .then(callback1)
+ .then(callback2)
+ .catch(errorUpToNow)
+ .then(callback3)
+ .then(callback4)
+ .catch(anyErrorIn3And4)
+ .then(and)
+ .then(so)
+ .then(on);
 ```
 
 `errorUpToNow` handles three errors:
@@ -587,10 +590,10 @@ let p=Promise.resolve(2);
 p.then(cb1)
  .catch(eh1)
  .finally(()=>{
-   // all over
-   // clean up
-   // inform
-   // //wind up
+ // all over
+ // clean up
+ // inform
+ // //wind up
  });
 ```
 
@@ -605,7 +608,7 @@ Show me the code:
 ```js
 let p=Promise.resolve(1);
 let q=p.then(x=>x+2)
-       .finally(()=>{console.log("All Clear")});
+ .finally(()=>{console.log("All Clear")});
 
 q.then(console.log); //3
 
@@ -619,8 +622,7 @@ Had the Promise been rejected, `finally` would then send that rejected Promise b
 
 **Compatibility Warning**: `finally` is a stage 4 proposal already implemented on major browsers. But the browser compatibility is not as good as rest of the Promise API features (as of this writing in June 2018). Check this [compatibility table on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally). 
 
-## Racing with Promises
-
+## Fastest with Promise.race
 Promise API provides a `race` method that allows you to get fastest response from many different possible inputs.
 
 Let's say your data is geographically distributed. You want to try and get data as much as possible, but you do not want to figure out closest data center manually.
@@ -637,7 +639,7 @@ const ASIA=fetch(ASIA_URL);
 let fastest=Promise.race([US,EU,ASIA]);
 
 fastest.then(delightUser)
-       .catch(countMistakes);
+ .catch(countMistakes);
 
 ```
 
@@ -645,26 +647,26 @@ A bit more streamlined version:
 
 ```js
 let urlList=[
-  "https://us.pineboat.in",
-  "https://uk.pineboat.in",
-  "https://sa.pineboat.in"
+ "https://us.pineboat.in",
+ "https://uk.pineboat.in",
+ "https://sa.pineboat.in"
 ];
 
 const fastestResponse = list => {
-  let promises=list.map(url => fetch(url));
+ let promises=list.map(url => fetch(url));
   return Promise.race(promises);
 } 
 
 let res=fastestResponse(urlList);
 
 res.then(updateUI)
-   .catch(failInStyle);
+ .catch(failInStyle);
 
 ```
 
 Here, the `fastestResponse` takes an array of URLs and returns the fastest response when you invoke the function call.
 
-## Iterating Promises
+## Iterating With Promise.all
 
 While there can be only one winner in a `race`, UI development is no race. At least not all the time. Sometimes, you need all the runners to reach the line for the race to be successful.
 
@@ -680,23 +682,23 @@ SHOW.ME.THE.CODE:
 
 ```js
 let urlList=[
-  "https://us.pineboat.in",
-  "https://uk.pineboat.in",
-  "https://sa.pineboat.in"
+ "https://us.pineboat.in",
+ "https://uk.pineboat.in",
+ "https://sa.pineboat.in"
 ];
 
 const everyResponse = list => {
-  let promises=list.map(url => fetch(url));
+ let promises=list.map(url => fetch(url));
   return Promise.all(promises);
 } 
 
 let res=everyResponse(urlList);
 
 res.then(updateCountries)
-   .catch(failInStyle);
+ .catch(failInStyle);
 
 const updateCountries = list => {
-  list.forEach( country => updateUI);
+ list.forEach( country => updateUI);
 }
 ```
 
@@ -770,7 +772,7 @@ After all this, if you ever write code like this, you'll spend rest of your live
 ```js
 let data;
 fetch(url).then(res=>{
-  data=res.json();
+ data=res.json();
 });
 render(data); //undefined
 ```
@@ -785,8 +787,8 @@ The takeaway from this article does not end with an understanding of Promises.
 
 ```js
 const Wrapper = val => ({
-    then: func => Wrapper(func(val)),
-    toString: () => `Wrapper(${val})` 
+ then: func => Wrapper(func(val)),
+ toString: () => `Wrapper(${val})` 
 });
 
 //literal values
@@ -818,32 +820,32 @@ Remember the first ever code block you read in this article. It was on jQuery. I
 ```js
 $.ajax({
     url: apiURL,
-    success: (data)=>{
-      //valid data from HTTP
-      console.log(error);
+ success: (data)=>{
+ //valid data from HTTP
+ console.log(error);
     },
-    error: (xhr,status)=>{
-      //HTTP or parsing error
-      console.log(error);
+ error: (xhr,status)=>{
+ //HTTP or parsing error
+ console.log(error);
     }
 });
 ```
 
 ```js
 const good = data => 
-    console.log(data);
+ console.log(data);
 
 const bad = error => 
-    console.log(error);
+ console.log(error);
 
 const promisifiedAjax = (apiURL) => {
   return new Promise((resolve,reject)=> {
-    $.ajax({
+ $.ajax({
         url: apiURL,
         success: resolve,
         error: reject
-    });
-  }
+ });
+ }
 }
 
 let res=promisifiedAjax(apiURL);
@@ -859,9 +861,9 @@ This article will be incomplete if I do not talk about the new Async/Await pair 
 
 ```js
 async function ajax(url){
-    let response=await fetch(url);
-    let json=await response.json();
-    console.log(json);
+ let response=await fetch(url);
+ let json=await response.json();
+ console.log(json);
 }
 ```
 
@@ -874,8 +876,8 @@ Now to finish off with how sync and async play together, two examples using `aja
 Async used inside sync:
 ```js
 function syncTest(url){
-  ajax();
-  console.log("end");
+ ajax();
+ console.log("end");
 }
 
 syncTest();
@@ -888,8 +890,8 @@ That's not what you intended, but not new either. This is very similar to using 
 Now, let's put the same under async flag:
 ```js
 async function asyncTest(url){
-  await ajax();
-  console.log("end");
+ await ajax();
+ console.log("end");
 }
 
 asyncTest();
