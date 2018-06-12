@@ -853,6 +853,53 @@ res.then(good).catch(bad);
 ```
 In a way this is similar to promisifying `geolocation` we have done earlier. In case it didn't make sense at that time, hope this serves as a recap as you know more about promises now.
 
+## Async Await
+
+This article will be incomplete if I do not talk about the new Async/Await pair introduced to make, well, Async code easy to read. It makes Async Code look like synchronous code, but let's other tasks get access to main thread while async activity is in progress. 
+
+```js
+async function ajax(url){
+    let response=await fetch(url);
+    let json=await response.json();
+    console.log(json);
+}
+```
+
+Do you see the difference? All the `then` chaining is replaced with `await` prefix. Wherever you see `await`, the activity happens in the background while the control waits on the same line. 
+
+Since the activity is happening in the parallel thread, it does not block the main thread.
+
+Now to finish off with how sync and async play together, two examples using `ajax` above.
+
+Async used inside sync:
+```js
+function syncTest(url){
+  ajax();
+  console.log("end");
+}
+
+syncTest();
+//end
+//response from ajax
+```
+
+That's not what you intended, but not new either. This is very similar to using `setTimeout`.
+
+Now, let's put the same under async flag:
+```js
+async function asyncTest(url){
+  await ajax();
+  console.log("end");
+}
+
+asyncTest();
+//response from ajax
+//end
+```
+There you go! Now you get to have the sequence you always wanted. **Much more friendlier on your brain**. Remember or heard of [WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG)? What you see is what you get.
+
+That's it about Async Await for now. There is more to it in terms of syntax. I'd encourage you to explore further. I might even write about it in detail one day. 
+
 ## References:
 
 * [Callbacks @ YDKJS][ydkjs-callbacks]
