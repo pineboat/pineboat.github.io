@@ -1,17 +1,17 @@
 {{ if .IsPage }}
-<div id="share" class="social_sharing">
+<div class="social_sharing">
   <h2>Share this article</h2>
   <ul>
   <!-- Sharingbutton Facebook -->
-  <li><a class="sharing__link" href="https://facebook.com/sharer/sharer.php?u={{- .Permalink -}}" target="_blank" aria-label="">Share on Facebook</a></li>
+  <li><a class="sharing__link" rel="noopener" href="https://facebook.com/sharer/sharer.php?u={{- .Permalink -}}" target="_blank" aria-label="">Share on Facebook</a></li>
 
   <!-- Sharingbutton Twitter -->
-  <li><a class="sharing__link" href="https://twitter.com/intent/tweet/?text={{- .Params.Subtitle -}}&amp;url={{- .Permalink -}}&amp;via=pineboat"
+  <li><a class="sharing__link" rel="noopener" href="https://twitter.com/intent/tweet/?text={{- .Params.Subtitle -}}&amp;url={{- .Permalink -}}&amp;via=pineboat"
     target="_blank" aria-label="">Tweet this post</a></li>
 <!-- Sharingbutton LinkedIn -->
-<li><a class="sharing__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{- .Permalink -}}&amp;title={{- .Params.Title -}}&amp;summary={{- .Params.Subtitle -}}&amp;source={{- $.Site.BaseURL -}}" target="_blank" aria-label="">Share on LinkedIn</a></li>
+<li><a class="sharing__link" rel="noopener" href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{- .Permalink -}}&amp;title={{- .Params.Title -}}&amp;summary={{- .Params.Subtitle -}}&amp;source={{- $.Site.BaseURL -}}" target="_blank" aria-label="">Share on LinkedIn</a></li>
   <!-- Sharingbutton Google+ -->
-  <li><a class="sharing__link" href="https://plus.google.com/share?url={{- .Permalink -}}"
+  <li><a class="sharing__link" rel="noopener" href="https://plus.google.com/share?url={{- .Permalink -}}"
     target="_blank" aria-label="">Share on Google+</a></li></ul>
 </div>
 {{ end }}
