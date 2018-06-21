@@ -214,7 +214,7 @@ As a recap for possible states, with some JavaScript syntactic sugar:
 * Settled = (Resolved || Rejected);
 * Pending = (!Resolved && !Rejected);
 
-There is no built-in method in the Promise API to get the current state. You should also avoid trying to get it (as a call on `then` or `catch` will automatically take the sequence forward). However, if you wanted to experiment, start [here](https://stackoverflow.com/questions/30564053/how-can-i-synchronously-determine-a-javascript-promises-state).
+There is no built-in method in the Promise API to get the current state. You should also avoid trying to get it (as a call on `then` or `catch` will automatically take the sequence forward). However, if you wanted to experiment, start [from this stackoverflow thread](https://stackoverflow.com/questions/30564053/how-can-i-synchronously-determine-a-javascript-promises-state).
 
 ### Syntax & Components
 
