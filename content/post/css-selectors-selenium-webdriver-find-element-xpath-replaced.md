@@ -1,10 +1,9 @@
 ---
-draft: true
 author: "vijayabharathib"
 title: "Why CSS Selectors are the most useful Selenium WebDriver locators?"
-subtitle: "When Front end developers need to locate elements on a web page, they use CSS selectors! Why not automation testers?"
-date: "2018-07-02T07:15:59+05:30"
-publishdate: "2018-07-02T07:15:59+05:30"
+subtitle: "When Front end developers need to locate elements on a web page, they use CSS selectors! Why not for selenium webdriver automation?"
+date: "2018-07-10T22:45:59+05:30"
+publishdate: "2018-07-10T22:45:59+05:30"
 tags: ["CSS Selectors","XPath","Selenium","WebDriver"]
 categories: ["Testing"]
 image: "/img/008_css_selectors/comparison_with_title.png"
@@ -12,13 +11,13 @@ image_alt: "Image showing CSS selector syntax samples"
 image_credit: "image created via carbon.now.sh"
 ---
 
-A wide variety of locators are being used in Selenium Web Driver automation. CSS selector comes last when you ask the question, "What are all the locators do you use frequently and why?"
+A wide variety of locators are being used in Selenium Web Driver automation. **CSS selectors** come last when you ask the question, "What are all the locators do you use frequently and why?"
 
-`XPath` tops the list as one size fits all solution. There is also a tendency to use `XPath` even when a proper `id` is available. 
+**XPath** tops the list as one size fits all solution. There is also a tendency to use `XPath` even when a proper `id` is available. 
 
-Often, it is also lack of exposure to CSS selectors. People have mentioned that they are able to get the job done with other selectors. Fair enough, no harm was done.
+Often, it is also lack of exposure to CSS selectors that drives them towards other options. People have mentioned that they are able to get the job done with other selectors. Fair enough, no harm was done.
 
-Why do you have to pay attention to CSS selectors?
+## Why do you have to pay attention to CSS selectors?
 
 Answer this question. When you want to put a nail on the wall, will you use a brick, cobblestone or hammer?
 
@@ -26,7 +25,7 @@ Brick and cobblestone can do the job. But, **Hammer** is the tool for the job.
 
 Just like that, there are ways to identify elements in an HTML document/DOM. But CSS selectors are the tool for the job. They have a [specification that browsers need to follow](https://www.w3.org/TR/selectors-3/)
 
-If you are an automation engineer working on UI automation, invest time in learning CSS selectors. You will reap benefits that are much more.
+If you are an automation engineer working on UI automation, invest time in learning CSS selectors (how about reading through the rest of the article?). You will reap benefits that are much more.
 
 I can hear your question: "But, it is so easy to copy the XPath. How about CSS selectors?" Trust me, in many browsers, the option is right there next to `Copy XPath`. You'll find `Copy CSS Selector` or `Copy Selector`. 
 
@@ -44,6 +43,8 @@ Selectors to target specific elements was specified formally by [CSS Working Gro
 
 Attributes such as `id` and `class` were added as hooks to target specific elements. They are there to help front-end developers style and attach behaviors to elements. **Automation engineers can piggyback** on the same provisions, CSS selectors, to identify elements.
 
+## How CSS selectors are used?
+
 To style an element, FEDs need to locate the element first and then apply styling rules.
 
 It looks like this:
@@ -54,7 +55,7 @@ It looks like this:
 }
 ```
 
-It says, apply these styles to any element with an ID of `logo`. Normally, ID will be unique in any HTML document carefully crafted. But there are chances for multiple developers working on the same page to use the same ID for different elements. Most of the time, without knowing it is already being used. Don't worry, they'll eventually catch up with that bug, but the point is the browser throws no warning. You should tell them when you find such scenarios.
+That CSS snippet says, apply `color` and `background` styles to any element with an ID of `logo`. Normally, ID will be unique in any HTML document carefully crafted. But there are chances for multiple developers working on the same page to use the same ID for different elements. Most of the time, without knowing it is already being used. Don't worry, they'll eventually catch up with that bug, but the point is the browser throws no warning. You should tell the developers when you find such scenarios.
 
 The javascript developer who wants to take the `logo` for a spin writes code like this:
 
@@ -65,19 +66,21 @@ rotate(element);
 
 Don't worry about the implementation of `rotate`, but just look at the first line. `document.querySelector` is a native API available to select elements in a browser. ...and it takes CSS selector syntax.
 
+In fact, you can use it within **JavascriptExecutor**.
+
 Since FEDs are using CSS selectors to locate elements (either to style them / amend the elements / to attach behavior to elements), it makes sense for the UI test automation engineers also to use the same API to locate elements.
 
 Convinced? Here is a preview of different selectors replaced by CSS selector.
 
 ```js
- Other Selectors => By.cssSelector
------------------------- => --------------
-By.className("register") => ".register"
- By.tagName("table") => "table"
- By.id("unique_id") => "#unique_id"
- By.name("login") => "[name=login]"
- By.xpath("//body/nav") => "body > nav"
- By.xpath("//body//nav") => "body nav"
+ Other Selectors          => By.cssSelector
+------------------------  => --------------
+ By.className("register") => ".register"
+ By.tagName("table")      => "table"
+ By.id("unique_id")       => "#unique_id"
+ By.name("login")         => "[name=login]"
+ By.xpath("//body/nav")   => "body > nav"
+ By.xpath("//body//nav")  => "body nav"
 ```
 ## Four Selectors
 
@@ -175,8 +178,6 @@ By.cssSelector | Description
 `"input[type^=form]"` | input elements with type attribute starting with `form`
 `"input[type$=radio]"` | input elements with type attribute ending with `radio`
 
-
-
 ## Four Combinators
 
 We saw four different selectors that form the basis of CSS selectors family. We'll now look at four combinators that give special powers to those CSS selectors.
@@ -256,7 +257,6 @@ We can reuse some of our earlier HTML snippets:
 ```
 
 All three elements can be located using the following options:
-
 ```js
 By.cssSelector('#profile > img')
 By.cssSelector('#profile > h1')
@@ -271,18 +271,19 @@ We are now down to the fourth and last combinator, the descendant combinator whi
 Let's use the same HTML:
 ```html
 <div id='profile'>
- <img src='head.png'>
- <h1>Mr.Neo</h1>
- <p>The one</p>
- <div id='crew'>
- <img src='crew1.png'>
- <h2>Mr. Morpheus</h2>
- <p>The other one</p>
- </div>
+    <img src='head.png'>
+    <h1>Mr.Neo</h1>
+    <p>The one</p>
+    <div id='crew'>
+        <img src='crew1.png'>
+        <h2>Mr. Morpheus</h2>
+        <p>The other one</p>
+    </div>
 </div>
 ```
 
 Here is what happens:
+
 Locator | Description
 --------|------------
 `#profile img` | targets two `img` tags
@@ -328,12 +329,12 @@ This one helps you with targeting a particular element based on its position.
 
 ```html
 <div id='profile'>
- <h1>Name</h1>
- <img src='pic.png' />
- <img src='background.png' />
- <p>Summary...</p>
- <p>Details...</p>
- <p>Conclusion...</p>
+    <h1>Name</h1>
+    <img src='pic.png' />
+    <img src='background.png' />
+    <p>Summary...</p>
+    <p>Details...</p>
+    <p>Conclusion...</p>
 </div>
 ```
 Remember child selector from previous sections. We are going to use it. How do you say, "Get me the second child within the profile". `#profile > *:nth-child(2)` will do. `*` denotes any tag and `nth-child` looks for a particular child based on the number you've given.
@@ -342,9 +343,9 @@ You could have used the right tag name instead of `*`, as in `#profile > img:nth
 
 `:nth-child` takes input like a number, `odd`, `even` and `3n+2`. You can read `3n+2` like, every 3rd element starting from the 2nd element. MDN defines it as `An+B`. This is used more in terms of styling elements. May not be so much for test automation. Let's leave it right there. 
 
-There is another one to get an element counting from bottom: `nth-last-child`. For example, `#profile > *:nth-last-child(1)` will give you the last child, which is `p` tag that has the text "Conclusion...". The spec has `:last-child` as a pseudo-class that will give you the similar outcome.
+There is another one to get an element counting from bottom: **:nth-last-child**. For example, `#profile > *:nth-last-child(1)` will give you the last child, which is `p` tag that has the text "Conclusion...". The spec has `:last-child` as a pseudo-class that will give you the similar outcome.
 
-I'll leave you to guess what `:first-child` would return.
+I'll leave you to guess what **:first-child** would return.
 
 ### :nth-of-type
 
@@ -352,17 +353,17 @@ While `nth-child` takes all children into account, `nth-of-type` takes only the 
 
 ```html
 <div id='profile'>
- <h1>Name</h1>
- <img src='pic.png' />
- <img src='background.png' />
- <p>Summary...</p>
- <p>Details...</p>
- <p>Conclusion...</p>
+    <h1>Name</h1>
+    <img src='pic.png' />
+    <img src='background.png' />
+    <p>Summary...</p>
+    <p>Details...</p>
+    <p>Conclusion...</p>
 </div>
 ```
 We've seen that, `#profile > img:nth-child(1)` would return nothing, as first child is `h1`, but `#profile > img:nth-of-type(1)` returns the first image. The spec also has something called `:first-of-type` as a shorter version.
 
-What do you do to count from the bottom (reverse order)? Yeah, `:nth-last-of-type` will come to your help. You also have `:last-of-type` to get the bottom-most child of the specified type.
+What do you do to count from the bottom (reverse order)? Yeah, **:nth-last-of-type** will come to your help. You also have **:last-of-type** to get the bottom-most child of the specified type.
 
 ### :disabled
 
@@ -376,9 +377,11 @@ Final words, do not get discouraged if you have been using `XPath` all the while
 
 In my experience, test automation engineers started using `XPath` universally. So, this article was to add a counterweight to `cssSelectors` so that the scale is balanced against `XPath`. In fact, John Resig, creator of jQuery has written about such a [comparison showing how powerful xPath][john-resig] can be.
 
-All righty! Thank you so much if you managed to reach this far. Hope it was useful and you get to try your hands on cssSelectors the next time you target an element.
+All righty! **Thank you so much** if you managed to reach this far. Hope it was useful and you get to try your hands on cssSelectors the next time you target an element.
 
-If you think this would help, spread it to your teams and friends. See you in the next article.
+If you think this would help, **[spread](#share)** it to your teams and friends. [Hit me up on twitter](https://twitter.com/vijayabharathib) if you want to discuss. You can also use this [github issue I've set up for discussion on this article](https://github.com/pineboat/pineboat.github.io/issues/7).
+
+See you in the next article.
 
 ## References
 
