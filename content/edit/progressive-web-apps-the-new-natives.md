@@ -25,20 +25,23 @@ Usually, when you are not connected to any network, websites break down and they
 
 Not anymore. PWAs come with a piece of JavaScript called *Service Workers* that can cache information related to the site in advance and in the background. Web developers use this capability to cache and show some meaningful content even when you are not connected to any network. 
 
-## Lives In Your Home 
+## Lives In Your Home (Screen)
 I mean to say, *Lives on your home screen*. PWAs are normal websites that are visited using browsers. However, modern browsers can sense a PWA from miles away and can show an option to install the site as an app on your mobile or tablet's home screen.
 
 The next time you want to visit that site, you can launch it from your home screen. It will again open up on a browser, but developers can make it look like a native app with full screen experience if they wanted.
 
-Another benefit, you first visit the app, use it and then you get to decide if you want it on your home screen. Not the other way around. No prior downloading required. Remember those days when you download a bulky app only to find out that ads take more space than the app and removed it immediately? Well, those days are going away. No need to scroll through market place like Google Play or Apple AppStore.
+## Try first, install next
+Since PWAs are web apps, you can first visit them on your browser. Use them. Then you get to decide if you want it on your home screen. Not the other way around, as it happens for native apps. 
 
-## Helps you with Notifications
+Remember those bulky apps you have downloaded, only to find out that ads take more space than the app and removed it immediately? Well, those days are going away. No need to scroll through market place like Google Play or Apple AppStore. No prior downloading required to use PWAs.
+
+## Capable of Notifications
 
 Or should I say, PWAs have the power to annoy you with notifications. Or help you by being a good assistant. Depends on whether the notifications are relevant.
 
 But the bottom line is, they have the power to use mobile notifications like native applications. They will ask your permission to notify. You then live with that decision for the rest of your life (just joking, you can revert that decision, if you can figure out where to go for that).
 
-## Saves You Data Charges
+## Saves You Money (Data Charges)
 
 PWAs can save money for you. If you are using a PWA often, the PWA can cache most of the re-usable content and serve it locally instead of asking the network to deliver the same content.
 
@@ -46,9 +49,33 @@ Browsers, by default, do this kind of caching on all the sites (unless you speci
 
 Every file that was not requested from the network saves you data consumption charges.
 
+## Saves You Money (Development Cost)
+If you are developing web apps, PWAs are good news for you too. You do not need to develop individual apps for iOS, Windows and Android. This is web. Works everywhere. One development is quite enough.
+
+If you really want to go for native apps, it is also possible to just wrap this PWA in a native shell. There are products that can support you **TK; phonegap?**
+
+Again you save development cost of duplicating the app across platforms.
+
 ## They are really Fast
 
 Naturally, better caching strategy will lead to faster app as network requests usually take longer when compared to content served locally from caches. Imagine a user in India trying to download an image from the US, you cannot get is faster than the speed of light.
 
 Hence, the PWA responds with speed when most of the content is already cached. This helps you interact with the application quicker when you visit it a second time (or navigate to another page). 
+
+
+## Platform Independent
+
+This is cool. They work on all operating systems and devices as long as you have a working browser. Why? Say it with me, "they are just normal websites with super powers".
+
+While support for features such as "Adding to home screen", "notifications" are varying across browsers and devices, you'll get the basic experience across all devices and browsers. Features are made available progressivly to supporting systems. These features do not break the functionality of the sites on systems that do not support PWAs well.
+
+For example, apple iPhones come with Safari browser which did not support PWAs for a long time. Hence, there was no "Add to home screen" option. However, the website can be accessed and used on Safari browser nonetheless.
+
+Support for PWAs are being added to Safari and others are catching up too. **TK; ADD references and links to compatibility tables**
+
+## Sharing Via Native Apps
+Though this is not necessarily the remit of PWAs, web APIs are now allowing content to be shared from websites via native apps such as Twitter & WhatsApp. This brings web apps pretty close to native apps in terms of experience.
+
+## What will you be missing?
+Though PWAs are nearing native apps in providing similar performant experience, there are certain features that are not (yet) available on PWAs, such as sensors used by phones. **TK;needs examples.** There are also pitfals the developer needs to be aware of (which might break the experience for users); **TK; mark firtman links may help here**. 
 
