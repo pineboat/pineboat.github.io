@@ -115,8 +115,8 @@ Example overdue:
 By.cssSelector(".btn_red")
 ```
 
-That's going to be a red button (if the developer adds relevant styles), but let's not worry about that. This selector will identify an element with a class `btn_red`. If more than one element is found, the first one is returned (**TK; will it not throw an exception**)
-
+That's going to be a red button (if the developer adds relevant styles), but let's not worry about that. This selector will identify an element with a class `btn_red`. If more than one element is found, the first one is returned.
+ 
 And if you wanted to combine a tag name and a class name? 
 
 ```js
