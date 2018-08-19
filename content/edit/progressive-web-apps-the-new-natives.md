@@ -1,14 +1,14 @@
 ---
 draft: true
 author: "vijayabharathib"
-title: "Progressive Web Apps - new natives on phones"
+title: "Progressive Web Apps Simplified - New Natives on Mobiles"
 subtitle: "Progressive Web Apps are like X-Men, with super power mutations who are just like any other web apps."
-date: "2018-07-29T08:15:59+05:30"
-publishdate: "2018-07-29T08:15:59+05:30"
+date: "2018-08-20T21:15:59+05:30"
+publishdate: "2018-08-20T21:15:59+05:30"
 tags: ["Service Workers","Javascript","PWA"]
-image: "/img/newlogo.png"
-image_alt: "important message about image"
-image_credit: "credit the image owner"
+image: "/img/009_pwa_introduction/pwa-960.png"
+image_alt: "Progressive web apps "
+image_credit: "Photo by Daniel Lombraña González on Unsplash"
 ---
 
 Progressive web apps are normal websites. They aim to provide near-native-app-like experience on phones and tablets with the help of JavaScript. They can be added to your phone's home screen. No need to install from market place (though you can, if you want to).
@@ -30,7 +30,7 @@ I mean to say, *Lives on your home screen*. PWAs are normal websites that are vi
 
 The next time you want to visit that site, you can launch it from your home screen. It will again open up on a browser, but developers can make it look like a native app with full screen experience if they wanted.
 
-## Try first, install next
+## Experience First, Install Next
 Since PWAs are web apps, you can first visit them on your browser. Use them. Then you get to decide if you want it on your home screen. Not the other way around, as it happens for native apps. 
 
 Remember those bulky apps you have downloaded, only to find out that ads take more space than the app and removed it immediately? Well, those days are going away. No need to scroll through market place like Google Play or Apple AppStore. No prior downloading required to use PWAs.
