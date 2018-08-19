@@ -4,7 +4,7 @@ title: "Why CSS Selectors are the most useful Selenium WebDriver locators?"
 subtitle: "When Front end developers need to locate elements on a web page, they use CSS selectors! Why not for selenium webdriver automation?"
 date: "2018-07-10T22:45:59+05:30"
 publishdate: "2018-07-10T22:45:59+05:30"
-tags: ["CSS Selectors","XPath","Selenium","WebDriver"]
+tags: ["CSS","CSS Selectors","XPath","Selenium","WebDriver"]
 categories: ["Testing"]
 image: "/img/008_css_selectors/comparison_with_title.png"
 image_alt: "Image showing CSS selector syntax samples"
