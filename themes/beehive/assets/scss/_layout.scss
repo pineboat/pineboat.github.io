@@ -1,0 +1,27 @@
+@media (min-width: $break-point) {
+  .site-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "header header" "main aside" "footer aside";
+  }
+}
+
+.site-main {   
+  margin: 0 auto;
+  max-width: 38em;
+  padding: 5px;
+  grid-area: main;
+}
+
+.site-header {
+  grid-area: header;
+}
+
+.side-bar {
+  grid-area: aside;
+}
+
+.site-footer {
+  grid-area: footer;
+}

@@ -1,7 +1,7 @@
 #! /bin/bash
 export THEME_DIR="themes/beehive/"
 export SOURCE_DIR="/home/weebee/Projects/beehive/"
-export DEV_DIR="/home/weebee/Projects/pineboat/development/"
+export DEV_DIR="/home/weebee/Projects/pineboat/"
 export RELEASE_DIR="/home/weebee/Projects/pineboat/release"
 
 rm -rf $DEV_DIR$THEME_DIR && echo "Existing theme folder removed."

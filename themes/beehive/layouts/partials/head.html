@@ -3,7 +3,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Links and stylesheets -->
-  <link rel="stylesheet" href="/css/main.css" />
+  <!--link rel="stylesheet" href="/css/main.css" /-->
+  {{ if .Site.IsServer }}
+  {{ $cssOpts := (dict "targetPath" "styles/main.css" "enableSourceMap" true ) }}
+  {{ $styles := resources.Get "scss/main.scss" | toCSS $cssOpts | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $styles.Permalink }}" media="screen">
+  {{ else }}
+    {{ $cssOpts := (dict "targetPath" "styles/main.css" ) }}
+    {{ $styles := resources.Get "scss/main.scss" | toCSS $cssOpts | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $styles.Permalink }}" integrity="{{ $styles.Data.Integrity }}" media="screen">
+  {{ end }}
+  <!-- end of style sheets -->
   <link rel="canonical" href="{{ .URL | absLangURL }}" />
   <link rel="alternate" href="{{ "index.xml" | absLangURL }}" type="application/rss+xml" title="{{ .Site.Title }}">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">

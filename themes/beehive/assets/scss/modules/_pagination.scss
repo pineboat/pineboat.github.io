@@ -1,0 +1,24 @@
+.o-pagination {
+  list-style: none;
+  margin: 2em auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 10px;
+  li {
+    display: inline-block;
+    margin-left: 10px;
+  }
+  a {
+    padding: 5px 10px;
+  }
+  .inactive {
+    &:hover {
+      background-color: $color-teal-dark;
+    }
+    a {
+      color: #ccc;
+      cursor: default;
+    }
+  }
+}
