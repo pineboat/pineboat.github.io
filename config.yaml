@@ -11,6 +11,10 @@ pygmentsUseClasses: true
 pygmentsUseClassic: true
 menu:
   main:
+      - Name: "Home"
+        Identifier: "home"
+        URL: "/"
+        weight: 101
       - Name: "About"
         Identifier: "about"
         URL: "/page/about/"

@@ -1,0 +1,3 @@
+[submodule "themes/beehive"]
+	path = themes/beehive
+	url = git@github.com:vijayabharathib/beehive_hugo_theme.git

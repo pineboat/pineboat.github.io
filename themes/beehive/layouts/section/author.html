@@ -1,9 +1,0 @@
-{{ define "main" }}
-  <h2>list of authors</h2><ul>
-  {{ range .Data.Pages }}
-  <li>  <a href="{{ .Permalink }}">
-    {{ print .Params.firstname " " .Params.lastname  }}
-  </a></li>
-  {{ end }}
-  </ul>
-{{ end }}
