@@ -1,5 +1,0 @@
----
-firstname: ""
-lastname: ""
-shortbio: ""
----
