@@ -36,7 +36,7 @@ Before you start, get up to date version of the repo:
 ```bash
 git pull origin production
 git checkout development
-git rebase origin production
+git merge origin/production
 ```
 
 The beehive theme is a separate repository. It is NOT a git submodule yet. So, after testing the theme separately, copy over the files using `refresh_theme.sh`. 
