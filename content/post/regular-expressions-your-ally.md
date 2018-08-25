@@ -4,6 +4,7 @@ date: "2017-11-12T08:15:59+05:30"
 publishdate: "2017-11-12T08:15:59+05:30"
 subtitle: "Have you stayed off from Regular Expressions because they look complex. Grok them in this 30-minute practical guide."
 tags: ["Regular Expressions","JavaScript","RegExp"]
+categories: ["Programming"]
 title: "How to Make Regular Expressions Your Ally"
 draft: false
 image: "/img/004_regular_expressions/balloon_pattern.jpg"

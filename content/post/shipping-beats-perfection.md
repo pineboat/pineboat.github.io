@@ -1,12 +1,12 @@
-+++
-author = "vijayabharathib"
-date = "2017-08-01T20:18:38+05:30"
-publishdate = "2017-08-08T06:00:00+05:30"
-subtitle = "Top 10 reasons not to write and why should you write anyways"
-tags = ["ship","productivity","first post"]
-title = "Shipping beats perfection"
-
-+++
+---
+author: "vijayabharathib"
+date: "2017-08-01T20:18:38+05:30"
+publishdate: "2017-08-08T06:00:00+05:30"
+subtitle: "Top 10 reasons not to write and why should you write anyways"
+tags: ["ship","productivity","first post"]
+title: "Shipping beats perfection"
+categories: ["Writing"]
+---
 
 First of all, there is an elaborate [post][KamensBlog] on this by Ben Kamens if you really want to know more on that phrase and what it means to software development.
 

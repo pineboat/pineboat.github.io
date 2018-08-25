@@ -5,7 +5,7 @@ subtitle: "Promises are the new return type of most of the asynchronous web APIs
 date: "2018-06-15T19:39:59+05:30"
 publishdate: "2018-06-15T19:39:59+05:30"
 tags: ["Javascript","ES6","Promises","Async","Await","Callbacks"]
-categories: ["Javascript"]
+categories: ["Web Development"]
 image: "/img/007_promises/javascript_promises.png"
 image_alt: "JavaScript Promises"
 image_credit: "Patterns from trianglify.io"

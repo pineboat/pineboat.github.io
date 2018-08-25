@@ -5,7 +5,7 @@ subtitle: "Event loop in the browser and the promise to Run to Completion are th
 date: "2018-05-25T08:09:10+05:30"
 publishdate: "2018-05-25T08:09:10+05:30"
 tags: ["Javascript","Async","Event Loop"]
-categories: ["Javascript"]
+categories: ["Web Development"]
 image: "/img/006_event_loop/eventloop_run_to_completion.jpg"
 image_alt: "Children running"
 image_credit: "Photo by Ban Yido on Unsplash"

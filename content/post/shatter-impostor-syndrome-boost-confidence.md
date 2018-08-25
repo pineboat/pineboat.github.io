@@ -1,15 +1,16 @@
-+++
-author = "vijayabharathib"
-date = "2017-09-07T22:28:21+05:30"
-publishdate = "2017-09-07T22:28:21+05:30"
-subtitle = "Everyone faces their impostor self once in a while. Especially when you know how much you don't know. One way to fight against the syndrome is to recognize what you do know. To realize you are becoming better."
-tags = ["Learning","Impostor Syndrome","Code Refactoring"]
-title = "How to Shatter Impostor Syndrome and Boost Confidence"
-draft = false
-image = "/img/003_impostor_syndrome/impostor_compressed.jpg"
-image_alt = "Man in shadow"
-image_credit="cc photo https://unsplash.com/@sergiunista"
-+++
+---
+author: "vijayabharathib"
+date: "2017-09-07T22:28:21+05:30"
+publishdate: "2017-09-07T22:28:21+05:30"
+subtitle: "Everyone faces their impostor self once in a while. Especially when you know how much you don't know. One way to fight against the syndrome is to recognize what you do know. To realize you are becoming better."
+tags: ["Learning","Impostor Syndrome","Code Refactoring"]
+categories: ["Self Help"]
+title: "How to Shatter Impostor Syndrome and Boost Confidence"
+draft: false
+image: "/img/003_impostor_syndrome/impostor_compressed.jpg"
+image_alt: "Man in shadow"
+image_credit:"cc photo https://unsplash.com/@sergiunista"
+---
 
 Have you ever tried refactoring your own code that was a year or two old? I had to. And the results were not just better code base. The refactoring also showed me what have I learned.
 
