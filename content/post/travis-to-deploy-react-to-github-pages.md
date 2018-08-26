@@ -1,15 +1,16 @@
-+++
-author = "vijayabharathib"
-date = "2017-08-23T22:45:25+05:30"
-publishdate = "2017-08-23T22:45:25+05:30"
-subtitle = "When you are ready to build apps for production, you need a better workflow. You need to befriend a terminal to publish to github pages. All this becomes easier with continuous integration via Travis CI."
-tags = ["DevOps","React","GitHub Pages","Travis CI"]
-title = "How to quickly wire travis to deploy React site to github pages"
-draft=false
-image="/img/react-continuous-deployment/reverse-react2.gif"
-image_alt="React in reverse"
-image_credit="Gif using Peek and GIMP"
-+++
+---
+author: "vijayabharathib"
+date: "2017-08-23T22:45:25+05:30"
+publishdate: "2017-08-23T22:45:25+05:30"
+subtitle: "When you are ready to build apps for production, you need a better workflow. You need to befriend a terminal to publish to github pages. All this becomes easier with continuous integration via Travis CI."
+tags : ["DevOps","React","GitHub Pages","Travis CI","Deployment"]
+categories: ["Deployment"]
+title : "How to quickly wire travis to deploy React site to github pages"
+draft: false
+image: "/img/react-continuous-deployment/reverse-react2.gif"
+image_alt: "React in reverse"
+image_credit: "Gif using Peek and GIMP"
+---
 
 It's quite common to hack with apps on codepen when you are starting out. There will soon be a time when you want to publish your own web apps to the whole world. They could be side projects or projects for a client. A good development workflow will make a world of difference at this point.
 
