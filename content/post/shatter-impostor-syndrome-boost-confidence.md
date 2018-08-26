@@ -9,7 +9,7 @@ title: "How to Shatter Impostor Syndrome and Boost Confidence"
 draft: false
 image: "/img/003_impostor_syndrome/impostor_compressed.jpg"
 image_alt: "Man in shadow"
-image_credit:"cc photo https://unsplash.com/@sergiunista"
+image_credit: "cc photo https://unsplash.com/@sergiunista"
 ---
 
 Have you ever tried refactoring your own code that was a year or two old? I had to. And the results were not just better code base. The refactoring also showed me what have I learned.
