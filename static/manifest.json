@@ -4,7 +4,7 @@
     "description": "Pineboat ⛵ On Shipping Web",
     "start_url": ".",
     "theme_color": "#bbbbcc",
-    "background_color": "#bbbbcc",
+    "background_color": "#333333",
     "display": "minimal-ui",
     "icons": [
         {
