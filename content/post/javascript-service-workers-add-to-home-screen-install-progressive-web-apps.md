@@ -1,17 +1,18 @@
 ---
 draft: true
 author: "vijayabharathib"
-title: "Develop a Progressive Web App and Install it in Under 6 Minutes"
-subtitle: "Adding JavaScript service workers to your site shouldn't take hours. You can set one up in minutes."
+title: "Developing an Installable Website Is Unbelievably Easy"
+subtitle: "Just 2 additional files. A manifest and a service worker JavaScript, both less than 10 lines. That's all it takes to install your website to your mobile home screen."
 date: "2018-09-06T21:15:59+05:30"
 tags: ["Service Workers","Javascript","PWA"]
-image: "/img/newlogo.png"
-image_alt: "important message about image"
-image_credit: "credit the image owner"
+image: "/img/010_pwa_a2hs/a2hs_960.png"
+image_widths: [320,426,640,800,960,1280,1920]
+image_alt: "Developing Website with Add To Home Screen"
+image_credit: "Photo by Sam Beasley on Unsplash"
 ---
 Creating a web page is surprisingly easy. All you need is a single HTML file. But converting it to a [Progressive Web App][PWA_POST] that you can install is shockingly easier. You need two more files, with less than 10 lines each.
 
-I have created a repository named [pwa-features][PWA_REPO] that you can use for reference.
+I have created a Git repository named [pwa-features][PWA_REPO] that you can use for reference.
 
 Let's get that HTML file out of the way first.
 
@@ -159,7 +160,7 @@ The script tag has following instructions:
 
 If you refresh the browser window on `localhost:8000` now, you can see `Ready` printed on the console. Chrome shows a pop up `Add this app to the shelf to access it easily later`. 
 
-Click on the `Add to home screen` link within the dev tools. You don't see any error. Instead, the app is added to the list of applications. In my case, I'm using [Elementary OS](https://elementaryos.io), which shows the application in the list.
+Click on the `Add to home screen` link within the dev tools. You don't see any error. Instead, the app is added to the list of applications. In my case, I'm using [Elementary OS](https://elementaryos.io), which shows the icon in the application list for easier access.
 
 That's less than 40 lines, including the manifest to convert a bare `html` file into an app that you can install.
 
