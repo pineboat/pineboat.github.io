@@ -36,3 +36,14 @@ author:
       website: "https://vijayabharathi.in"
       twitter: "vijayabharathib"
       github: "vijayabharathib"
+
+related:
+  threshold: 80
+  includeNewer: true
+  indices:
+    - name: categories 
+      weight: 200
+    - name: tags
+      weight: 100
+    - name: date
+      weight: 10

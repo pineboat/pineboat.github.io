@@ -1,7 +1,7 @@
 ---
 title: "How to Energize a Scary Terminal With Little Scripts"
 subtitle: "Three valuable tools to finally conquer fear of terminals. Git Aliases, Bash Aliases, and One click snippets."
-tags: ["git","bash","aliases","terminal","dev-workflow"]
+tags: ["Git","Bash","Aliases","Terminal","Workflow"]
 categories: ["Workflow"]
 author: "vijayabharathib"
 date: "2017-11-23T23:00:25+05:30"
