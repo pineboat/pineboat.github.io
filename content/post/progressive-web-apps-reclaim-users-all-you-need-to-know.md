@@ -97,7 +97,7 @@ The next time you want to visit that site, **you can launch it from your home sc
 
 *It will still use the browser in the background*, but it doesn't act like a standalone browser. You can't launch other sites. Some PWAs are designed to be full screen, showing no signs that it is a browser.
 
-If you are curious how do they do it, this is enabled by a file named **manifest.json**. This file holds key-value pairs of information such as the site name, author, theme color. They are usually information shown on home screens. 
+If you are curious how do they do it, this is enabled by a file named **manifest.json**. This file holds key-value pairs of information such as the site name, author, theme color. They are usually information shown on home screens. I have written an [article on how to set up a simple skeleton website that you can install on your mobile home screen](/post/javascript-service-workers-add-to-home-screen-install-progressive-web-apps/), you may find it useful to get started.
 
 ## Experience First, Install Next
 Since PWAs are web apps, you can first visit them on your browser. Use them for as long as you want. Then you get to decide if you want it on your home screen. Not the other way around, as it happens for native apps. 
