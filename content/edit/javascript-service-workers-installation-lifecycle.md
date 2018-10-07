@@ -71,3 +71,5 @@ https://developers.google.com/web/fundamentals/primers/service-workers/
 
 service worker gotchas : 
 https://www.netlify.com/blog/2017/10/31/service-workers-explained/
+
+https://jakearchibald.github.io/isserviceworkerready/
