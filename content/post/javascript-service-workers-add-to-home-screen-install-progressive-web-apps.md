@@ -3,6 +3,7 @@ author: vijayabharathib
 title: Developing an Installable Website Is Unbelievably Easy
 subtitle: Just 2 extra files. A manifest and a service worker JavaScript, both less than 10 lines. That's all it takes to install your website to your mobile home screen.
 date: 2018-10-07 14:50:59 +0530
+categories: ["Web Development"]
 tags:
 - Service Workers
 - Javascript

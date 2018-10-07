@@ -3,3 +3,4 @@ _site
 .jekyll-metadata
 public
 tmux-client-7532.log
+node_modules/
