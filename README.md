@@ -6,7 +6,60 @@ Hosted on [Netlify](https://netlify.com).
 
 The production branch is published.
 The development branch is for theme UI development
-The content branch handles new posts. The content branch is also the one connected to [forestry.io].
+The content branch handles new posts. The content branch is also the one connected to [Forestry](https://forestry.io).
+
+### Multiple Git Profiles
+
+Create a file named `config` inside `~/.ssh` folder. One for default work profile, another one for public profile.
+
+```config
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_rsa
+
+Host github.public
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_rsa_public_vijayabharathib
+```
+
+While cloning a public repository, use a different host name (this is symbolic).
+
+```sh
+git clone git@github.public:pineboat/pineboat.git
+```
+
+Also set up a local `git config` for public (as the global git config will have work email):
+```sh
+cd pineboat
+git config user.email "y.v@g.com"
+git config user.name "vijayabharathib"
+```
+
+Cloning a work repository can use normal git clone URL:
+```
+git clone git@github.com:company/repo.git
+```
+
+### First Clone
+
+Right after cloning, the branches need to be set up. Following will do:
+
+```sh
+git branch -a
+git checkout -b content origin/content
+git checkout -b development origin/development
+git checkout -b production origin/production
+```
+
+The theme will be a `git submodule` and it will be empty after cloning parent repo. It has to be downloaded, which is via:
+
+```sh
+git submodule update --init
+```
+
+**Note**: The submodule is a problem while working with multiple git ssh profiles.
 
 ### Workflow for Content
 
@@ -60,3 +113,15 @@ Check the deploy preview on Netlify.com before merging the pull request.
 
 **The deploy preview will lack styles**. That is because, the `link` tag in `head` will be pointing at a stylesheet from `pineboat.in/styles` as the theme currently uses absolute path. Manually replacing the initial portion of the URL to use **deploy preview** URL from netlify will give you the styles.
 
+
+## Dependencies
+
+Building the website has dependency on `postcss`. A `package.json` at root level will solve the problem. But to prevent `netlify` from building the `css` files, no `package.json` has been added. Todo: there must be a way to prevent `netlify` from building `package.json`.
+
+For now, the `package.json` from `themes` folder can be copied to project root to install dependencies.
+
+```sh
+cd pineboat
+cp ./themes/beehive/package.json .
+yarn
+```
