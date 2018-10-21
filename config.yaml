@@ -19,10 +19,14 @@ menu:
         Identifier: "about"
         URL: "/page/about/"
         weight: 220
-      - Name: "Privacy"
-        Identifier: "privacy"
-        URL: "/page/privacy_policy/"
-        weight: 110
+      - Name: "Search"
+        Identifier: "search"
+        URL: "/page/search"
+        weight: 333
+      # - Name: "Privacy"
+      #   Identifier: "privacy"
+      #   URL: "/page/privacy_policy/"
+      #   weight: 110
 params:
   subtitle: "On shipping web"
   analytics: "https://unar.herokuapp.com/visits"
