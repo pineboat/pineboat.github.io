@@ -13,7 +13,7 @@ image_credit: "credit the image owner"
 
 Service workers have very simple way of registering themselves with a browser. You write the code for your service worker in a `.js` file. Add a snippet of JavaScript to register the service worker file with your browser when HTML content is loaded.
 
-Registration is one time, unless you change the service worker JavaScript file. Even 1 byte change will trigger registration. This will happen once your old service worker is closed off.
+Registration is one time, unless you change the service worker JavaScript file. Even 1 byte change will trigger registration. This will happen once your old service worker is closed off, when you close and open the site again. 
 
 ## Register
 
