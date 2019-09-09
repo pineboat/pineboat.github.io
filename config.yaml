@@ -28,7 +28,7 @@ menu:
       #   URL: "/page/privacy_policy/"
       #   weight: 110
 params:
-  subtitle: "articles on building, testing & shipping modern websites and apps."
+  subtitle: "Here to hep you build, test & ship modern web sites & apps."
   analytics: "https://unar.herokuapp.com/visits"
   algolia: 
     vars = ["title", "summary", "date", "publishdate", "expirydate", "permalink"]
